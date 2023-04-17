@@ -37,6 +37,7 @@ setup(
         "scikit-learn~=1.1.3",
         "ipyvuetify~=1.8.4",
         "ipywidgets<=8.0",
+        "ipyanchorviz",
         "altair",
     ],
 )
