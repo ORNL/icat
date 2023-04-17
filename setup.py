@@ -35,5 +35,8 @@ setup(
         "numpy~=1.23.4",
         "pandas~=1.5.1",
         "scikit-learn~=1.1.3",
+        "ipyvuetify~=1.8.4",
+        "ipywidgets<=8.0",
+        "altair",
     ],
 )
