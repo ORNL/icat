@@ -1,0 +1,22 @@
+name: icat
+channels:
+- https://conda.anaconda.org/conda-forge
+dependencies:
+- ipydrawio
+- numpy
+- python=3.10
+- panel
+- jupyter
+- jupyterlab
+- isort
+- dask_labextension
+- scikit-learn
+- jupyterlab_vim
+- pytest
+- black
+- nodejs
+- jupyterlab_code_formatter
+- pandas
+- jupyterlab-lsp
+- python-language-server
+- ipyvuetify

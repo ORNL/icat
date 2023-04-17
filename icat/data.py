@@ -1,0 +1,453 @@
+"""Data management class, this is another visual component, but also manages
+all of the sample data and so on for the model.
+"""
+
+# Responsibilities:
+# * Manages the current sample/sample history
+# * Manages interaction with model as far as setting the training data and so on.
+# * Tabulator and search and "tabs" component
+
+import re
+from collections.abc import Callable
+from typing import Optional
+
+import ipyvuetify as v
+import ipywidgets as ipw
+import pandas as pd
+import panel as pn
+import param
+
+import icat
+from icat.anchors import TFIDFAnchor
+from icat.instance import InstanceViewer
+from icat.table import TableContentsTemplate
+
+
+class DataManager(pn.viewable.Viewer):
+    sample_indices = param.List([])
+    selected_indices = param.List([])
+
+    update_trigger = param.Event()
+
+    current_data_tab = param.String("Sample")
+    search_value = param.String("")
+
+    pred_min = param.Number(0.0)
+    pred_max = param.Number(1.0)
+
+    # NOTE: since we're not yet treating width/height as params, you can't actually
+    # change the size of the datamanager after its creation, which should be addressed
+    # at some point. Note that for this to work, we'll probably need to still keep
+    # the width/height as explicit init params, and then update the class params for
+    # them _after_ we call super init (see note on that below). Then we'll need event
+    # handlers to propagate those changes on down to tabledisplay and table contents.
+
+    def __init__(
+        self,
+        data: pd.DataFrame | None = None,
+        text_col: str | None = None,
+        model: Optional["icat.model.Model"] = None,
+        width: int = 700,
+        height: int = 800,
+        **params,
+    ):
+        self.active_data = None
+        self.filtered_df = None
+        self.model = model
+
+        self.width = width
+        self.height = height
+
+        self.text_col: str = text_col
+        self.label_col: str = "_label"
+        self.prediction_col: str = "_pred"
+
+        self.instance_viewer: InstanceViewer = InstanceViewer(
+            height=height, width=width, data=self
+        )
+        self.instance_viewer.on_label_changed(self._handle_label_changed)
+
+        self.data_tab_list = ["Sample", "Labeled", "Interesting", "Selected"]
+        self.data_tabs = v.Tabs(
+            v_model=0,
+            fixed_tabs=True,
+            dense=True,
+            height=35,
+            children=[v.Tab(children=[tab]) for tab in self.data_tab_list],
+        )
+        self.data_tabs.on_event("change", self._handle_ipv_tab_changed)
+
+        self.search_box = v.TextField(
+            v_model="",
+            dense=True,
+            append_icon="mdi-magnify",
+            label="Search",
+            clearable=True,
+            clear_icon="mdi-close",
+            style_="padding-top: 7px",
+        )
+        self.search_box.on_event("keyup", self._handle_ipv_search_changed)
+        self.search_box.on_event("click:clear", self._handle_ipv_search_cleared)
+
+        self.table = TableContentsTemplate(
+            headers=[
+                {"text": self.text_col, "value": "text"},
+                {"text": "id", "value": "index"},
+                {"text": "Actions", "value": "actions", "width": "110px"},
+            ],
+            width=width,
+            height=height - 240,
+        )
+        self.table.on_update_options(self._set_page_contents)
+        self.table.on_apply_label(self._handle_label_changed)
+        self.table.on_select_point(self.fire_on_row_selected)
+        self.table.on_select_point(self._handle_row_selected)
+        self.table.on_add_example(self._handle_example_added)
+
+        self.filtered_df = None
+
+        # NOTE: ipywidgets_bokeh is a bit broken right now and I'm not yet able
+        # to get pn.ipywidget to work correctly - so panel components can only
+        # be at the highest level right now, I can't have ipywidgets with panel
+        # components as children. To get around this, I have both a self.layout
+        # (for panel) and a self.widget (for a roughly equivalent ipywidget version.)
+        # This allows a user to still get a quick interactive component, e.g. by
+        # running `model.data`, and for the more comprehensive model interactiveview
+        # to get a ipywidgets friendly `model.data.widget`. In principle, once bokeh3,
+        # ipywidgets8, and ipywidgets_bokeh are all playing nice, this won't be necessary
+        # anymore.
+        data_layout_stack = v.Container(
+            fluid=True,
+            children=[self.data_tabs, self.search_box, self.table],
+            height=height,
+            width=width,
+        )
+
+        self.resample_btn = v.Btn(children=["Resample"])
+        self.resample_btn.on_event("click", self._handle_ipv_resample_btn_click)
+        self.sampling_controls = v.Container(children=[self.resample_btn])
+
+        self.tabs_component = v.Tabs(
+            v_model=0,
+            height=35,
+            background_color="primary",
+            children=[
+                v.Tab(children=["Data"]),
+                v.Tab(children=["Instance"]),
+                v.Tab(children=["Sampling"]),
+            ],
+        )
+        self.tabs_items_component = v.TabsItems(
+            v_model=0,
+            children=[
+                v.TabItem(children=[data_layout_stack]),
+                v.TabItem(children=[self.instance_viewer.widget]),
+                v.TabItem(children=[self.sampling_controls]),
+            ],
+        )
+        ipw.jslink(
+            (self.tabs_component, "v_model"), (self.tabs_items_component, "v_model")
+        )
+
+        layout_stack = v.Container(
+            fluid=True, children=[self.tabs_component, self.tabs_items_component]
+        )
+        self.layout = pn.Column(layout_stack, height=height, width=width)
+        self.widget = v.Container(children=[layout_stack], height=height, width=width)
+
+        self._data_label_callbacks: list[Callable] = []
+        self._row_selected_callbacks: list[Callable] = []
+        self._sample_changed_callbacks: list[Callable] = []
+
+        super().__init__(**params)  # required for panel components
+        # Note that no widgets can be declared _after_ the above, or their values won't be
+        # considered parameters. But, calling this also resets any changes to local params,
+        # so any init code that changes param values will need to go _after_ this.
+
+        if data is not None:
+            self.set_data(data)
+
+    # ============================================================
+    # EVENT HANDLERS
+    # ============================================================
+
+    # TODO: coupling: directly calling refresh data on the model view. Instead, we
+    # could have a "sample_changed" event that view listens to.
+    def _handle_ipv_resample_btn_click(self, widget, event, data):
+        self.set_random_sample()
+        self.model.view.refresh_data()
+
+    def _handle_ipv_tab_changed(self, widget, event, data: int):
+        """Event handler for the vuetify tabs change. This chagnes the current_data_tab
+        param, which will automatically trigger the apply_filter."""
+        self.table.options["page"] = 1
+        self.current_data_tab = self.data_tab_list[data]
+
+    def _handle_ipv_search_changed(self, widget, event, data):
+        """Event handler for the vuetify search box change. This changes the search_value
+        param, which will automatically trigger the apply_filter."""
+        self.search_value = widget.v_model if widget.v_model is not None else ""
+
+    def _handle_ipv_search_cleared(self, widget, event, data):
+        """Event handler for the vuetify search box "x" button pressed, resetting search field."""
+        self.search_value = ""
+
+    def _handle_row_selected(self, point_id):
+        """Event handler from table row select."""
+        self.instance_viewer.populate(point_id)
+        self.tabs_component.v_model = 1
+
+    def _handle_example_added(self, point_id):
+        """Event handler for when the 'example' button is clicked."""
+        if self.model is not None:
+            new_anchor = TFIDFAnchor(
+                text_col=self.text_col, container=self.model.anchor_list
+            )
+            # TODO: an example of where it would be cleaner to just be able to pass in ID's
+            # directly on init
+            new_anchor.reference_texts = [self.active_data.loc[point_id, self.text_col]]
+            # TODO: coupling: honestly I don't have a ton of heartburn from this one.
+            # Arguably model should itself have an add_anchor function (which would just
+            # be calling the anchor_list one, but law of demeter) which would make this
+            # marginally cleaner and make model's interface nicer as well.
+            self.model.anchor_list.add_anchor(new_anchor)
+
+    def _handle_label_changed(self, index: int, new_label: int):
+        self.active_data.at[index, self.label_col] = new_label
+        self.fire_on_data_labeled(index, new_label)
+        self._apply_filters()  # ....this doesn't feel good, but some filters depend on labeling?
+
+    # ============================================================
+    # EVENT SPAWNERS
+    # ============================================================
+
+    # TODO: hook this up to model view instead of manually calling in resmaple button click handler
+    def on_sample_changed(self, callback: Callable):
+        """Register a callback function for the "sample changed" event.
+
+        Callbacks for this event should take a single parameter which is
+        the new list of sample indices
+        """
+        self._sample_changed_callbacks.append(callback)
+
+    def on_data_labeled(self, callback: Callable):
+        """Register a callback function for the "data label changed" event.
+
+        Callbacks for this event should take two parameters:
+        * index (int)
+        * label (int)
+        """
+        self._data_label_callbacks.append(callback)
+
+    def on_row_selected(self, callback: Callable):
+        """Register a callback function for the "row clicked" event.
+
+        Callbacks for this event should take the index as a parameter.
+        """
+        self._row_selected_callbacks.append(callback)
+
+    def fire_on_sample_changed(self):
+        for callback in self._sample_changed_callbacks:
+            callback(self.sample_indices)
+
+    def fire_on_data_labeled(self, index: int, label: int):
+        for callback in self._data_label_callbacks:
+            callback(index, label)
+
+    def fire_on_row_selected(self, index: int):
+        for callback in self._row_selected_callbacks:
+            callback(index)
+
+    # ============================================================
+    # INTERNAL FUNCTIONS
+    # ============================================================
+
+    def __panel__(self):
+        return self.layout
+
+    @param.depends(
+        "current_data_tab",
+        "sample_indices",
+        "selected_indices",
+        "search_value",
+        "update_trigger",
+        "pred_min",
+        "pred_max",
+        watch=True,
+    )
+    def _apply_filters(self):
+        self.data_tabs.v_model = self.data_tab_list.index(self.current_data_tab)
+        df = self.active_data
+        df = self._current_tab_filter(
+            df, self.current_data_tab, self.sample_indices, self.selected_indices
+        )
+        df = DataManager._search_box_filter(df, self.search_value, self.text_col)
+        df = self._prediction_range_filter(df)
+        self.filtered_df = df
+
+        self.table.total_length = self.filtered_df.shape[0]
+        # self.table.options["page"] = 1  # TODO: necessary?
+        self._set_page_contents(self.table.options)
+
+    def _set_page_contents(self, options):
+        """Retrieves rows from the filtered dataframe based on current table options
+        and sets them."""
+
+        if self.filtered_df is None:
+            # I think this function gets triggered on table widget init, which isn't
+            # necessary, so just ignore
+            return
+        df = self.filtered_df
+        page_num = 1
+        if "page" in options:
+            page_num = options["page"]
+        count = 10
+        if "itemsPerPage" in options:
+            count = options["itemsPerPage"]
+
+        # calculate the range in the dataframe based on current page
+        total_len = df.shape[0]
+        end_index = page_num * count
+        start_index = end_index - count
+        if end_index > total_len:
+            end_index = total_len
+        df_rows = df.iloc[start_index:end_index, :]
+
+        # create a list of dictionaries for each row in range to assign to the table items
+        rows = []
+        for index, row in df_rows.iterrows():
+            # handle keyword highlighting
+            text = row[self.text_col]
+            if self.model is not None:
+                # TODO: coupling: I don't have a huge issue with this and I don't know that
+                # there's a better way of doing it anyway. We _have_ to know about the anchors
+                # here somehow
+                kw_regex = self.model.anchor_list.highlight_regex()
+                if kw_regex != "":
+                    highlighted_str = re.sub(
+                        kw_regex,
+                        r"<span style='background-color: yellow; color: black;'>\g<1></span>",
+                        text,
+                        flags=re.IGNORECASE,
+                    )
+                    text = highlighted_str
+
+            # set the color of the text based on the prediction
+            if self.prediction_col in row.keys():
+                if row[self.prediction_col] > 0.5:
+                    color = "blue"
+                else:
+                    color = "orange"
+                text = f"<span class='{color}--text darken-1'>{text}</span>"
+            else:
+                text = f"<span>{text}</span>"
+
+            # if a point has been explicitly labeled, add a little colored text indicator
+            if self.label_col in row.keys():
+                if row[self.label_col] == -1:
+                    labeled = ""
+                else:
+                    if row[self.label_col] == 1:
+                        labeled = "blue"
+                    elif row[self.label_col] == 0:
+                        labeled = "orange"
+                    labeled = f"<span class='{labeled}--text darken-1'>Labeled</span>"
+
+            rows.append(dict(id=index, text=text, labeled=labeled))
+        self.table.items = rows
+
+    @staticmethod
+    def _search_box_filter(
+        df: pd.DataFrame,
+        pattern: str,
+        column: str,
+    ) -> pd.DataFrame:
+        """This function searches for a given string in code:`pattern` and applies it to the code:`column` within the
+        code:`df`."""
+        # TODO: possibly move to a utils.py
+        if not pattern:
+            return df
+        return df[df[column].str.contains(pattern)]
+
+    # TODO: either make this static and add prediction col,
+    # or embrace that it's a self filter and don't support passing min/max/take it from the self params
+    def _prediction_range_filter(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Filters out rows that don't have a predicted value within the specified range."""
+
+        if self.prediction_col not in df:
+            return df
+
+        return df[
+            (df[self.prediction_col] >= self.pred_min)
+            & (df[self.prediction_col] <= self.pred_max)
+        ]
+
+    def _current_tab_filter(
+        self,
+        df: pd.DataFrame,
+        filter_name: str = None,
+        current_sample: list[int] = None,
+        selected_indices: list[int] = None,
+    ) -> pd.DataFrame:
+        if df is None:
+            return None
+
+        if filter_name is None:
+            return df
+
+        # determine filter method based on the tab name that was passed
+        if filter_name == "Sample":
+            if current_sample is not None:
+                return df.loc[current_sample, :]
+            else:
+                return df.loc[[], []]
+        elif filter_name == "Labeled":
+            if self.label_col in df.columns:
+                return df[(df[self.label_col] != -1) & (df[self.label_col] != pd.NA)]
+            else:
+                return df.loc[[], []]
+        elif filter_name == "Interesting":
+            # only get rows where the prediction is "interesting" (>0.5)
+            if self.prediction_col in df.columns:
+                return df[
+                    (df[self.prediction_col] != -1)
+                    & (df[self.prediction_col] != pd.NA)
+                    & (df[self.prediction_col] > 0.5)
+                ]
+            else:
+                return df.loc[[], []]
+        elif filter_name == "Selected":
+            if selected_indices is not None:
+                return df.loc[selected_indices, :]
+            else:
+                return df.loc[[], []]
+        else:
+            return df
+
+    # ============================================================
+    # PUBLIC FUNCTIONS
+    # ============================================================
+
+    def apply_label(self, index: int, label: int):
+        self._handle_label_changed(index, label)
+
+    def set_data(self, data: pd.DataFrame):
+        # TODO: option to allow "Keeping indices/samples", for example if you were
+        # doing a bunch of table updates, but no actual row additions/removals/index changes
+        self.active_data = data.copy()
+        # self.table.value = data
+
+        # add any missing columns
+        if self.label_col not in self.active_data:
+            self.active_data[self.label_col] = -1
+
+        self.set_random_sample()
+        # TODO: seems weird to handle this here
+        self._apply_filters()
+
+    def set_random_sample(self):
+        if len(self.active_data) > 100:
+            self.sample_indices = list(self.active_data.sample(100).index)
+        else:
+            self.sample_indices = list(self.active_data.index)
+        self.fire_on_sample_changed()
