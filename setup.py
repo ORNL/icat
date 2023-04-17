@@ -14,7 +14,7 @@ with open("README.md", encoding="utf-8") as infile:
     long_description = infile.read()
 
 setup(
-    name="icat",
+    name="icat-iml",
     version=get_property("__version__"),
     description="Interactive Corpus Analysis Tool",
     long_description=long_description,
