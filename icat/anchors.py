@@ -444,5 +444,6 @@ class SimilarityModelAnchor(TFIDFAnchor):
 
     def featurize(self, data: pd.DataFrame) -> pd.Series:
         model_fn = self.container.model.similarity_model
-        results = model_fn(data, self.container)
+        # TODO: for now only accepting single reference text
+        results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
         return results
