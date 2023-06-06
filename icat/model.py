@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from icat.anchorlist import AnchorList
-from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityModelAnchor, TFIDFAnchor
 from icat.data import DataManager
 from icat.view import InteractiveView
 
@@ -101,7 +101,9 @@ class Model:
         """Event handler for anchorlist."""
         # TODO: it's possible this should be handled inside the anchorlist?
         if (
-            type(anchor) == DictionaryAnchor or type(anchor) == TFIDFAnchor
+            type(anchor) == DictionaryAnchor
+            or type(anchor) == TFIDFAnchor
+            or type(anchor) == SimilarityModelAnchor
         ) and anchor.text_col == "":
             anchor.text_col = self.text_col
             self.anchor_list.anchors[-1].text_col = self.text_col
