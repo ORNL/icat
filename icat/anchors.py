@@ -443,6 +443,9 @@ class SimilarityModelAnchor(TFIDFAnchor):
         super().__init__(container, *args, **kwargs)
 
     def featurize(self, data: pd.DataFrame) -> pd.Series:
+        if len(self.reference_texts) == 0:
+            return pd.Series(0, index=data.index)
+
         model_fn = self.container.model.similarity_model
         # TODO: for now only accepting single reference text
         results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
