@@ -216,11 +216,17 @@ class AnchorList(pn.viewable.Viewer):
         )
         self.tfidf_button.on_click(self._handle_pnl_new_tfidf_btn_clicked)
 
+        self.similarity_button = pn.widgets.Button(
+            name="Add Similarity Model Anchor",
+            button_type="primary",
+        )
+        self.similarity_button.on_click(self._handle_pnl_new_similarity_btn_clicked)
+
         self.table = AnchorListTemplate()
         self.table.on_anchor_removal(self._handle_table_anchor_deleted)
 
         self.layout = pn.Column(
-            pn.Row(self.dictionary_button, self.tfidf_button),
+            pn.Row(self.dictionary_button, self.tfidf_button, self.similarity_button),
             self.table,
             height=table_height,
             width=table_width,
@@ -256,6 +262,10 @@ class AnchorList(pn.viewable.Viewer):
         self.add_anchor(DictionaryAnchor(anchor_name=name))
 
     def _handle_pnl_new_tfidf_btn_clicked(self, event):
+        name = self.get_unique_anchor_name()
+        self.add_anchor(TFIDFAnchor(anchor_name=name))
+
+    def _handle_pnl_new_similarity_btn_clicked(self, event):
         name = self.get_unique_anchor_name()
         self.add_anchor(TFIDFAnchor(anchor_name=name))
 

@@ -435,3 +435,14 @@ class TFIDFAnchor(Anchor):
     # @staticmethod
     # def load(path: str, prefix: str):
     #     raise NotImplementedError("these are not the droids you are looking for")
+
+
+# TODO: probably instead of this extending TF-IDFAnchor, we should have them extend from same root?
+class SimilarityModelAnchor(TFIDFAnchor):
+    def __init__(self, container=None, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+
+    def featurize(self, data: pd.DataFrame) -> pd.Series:
+        model_fn = self.container.model.similarity_model
+        results = model_fn(data, self.container)
+        return results

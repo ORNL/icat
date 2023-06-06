@@ -3,6 +3,8 @@ contains an associated anchorlist, datamanager, and view. This is sort of the
 primary parent class for interacting with icat.
 """
 
+from collections.abc import Callable
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -14,7 +16,12 @@ from icat.view import InteractiveView
 
 
 class Model:
-    def __init__(self, data: pd.DataFrame, text_col: str):
+    # TODO: allow this to support an arbitrary set of dictionary similarity_models that you can choose from
+    # for now, for time's sake, not going to do.
+    # def __init__(self, data: pd.DataFrame, text_col: str, similarity_models: dict[str, Callable]):
+    def __init__(
+        self, data: pd.DataFrame, text_col: str, similarity_model: Callable = None
+    ):
         self.training_data: pd.DataFrame = None
         """The rows (and only those rows) of the original data explicitly used for training."""
         self.text_col = text_col
@@ -37,6 +44,9 @@ class Model:
         self._last_anchor_names: dict[str, str] = []
         """Keep track of anchor names so when the name of one updates we can
         remove the previous column name. The key is the panel id."""
+
+        # self.similarity_models: dict[str, Callable] = similarity_models
+        self.similarity_model = similarity_model
 
         self.anchor_list.build_tfidf_features()
 
