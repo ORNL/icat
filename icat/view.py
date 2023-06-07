@@ -122,7 +122,9 @@ class InteractiveView(pn.viewable.Viewer):
                 # it adds it back where it was when we removed it.
                 for anchor in self.anchorviz.anchors:
                     if anchor["id"] == id:
-                        actual_anchor = self.model.anchor_list.get_anchor_by_id(id)
+                        actual_anchor = self.model.anchor_list.get_anchor_by_panel_id(
+                            id
+                        )
                         actual_anchor.theta = anchor["theta"]
                 # remove the anchor, but only from the visualization.
                 # TODO: this can be cleaned when ipyanchorviz#6 is implemented
@@ -132,7 +134,7 @@ class InteractiveView(pn.viewable.Viewer):
                         updated_anchors.remove(anchor_dict)
                 self.anchorviz.set_anchors(updated_anchors)
             else:
-                actual_anchor = self.model.anchor_list.get_anchor_by_id(id)
+                actual_anchor = self.model.anchor_list.get_anchor_by_panel_id(id)
                 self._add_list_anchor_to_viz(actual_anchor)
 
     def _serialize_data_to_dicts(self) -> dict:
