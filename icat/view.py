@@ -108,6 +108,7 @@ class InteractiveView(pn.viewable.Viewer):
 
         self.model.anchor_list.add_anchor(new_anchor)
 
+    # TODO: need tests for this one
     def _send_anchorlist_anchor_modification_to_viz(
         self, id: str, property: str, value: Any
     ):

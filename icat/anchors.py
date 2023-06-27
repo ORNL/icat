@@ -415,7 +415,7 @@ class TFIDFAnchor(Anchor):
 
         combined_reference_features = reference_features.mean(axis=0)
         similarities = self._tfidf_similarities(
-            combined_reference_features, tfidf_features
+            np.asarray(combined_reference_features), tfidf_features
         )
 
         # if it does, transform the passed data based on it.
