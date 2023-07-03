@@ -35,6 +35,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
             {"text": "Delete", "value": "delete", "width": 10, "sortable": False},
         ]
     ).tag(sync=True)
+    # TODO: height and width don't seem to be used?
     height = traitlets.Int(700).tag(sync=True)
     width = traitlets.Int(150).tag(sync=True)
     expanded = traitlets.List([]).tag(sync=True)

@@ -45,6 +45,9 @@ class InteractiveView(pn.viewable.Viewer):
         self.model.anchor_list.on_anchor_changed(
             self._send_anchorlist_anchor_modification_to_viz
         )
+        self.model.anchor_list.on_anchor_changed(
+            self._update_data_table_on_anchor_change
+        )
         self.model.anchor_list.on_anchor_removed(self._remove_list_anchor_from_viz)
         self.anchorviz.on_anchor_add(self._add_viz_anchor_to_list)
         self.anchorviz.observe(
@@ -200,6 +203,13 @@ class InteractiveView(pn.viewable.Viewer):
         selected_ids = self.anchorviz.lassoedPointIDs
         for callback in self._selected_points_change_callbacks:
             callback(selected_ids)
+
+    def _update_data_table_on_anchor_change(self, id: str, property: str, value: Any):
+        """Whenever an anchor changes, refresh the data table (this is so that any
+        keyword changes correctly update highlighting)"""
+        # NOTE: unsure if this will cause any "jumping" or lag, if so, look for a keywords
+        # property?
+        self.model.data.update_trigger = True
 
     def on_selected_points_change(self, callback: Callable):
         """Register a callback function for the "anchor added" event.

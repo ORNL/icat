@@ -28,7 +28,7 @@ class Histograms(pn.viewable.Viewer):
             max=100,
             step=1,
             thumb_label=True,
-            style_="padding: 0; padding-top: 35px; margin: 0; z-index: 10000;",
+            style_=f"padding: 0; padding-top: 35px; margin: 0; z-index: 10000; width: {width-25}px;",
         )
         self.slider.on_event("change", self._handle_ipv_range_changed)
 
@@ -80,9 +80,12 @@ class Histograms(pn.viewable.Viewer):
     def _set_layout(self):
         self.layout = pn.Column(
             self.hist_local.layout,
-            v.Container(
-                children=[self.slider, self.transparent_bg_css],
-                style_="padding: 0; margin: 0; overflow: hidden;",
+            pn.Row(
+                v.Container(
+                    children=[self.slider, self.transparent_bg_css],
+                    style_="padding: 0; margin: 0; overflow: hidden;",
+                ),
+                sizing_mode="stretch_width",
             ),
             self.hist_global.layout,
             width=self.width,
