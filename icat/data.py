@@ -178,10 +178,12 @@ class DataManager(pn.viewable.Viewer):
         self.model.view.refresh_data()
 
     def _handle_ipv_tab_changed(self, widget, event, data: int):
-        """Event handler for the vuetify tabs change. This chagnes the current_data_tab
+        """Event handler for the vuetify tabs change. This changes the current_data_tab
         param, which will automatically trigger the apply_filter."""
+        print(data)
         self.table.options["page"] = 1
-        self.current_data_tab = self.data_tab_list[data]
+        # self.current_data_tab = self.data_tab_list[data]
+        self.current_data_tab = self.data_tab_list[self.data_tabs.v_model]
 
     def _handle_ipv_search_changed(self, widget, event, data):
         """Event handler for the vuetify search box change. This changes the search_value

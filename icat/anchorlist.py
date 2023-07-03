@@ -166,7 +166,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
         """
 
 
-class AnchorList(pn.viewable.Viewer):
+class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
     """A model's list tracking and managing a collection of anchors for creating features off
     a dataset. This class is also a visual component for interacting with and modifying those
     anchors in a table format, and is used as part of the greater model interactive view.
