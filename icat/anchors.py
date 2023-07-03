@@ -459,6 +459,9 @@ class SimilarityFunctionAnchor(SimilarityAnchorBase):
         super().__init__(container, *args, **kwargs)
 
         self.sim_function_options = v.Select(label="Similarity function", items=[{}])
+        self.sim_function_options.on_event(
+            "change", self._handle_ipv_sim_function_change
+        )
 
         self.widget.children = [
             *self.widget.children,
@@ -470,6 +473,9 @@ class SimilarityFunctionAnchor(SimilarityAnchorBase):
         self._populate_items()
 
     # TODO: need dropdown event handlers to modify similarity_function
+
+    def _handle_ipv_sim_function_change(self, widget, event, data):
+        self.similarity_function = data
 
     def _populate_items(self):
         items = []
@@ -484,7 +490,8 @@ class SimilarityFunctionAnchor(SimilarityAnchorBase):
         if self.similarity_function == "":
             return pd.Series(0, index=data.index)
 
-        model_fn = self.container.model.similarity_function[self.similarity_function]
+        model_fn = self.container.model.similarity_functions[self.similarity_function]
+        print(model_fn)
         # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
         results = model_fn(data, self)
         return results
