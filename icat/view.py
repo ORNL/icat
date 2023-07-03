@@ -37,7 +37,7 @@ class InteractiveView(pn.viewable.Viewer):
         self.layout = pn.Row(
             pn.Column(self.anchorviz, self.model.anchor_list, self.debug),
             pn.Column(self.model.data.widget, self.histograms, width=700),
-            height=1000,
+            height=1150,
         )
 
         # set up all of the event handlers

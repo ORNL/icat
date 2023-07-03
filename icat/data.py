@@ -180,8 +180,12 @@ class DataManager(pn.viewable.Viewer):
     def _handle_ipv_tab_changed(self, widget, event, data: int):
         """Event handler for the vuetify tabs change. This changes the current_data_tab
         param, which will automatically trigger the apply_filter."""
-        print(data)
         self.table.options["page"] = 1
+        # BUG: https://github.com/ORNL/icat/issues/3
+        # Sometimes when clicking on the first tab, the data being sent is a blank dictionary
+        # {} instead of the integer 0. Bypassing this by directly setting the tab based on
+        # data_tabs v_model which does correctly get set to 0. This is possibly an issue within
+        # ipyvuetify itself?
         # self.current_data_tab = self.data_tab_list[data]
         self.current_data_tab = self.data_tab_list[self.data_tabs.v_model]
 
