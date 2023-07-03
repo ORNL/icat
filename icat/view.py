@@ -10,7 +10,7 @@ import pandas as pd
 import panel as pn
 from ipyanchorviz import AnchorViz
 
-from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 from icat.histograms import Histograms
 
 
@@ -82,6 +82,8 @@ class InteractiveView(pn.viewable.Viewer):
         anchor_dict = dict(id=anchor.name, name=anchor.anchor_name, theta=theta)
         if type(anchor) == TFIDFAnchor:
             anchor_dict["color"] = "#8e24aa"
+        elif type(anchor) == SimilarityFunctionAnchor:
+            anchor_dict["color"] = "#248eaa"
         self.anchorviz.add_anchor(anchor_dict)
 
     def _remove_list_anchor_from_viz(self, anchor: Anchor):

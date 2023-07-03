@@ -10,17 +10,17 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from icat.anchorlist import AnchorList
-from icat.anchors import Anchor, DictionaryAnchor, SimilarityModelAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 from icat.data import DataManager
 from icat.view import InteractiveView
 
 
 class Model:
-    # TODO: allow this to support an arbitrary set of dictionary similarity_models that you can choose from
-    # for now, for time's sake, not going to do.
-    # def __init__(self, data: pd.DataFrame, text_col: str, similarity_models: dict[str, Callable]):
     def __init__(
-        self, data: pd.DataFrame, text_col: str, similarity_model: Callable = None
+        self,
+        data: pd.DataFrame,
+        text_col: str,
+        similarity_functions: list[Callable] = [],
     ):
         self.training_data: pd.DataFrame = None
         """The rows (and only those rows) of the original data explicitly used for training."""
@@ -45,8 +45,10 @@ class Model:
         """Keep track of anchor names so when the name of one updates we can
         remove the previous column name. The key is the panel id."""
 
-        # self.similarity_models: dict[str, Callable] = similarity_models
-        self.similarity_model = similarity_model
+        # self.similarity_functions = similarity_functions
+        self.similarity_functions: dict[str, Callable] = {
+            str(func.__name__): func for func in similarity_functions
+        }
 
         self.anchor_list.build_tfidf_features()
 
@@ -103,10 +105,12 @@ class Model:
         if (
             type(anchor) == DictionaryAnchor
             or type(anchor) == TFIDFAnchor
-            or type(anchor) == SimilarityModelAnchor
+            or type(anchor) == SimilarityFunctionAnchor
         ) and anchor.text_col == "":
             anchor.text_col = self.text_col
             self.anchor_list.anchors[-1].text_col = self.text_col
+        if type(anchor) == SimilarityFunctionAnchor:
+            anchor._populate_items()
         self.fit()
         self.view.refresh_data()
 

@@ -6,6 +6,8 @@ the UI widget of the anchor to modify the feature (e.g. what keywords it
 searches for.)
 """
 
+# NOTE: "container" refers to the containing anchorlist instance
+
 from collections.abc import Callable
 
 import ipyvuetify as v
@@ -236,7 +238,7 @@ class DictionaryAnchor(Anchor):
         )
 
 
-class TFIDFAnchor(Anchor):
+class SimilarityAnchorBase(Anchor):
     # TODO: have to have the texts _and_ the indices from the original data
     # that this is based on? (because the indices are what we'll want to base
     # the widget off of, but the texts should be what we actually care about/store)
@@ -263,7 +265,8 @@ class TFIDFAnchor(Anchor):
         self._id_text = v.TextField(
             label="Row ID", v_model="", dense=True, single_line=True, width=40
         )
-        self._id_text.on_event("change", self._handle_ipv_id_text_changed)
+        # self._id_text.on_event("change", self._handle_ipv_id_text_changed)
+        # self._id_text.on_event("keydown", self._handle_ipv_id_text_changed)
         self._add_button = v.Btn(children=["Add"])
         self._add_button.on_event("click", self._handle_ipv_add_btn_clicked)
 
@@ -304,10 +307,14 @@ class TFIDFAnchor(Anchor):
             ],
         )
 
-    def _handle_ipv_id_text_changed(self, widget, event, data):
-        self.new_id = data
+    # def _handle_ipv_id_text_changed(self, widget, event, data):
+    #     print(widget)
+    #     self.new_id = self._id_text.v_model
+    #     print(self.new_id)
 
     def _handle_ipv_add_btn_clicked(self, widget, event, data):
+        self.new_id = self._id_text.v_model
+
         # get the text of the row id specified, or use as the text itself if not an id/no model
         if self.container is not None and self.container.model is not None:
             active_data = self.container.model.data.active_data
@@ -374,6 +381,21 @@ class TFIDFAnchor(Anchor):
                     new_list.append(item)
             self.reference_texts = new_list
 
+    def featurize(self, data: pd.DataFrame) -> pd.Series:
+        raise NotImplementedError()
+
+    # def save(self, path: str, prefix: str):
+    #     raise NotImplementedError("these are not the droids you are looking for")
+
+    # @staticmethod
+    # def load(path: str, prefix: str):
+    #     raise NotImplementedError("these are not the droids you are looking for")
+
+
+class TFIDFAnchor(SimilarityAnchorBase):
+    def __init__(self, container=None, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+
     def _tfidf_similarities(self, vector, comparison_vectors):
         # TODO: what is instance/instances?
         # these are already numpy arrays/the tfidf vectors I think.
@@ -418,8 +440,6 @@ class TFIDFAnchor(Anchor):
             np.asarray(combined_reference_features), tfidf_features
         )
 
-        # if it does, transform the passed data based on it.
-
         # store/save/cache the vectorizer and features
         # NOTE: we don't really have a way to detect when the data has sufficiently
         # changed that we should refit/transform vectorizer and features.
@@ -429,24 +449,42 @@ class TFIDFAnchor(Anchor):
 
         return pd.Series(similarities[0], index=data.index)
 
-    # def save(self, path: str, prefix: str):
-    #     raise NotImplementedError("these are not the droids you are looking for")
-
-    # @staticmethod
-    # def load(path: str, prefix: str):
-    #     raise NotImplementedError("these are not the droids you are looking for")
-
 
 # TODO: probably instead of this extending TF-IDFAnchor, we should have them extend from same root?
-class SimilarityModelAnchor(TFIDFAnchor):
+class SimilarityFunctionAnchor(SimilarityAnchorBase):
+    similarity_function = param.String("")
+
+    # TODO: need a dropdown for the possible similarity functions
     def __init__(self, container=None, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
+
+        self.sim_function_options = v.Select(label="Similarity function", items=[{}])
+
+        self.widget.children = [
+            *self.widget.children,
+            v.Row(
+                dense=True,
+                children=[self.sim_function_options],
+            ),
+        ]
+        self._populate_items()
+
+    # TODO: need dropdown event handlers to modify similarity_function
+
+    def _populate_items(self):
+        items = []
+        if self.container is not None and self.container.model is not None:
+            items = list(self.container.model.similarity_functions.keys())
+        self.sim_function_options.items = items
 
     def featurize(self, data: pd.DataFrame) -> pd.Series:
         if len(self.reference_texts) == 0:
             return pd.Series(0, index=data.index)
 
-        model_fn = self.container.model.similarity_model
-        # TODO: for now only accepting single reference text
-        results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
+        if self.similarity_function == "":
+            return pd.Series(0, index=data.index)
+
+        model_fn = self.container.model.similarity_function[self.similarity_function]
+        # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
+        results = model_fn(data, self)
         return results

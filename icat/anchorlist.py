@@ -14,7 +14,7 @@ import param
 import traitlets
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from icat.anchors import Anchor, DictionaryAnchor, SimilarityModelAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 
 
 class AnchorListTemplate(v.VuetifyTemplate):
@@ -218,7 +218,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         self.tfidf_button.on_click(self._handle_pnl_new_tfidf_btn_clicked)
 
         self.similarity_button = pn.widgets.Button(
-            name="Add Similarity Model Anchor",
+            name="Add Similarity Anchor",
             button_type="primary",
         )
         self.similarity_button.on_click(self._handle_pnl_new_similarity_btn_clicked)
@@ -268,7 +268,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
     def _handle_pnl_new_similarity_btn_clicked(self, event):
         name = self.get_unique_anchor_name()
-        self.add_anchor(SimilarityModelAnchor(anchor_name=name))
+        self.add_anchor(SimilarityFunctionAnchor(anchor_name=name))
 
     # ============================================================
     # EVENT SPAWNERS
