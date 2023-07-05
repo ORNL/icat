@@ -2,6 +2,7 @@
 widgets and the rest of the model gui components."""
 
 import copy
+import random
 from collections.abc import Callable
 from typing import Any
 
@@ -78,7 +79,10 @@ class InteractiveView(pn.viewable.Viewer):
             if av_anchor["id"] == anchor.name:
                 return
 
-        theta = anchor.theta if hasattr(anchor, "theta") else 0.5
+        # TODO: randomize theta here
+        theta = (
+            anchor.theta if hasattr(anchor, "theta") else random.uniform(0, 2 * 3.14)
+        )
         anchor_dict = dict(id=anchor.name, name=anchor.anchor_name, theta=theta)
         if type(anchor) == TFIDFAnchor:
             anchor_dict["color"] = "#8e24aa"
