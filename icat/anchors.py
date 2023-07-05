@@ -491,7 +491,6 @@ class SimilarityFunctionAnchor(SimilarityAnchorBase):
             return pd.Series(0, index=data.index)
 
         model_fn = self.container.model.similarity_functions[self.similarity_function]
-        print(model_fn)
         # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
         results = model_fn(data, self)
         return results

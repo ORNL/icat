@@ -373,7 +373,7 @@ class DataManager(pn.viewable.Viewer):
         # TODO: possibly move to a utils.py
         if not pattern:
             return df
-        return df[df[column].str.contains(pattern)]
+        return df[df[column].str.contains(pattern, case=False)]
 
     # TODO: either make this static and add prediction col,
     # or embrace that it's a self filter and don't support passing min/max/take it from the self params
