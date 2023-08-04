@@ -5,8 +5,11 @@ from collections.abc import Callable
 import ipyvuetify as v
 import panel as pn
 
+from icat import _kill_param_auto_docstring
 from icat.data import DataManager
 from icat.histogram import Histogram
+
+_kill_param_auto_docstring()
 
 
 class Histograms(pn.viewable.Viewer):

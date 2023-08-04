@@ -9,10 +9,13 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
+from icat import _kill_param_auto_docstring
 from icat.anchorlist import AnchorList
 from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 from icat.data import DataManager
 from icat.view import InteractiveView
+
+_kill_param_auto_docstring()
 
 
 class Model:

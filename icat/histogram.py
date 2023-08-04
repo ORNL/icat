@@ -9,6 +9,10 @@ import numpy as np
 import pandas as pd
 import panel as pn
 
+from icat import _kill_param_auto_docstring
+
+_kill_param_auto_docstring()
+
 
 class Histogram(pn.viewable.Viewer):
     def __init__(self, width: int = 400, **params):

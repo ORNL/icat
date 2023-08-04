@@ -18,6 +18,10 @@ import param
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from icat import _kill_param_auto_docstring
+
+_kill_param_auto_docstring()
+
 
 # TODO: coupling: we don't need access to container, just have a "fire_anchor_changed"
 # and "on_anchor_changed" that the container listens to.

@@ -14,7 +14,10 @@ import param
 import traitlets
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from icat import _kill_param_auto_docstring
 from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+
+_kill_param_auto_docstring()
 
 
 class AnchorListTemplate(v.VuetifyTemplate):
@@ -168,9 +171,11 @@ class AnchorListTemplate(v.VuetifyTemplate):
 
 
 class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
-    """A model's list tracking and managing a collection of anchors for creating features off
-    a dataset. This class is also a visual component for interacting with and modifying those
-    anchors in a table format, and is used as part of the greater model interactive view.
+    """A model's list tracking and managing a collection of anchors.
+
+    This is what handles creating features for a dataset. This class is also a
+    visual component for interacting with and modifying those anchors in a table
+    format, and is used as part of the greater model interactive view.
 
     Args:
         model: The parent model.
@@ -179,14 +184,14 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
     """
 
     anchors = param.List([])
-    """The :code:`param` list of anchors.
+    """The ``param`` list of anchors.
 
     Important:
         Care must be taken when directly setting this variable. Lists are mutable, and
         panel/param do not detect inner changes to mutable objects. This includes things like
-        :code:`anchors.append(my_anchor)` and :code:`anchors[1] = some_anchor`. Use the various
-        functions on this class such as :code:`add_anchor` and so on. Notably, entire list replacements,
-        e.g. :code:`anchors = [my_anchor, some_anchor]`, work as expected.
+        ``anchors.append(my_anchor)`` and ``anchors[1] = some_anchor``. Use the various
+        functions on this class such as ``add_anchor`` and so on. Notably, entire list replacements,
+        e.g. ``anchors = [my_anchor, some_anchor]``, work as expected.
     """
 
     # TODO: coupling: model is used to retrieve model.data.active_data
@@ -315,10 +320,10 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         from the anchor's individual on_anchor_changed events
 
         Args:
-            name (str): the _internal name_ that panel is using, which we're using as
-                the anchor id.
+            name (str): the *internal name* that panel is using, which we're using as
+            the anchor id.
             key (str): the name of the property being changed.
-            value (Any): The value the property was changed to.
+            value (any): The value the property was changed to.
         """
         for callback in self._anchor_changed_callbacks:
             callback(name, key, value)

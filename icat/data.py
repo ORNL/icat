@@ -18,9 +18,12 @@ import panel as pn
 import param
 
 import icat
+from icat import _kill_param_auto_docstring
 from icat.anchors import TFIDFAnchor
 from icat.instance import InstanceViewer
 from icat.table import TableContentsTemplate
+
+_kill_param_auto_docstring()
 
 
 class DataManager(pn.viewable.Viewer):

@@ -11,8 +11,11 @@ import pandas as pd
 import panel as pn
 from ipyanchorviz import AnchorViz
 
+from icat import _kill_param_auto_docstring
 from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 from icat.histograms import Histograms
+
+_kill_param_auto_docstring()
 
 
 class InteractiveView(pn.viewable.Viewer):

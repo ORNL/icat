@@ -11,3 +11,7 @@ pytest-mock
 build
 twine
 pre-commit
+sphinx~=7.1.2
+pydata-sphinx-theme
+#sphinx-autoapi
+sphinxcontrib-napoleon

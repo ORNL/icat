@@ -5,6 +5,10 @@ from collections.abc import Callable
 import ipyvuetify as v
 import traitlets
 
+from icat import _kill_param_auto_docstring
+
+_kill_param_auto_docstring()
+
 
 class TableContentsTemplate(v.VuetifyTemplate):
     items = traitlets.List(traitlets.Dict()).tag(sync=True)
