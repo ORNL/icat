@@ -299,3 +299,20 @@ def test_tfidf_anchor_with_multiple_texts(fun_df):
 
     assert results[8] > 0.5
     assert results[9] > 0.0
+
+
+@pytest.mark.integration
+def test_similarity_anchor_gets_short_from_text_entry(fun_df):
+    """Adding raw text in the id_text field of a similarity anchor should correctly
+    add to the reference_short and add a new chip"""
+
+    model = Model(fun_df, "text")
+    anchor = TFIDFAnchor(text_col="text")
+    model.anchor_list.add_anchor(anchor)
+
+    anchor._id_text.v_model = "kid"
+    anchor._add_button.fire_event("click")
+
+    assert anchor.reference_texts == ["kid"]
+    assert anchor.reference_short == ["kid"]
+    assert len(anchor._chips_container.children) == 1

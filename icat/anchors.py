@@ -48,10 +48,9 @@ class Anchor(param.Parameterized):
     in_view = param.Boolean(True, precedence=-1)
     """Whether to show this anchor in anchorviz."""
     in_model = param.Boolean(True, precedence=-1)
-    """Whether to include this feature in the training process.
-
-    TODO: does it still featurize/update loc inside anchorviz?
-    """
+    """Whether to include this feature in the training process. (it will be included
+    in the featurization call and will update locations inside anchorviz, it simply
+    won't be passed to the model.)"""
 
     def __init__(self, container=None, **params):
         self.container = container
@@ -67,6 +66,7 @@ class Anchor(param.Parameterized):
         # both "blur" (lost focus, e.g. clicked away, and we assume they're done) and
         # "change".
         self._anchor_name_input.on_event("input", self._handle_ipv_anchor_name_changed)
+        self._anchor_name_input.on_event("blur", self._handle_ipv_anchor_name_changed)
 
         self._weight_input = v.Slider(
             label="Weight",
@@ -369,10 +369,15 @@ class SimilarityAnchorBase(Anchor):
 
         for text in self.reference_texts:
             if data is not None:
+                # first check the data for an exact text match and convert to id
                 search = data[data[self.text_col] == text]
                 if search.shape[0] > 0:
                     refs.append(str(search.iloc[0].name))
+                else:
+                    # otherwise treat it as a raw text
+                    refs.append(text[:25])
             else:
+                # treat as raw text if no active dataset
                 refs.append(text[:25])
 
         self.reference_short = refs
@@ -381,7 +386,7 @@ class SimilarityAnchorBase(Anchor):
     def _handle_pnl_shorts_change(self):
         chips = []
         for index, short in enumerate(self.reference_short):
-            chip = v.Chip(close=True, children=[short], v_on="tooltip.on")
+            chip = v.Chip(close_=True, children=[short], v_on="tooltip.on")
             chip.on_event("click:close", self._handle_ipv_chip_close)
             # TODO: when you click on it, it should put it in the instance
             # chip.on_event("")
