@@ -167,3 +167,39 @@ def test_highlight_regex(kw_set1, kw_set2, expected_result):
     assert anchor_list.highlight_regex() == expected_result
 
     """Special characters should be escaped, esp *"""
+
+
+def test_save_load(data_file_loc, fun_df):
+    model = Model(fun_df, "text")
+    a1 = DictionaryAnchor(anchor_name="thing1")
+    a1.keywords = ["hello", "there"]
+    a1.theta = 1.2
+    model.anchor_list.cache["test_cache"] = 13
+
+    a2 = DictionaryAnchor(anchor_name="thing2")
+    a2.keywords = ["world", "here"]
+    a2.theta = 1.5
+
+    model.add_anchor(a1)
+    model.add_anchor(a2)
+
+    model.anchor_list.save("test/exampledata/thing")
+
+    model2 = Model(fun_df, "text")
+    model2.anchor_list.load("test/exampledata/thing")
+    assert model2.anchor_list.cache["test_cache"] == 13
+
+    a21 = model2.anchor_list.anchors[0]
+    a22 = model2.anchor_list.anchors[1]
+    assert a21.anchor_name == "thing1"
+    assert a22.anchor_name == "thing2"
+    assert a21.keywords == ["hello", "there"]
+    assert a22.keywords == ["world", "here"]
+
+    for anchor in model2.view.anchorviz.anchors:
+        if anchor["id"] == a21.name:
+            assert anchor["theta"] == 1.2
+        elif anchor["id"] == a22.name:
+            assert anchor["theta"] == 1.5
+        else:
+            raise Exception("what.")
