@@ -23,6 +23,8 @@ extensions = [
 
 autosummary_generate = True
 autosummary_imported_members = False
+# add_module_names = False  # NOTE: this doesn't apply to toc stuff
+
 
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
@@ -44,4 +46,23 @@ html_theme_options = {
     "show_nav_level": 3,
     "navigation_depth": 6,
     "show_toc_level": 2,
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/ORNL/icat",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/icat-iml/",
+            "icon": "fa-brands fa-python",
+            "type": "fontawesome",
+        },
+    ],
+    "external_links": [
+        {"name": "Changelog", "url": "https://github.com/ORNL/icat/releases"},
+    ],
 }
+
+html_context = {"default_mode": "dark"}
