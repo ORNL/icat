@@ -146,6 +146,20 @@ def test_anchor_init_starts_with_right_vmodels():
     assert not anchor._in_model_input.v_model
 
 
+@pytest.mark.vue
+def test_anchor_kw_field_events_change_param():
+    """Both the blur and change events for the keywords field should modify the param."""
+    anchor = DictionaryAnchor(keywords=["beans", "and", "toast"])
+    anchor._keywords_input.v_model = "beans,and"
+    anchor._keywords_input.fire_event("change", "beans,and")
+    assert anchor.keywords == ["beans", "and"]
+
+    # blur simulates that we clicked away without hitting enter
+    anchor._keywords_input.v_model = "beans"
+    anchor._keywords_input.fire_event("blur", "beans")
+    assert anchor.keywords == ["beans"]
+
+
 @pytest.mark.panel
 def test_dictionary_init_only():
     """Creating a dictionary passing "keywords" should also assign to keywords_str."""
@@ -174,7 +188,7 @@ def test_anchor_name_input_changes_anchor_name():
     """Changing an anchor's anchor_name_input should change the anchor_name parameter."""
     anchor = Anchor()
     anchor._anchor_name_input.v_model = "testing"
-    anchor._anchor_name_input.fire_event("change", "testing")
+    anchor._anchor_name_input.fire_event("input", "testing")
 
     assert anchor.anchor_name == "testing"
 

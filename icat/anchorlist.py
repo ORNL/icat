@@ -1,8 +1,5 @@
 """The AnchorList component class file, these manage a model's current set of anchors."""
 
-# TODO: still need to add coverage columns.
-# TODO: probably need some sort of save/dump/load functionality
-
 from collections.abc import Callable
 
 import ipyvuetify as v

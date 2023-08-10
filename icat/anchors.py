@@ -1,4 +1,4 @@
-"""The anchor class itself and a few anchor types.
+"""The parent anchor class and a few anchor types.
 
 Anchors are the interactive featuring component of ICAT, an anchor class
 determines how a feature is computed on the data, and the user interacts with
@@ -26,14 +26,32 @@ _kill_param_auto_docstring()
 # TODO: coupling: we don't need access to container, just have a "fire_anchor_changed"
 # and "on_anchor_changed" that the container listens to.
 class Anchor(param.Parameterized):
-    """The main parent anchor class, this should be subclassed, not directly used."""
+    """The main parent anchor class, this should be subclassed, not directly used.
+
+    Args:
+        container (AnchorList): The anchor list that this anchor is a part of. If
+            you are creating the anchor manually, leave this None, it will get
+            populated automatically.
+        anchor_name (str): The label to show for this anchor.
+        weight (float): Scalar multiple to apply to the output feature, this modifies
+            how strongly a particular feature is likely to influence the model.
+        in_view (bool): Whether to show this anchor in anchorviz.
+        in_model (bool): Whether to include this feature in the training process.
+    """
 
     anchor_name = param.String(default="New Anchor")
-    """Not to be confused with just ``name``, which is"""
+    """Not to be confused with just ``name``, which is the panel component id."""
     weight = param.Number(1.0, bounds=(0.0, 5.0))
+    """Scalar multiple to apply to all output features, the user can change this
+    to modify how much a particular feature influences the model."""
 
     in_view = param.Boolean(True, precedence=-1)
+    """Whether to show this anchor in anchorviz."""
     in_model = param.Boolean(True, precedence=-1)
+    """Whether to include this feature in the training process.
+
+    TODO: does it still featurize/update loc inside anchorviz?
+    """
 
     def __init__(self, container=None, **params):
         self.container = container
@@ -43,7 +61,12 @@ class Anchor(param.Parameterized):
         self._anchor_name_input = v.TextField(
             dense=True, label="Anchor Name", v_model=self.anchor_name, single_line=True
         )
-        self._anchor_name_input.on_event("change", self._handle_ipv_anchor_name_changed)
+        # NOTE: "input" fires for every keypress. We use the input event for this one
+        # because the model specially handles an anchor name change and _doesn't_ refit
+        # the model for that change. Most other text field events will want to fire on
+        # both "blur" (lost focus, e.g. clicked away, and we assume they're done) and
+        # "change".
+        self._anchor_name_input.on_event("input", self._handle_ipv_anchor_name_changed)
 
         self._weight_input = v.Slider(
             label="Weight",
@@ -157,6 +180,7 @@ class DictionaryAnchor(Anchor):
             label="Keywords", v_model=self.keywords_str, dense=True, single_line=True
         )
         self._keywords_input.on_event("change", self._handle_ipv_keywords_input_change)
+        self._keywords_input.on_event("blur", self._handle_ipv_keywords_input_change)
 
         self.widget = v.Container(
             fluid=True,
@@ -320,7 +344,11 @@ class SimilarityAnchorBase(Anchor):
         self.new_id = self._id_text.v_model
 
         # get the text of the row id specified, or use as the text itself if not an id/no model
-        if self.container is not None and self.container.model is not None:
+        if (
+            self.container is not None
+            and self.container.model is not None
+            and self.new_id.isdigit()
+        ):
             active_data = self.container.model.data.active_data
             new_text = active_data.loc[int(self.new_id), self.text_col]
         else:
