@@ -1,5 +1,8 @@
 """The AnchorList component class file, these manage a model's current set of anchors."""
 
+import json
+import os
+import pickle
 from collections.abc import Callable
 
 import ipyvuetify as v
@@ -258,6 +261,10 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
         self.coverage: dict[dict] = None
         """Keys are anchor ids, value is a dictionary of metrics to display"""
+
+        self.cache: dict[str, any] = {}
+        """This cache gets pickled on save, useful for anchors to store results of
+        processing-intensive tasks to reduce featurizing time."""
 
         self.tfidf_vectorizer = None
         self.tfidf_features = None
@@ -625,3 +632,62 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         self.tfidf_features = self.tfidf_vectorizer.fit_transform(
             self.model.data.active_data[self.model.data.text_col]
         )
+
+    def save(self, path: str):
+        """Save the configuration for each individual anchor, and pickle the cache,
+        at the specified location."""
+        anchors_info = []
+
+        os.makedirs(f"{path}/anchors", exist_ok=True)
+
+        # save each individual anchor and collect its information
+        for anchor in self.anchors:
+            name = anchor.anchor_name
+            anchor_info = {
+                "module": anchor.__module__,
+                "classname": anchor.__class__.__qualname__,
+                "params_path": f"{path}/anchors/{name}",
+                "theta": 0.0,
+            }
+
+            # get theta from the anchorviz anchor list
+            if self.model is not None:
+                for av_anchor_info in self.model.view.anchorviz.anchors:
+                    if av_anchor_info["id"] == anchor.name:
+                        anchor_info["theta"] = av_anchor_info["theta"]
+                        break
+            anchor.save(f"{path}/anchors/{name}")
+            anchors_info.append(anchor_info)
+
+        # save the cache
+        with open(f"{path}/anchorlist_cache.pkl", "wb") as outfile:
+            pickle.dump(self.cache, outfile)
+
+        # save the anchor information
+        with open(f"{path}/anchorlist.json", "w") as outfile:
+            json.dump(anchors_info, outfile, indent=4)
+
+    def load(self, path: str):
+        """Reload parameters for and re-add all anchors from specified location, as
+        well as unpickle any previously saved cache."""
+        # load the anchor information
+        with open(f"{path}/anchorlist.json") as infile:
+            anchors_info = json.load(infile)
+
+        # load the cache
+        with open(f"{path}/anchorlist_cache.pkl", "rb") as infile:
+            self.cache = pickle.load(infile)
+
+        # load and re-add each individual anchor
+        for anchor_info in anchors_info:
+            # black magic import to get the class type (this is to make it
+            # possible for user to implement their own anchor classes and still
+            # be handled correctly here)
+            module = __import__(anchor_info["module"])
+            klass = getattr(module, anchor_info["classname"])
+
+            # initialize and load the anchor type
+            anchor = klass()
+            anchor.load(anchor_info["params_path"])
+            anchor.theta = anchor_info["theta"]
+            self.add_anchor(anchor)

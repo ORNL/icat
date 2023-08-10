@@ -194,12 +194,12 @@ class Anchor(param.Parameterized):
 
     def save(self, path: str):
         """Save anchor to specified path."""
-        with open(path, "w") as outfile:
+        with open(f"{path}.json", "w") as outfile:
             json.dump(self.to_dict(), outfile, indent=4)
 
     def load(self, path: str):
         """Load anchor from specified path."""
-        with open(path) as infile:
+        with open(f"{path}.json") as infile:
             params = json.load(infile)
         icat.utils.populate_anchor_from_dictionary(self, params)
 

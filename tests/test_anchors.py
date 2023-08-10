@@ -355,10 +355,10 @@ def test_save_load_dictionary_anchor(data_file_loc):
     a1.text_col = "my_text"
     a1.keywords_str = "thing"
     a1.keywords = ["thing"]
-    a1.save("test/exampledata/test.json")
+    a1.save("test/exampledata/test")
 
     a2 = DictionaryAnchor()
-    a2.load("test/exampledata/test.json")
+    a2.load("test/exampledata/test")
     assert a2.anchor_name == "I am an anchor"
     assert a2.weight == 1.2
     assert not a2.in_view
@@ -380,10 +380,10 @@ def test_save_load_similarity_anchor(data_file_loc):
     a1.text_col = "my_text"
     a1.reference_texts = ["I am a powerful potato"]
     a1.reference_short = ["I am a"]
-    a1.save("test/exampledata/test.json")
+    a1.save("test/exampledata/test")
 
     a2 = SimilarityFunctionAnchor()
-    a2.load("test/exampledata/test.json")
+    a2.load("test/exampledata/test")
     assert a2.anchor_name == "I am an anchor"
     assert a2.weight == 1.2
     assert not a2.in_view
