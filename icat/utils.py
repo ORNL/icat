@@ -16,3 +16,16 @@ def _kill_param_auto_docstring():
 
     param.parameterized.docstring_describe_params = False
     param.parameterized.docstring_signature = False
+
+
+def populate_anchor_from_dictionary(anchor, parameters: dict[str, any]):
+    """Assign anchor's parameters from a dictionary containing the key value pairs.
+
+    This is useful to call from an anchor's ``load()`` implementation.
+
+    Args:
+        anchor (Anchor): The anchor to assign the parameters to.
+        parameters (dict[str, any]): The parameters to assign to the anchor.
+    """
+    for key, value in parameters.items():
+        setattr(anchor, key, value)

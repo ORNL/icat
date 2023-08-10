@@ -8,6 +8,7 @@ searches for.)
 
 # NOTE: "container" refers to the containing anchorlist instance
 
+import json
 from collections.abc import Callable
 
 import ipyvuetify as v
@@ -18,9 +19,9 @@ import param
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from icat.utils import _kill_param_auto_docstring
+import icat.utils
 
-_kill_param_auto_docstring()
+icat.utils._kill_param_auto_docstring()
 
 
 # TODO: coupling: we don't need access to container, just have a "fire_anchor_changed"
@@ -162,6 +163,46 @@ class Anchor(param.Parameterized):
     def row_view(self) -> pn.Row:
         return pn.Row(self.param)
 
+    def to_dict(self) -> dict[str, any]:
+        """Get a dictionary of this anchor's parameters. Useful for easily implementing
+        save functionality."""
+        return dict(
+            anchor_name=self.anchor_name,
+            weight=self.weight,
+            in_view=self.in_view,
+            in_model=self.in_model,
+        )
+
+    # def save(self, path: str):
+    #     """Save the information for this anchor at the specified path, such that calling
+    #     load() with the same path will return all values as they were.
+
+    #     Note:
+    #         Expected to be overriden in subclasses. It's recommended that you implement
+    #         a ``to_dict`` function that updates a dictionary from the parent anchor's
+    #         ``to_dict`` function to get all relevant information.
+    #     """
+    #     raise NotImplementedError()
+
+    # def load(self, path: str):
+    #     """Load an anchor's parameters from the specified path.
+
+    #     Note:
+    #         Expected to be overriden in subclasses.
+    #     """
+    #     raise NotImplementedError()
+
+    def save(self, path: str):
+        """Save anchor to specified path."""
+        with open(path, "w") as outfile:
+            json.dump(self.to_dict(), outfile, indent=4)
+
+    def load(self, path: str):
+        """Load anchor from specified path."""
+        with open(path) as infile:
+            params = json.load(infile)
+        icat.utils.populate_anchor_from_dictionary(self, params)
+
 
 class DictionaryAnchor(Anchor):
     """A bag-of-words feature that returns raw count value sum of the
@@ -265,6 +306,17 @@ class DictionaryAnchor(Anchor):
             self.param.weight,
             self.param.keywords_str,
         )
+
+    def to_dict(self) -> dict[str, any]:
+        """Get a dictionary of all relevant parameters that define this anchor."""
+        params = super().to_dict()
+        self_params = dict(
+            keywords_str=self.keywords_str,
+            text_col=self.text_col,
+            keywords=self.keywords,
+        )
+        params.update(self_params)
+        return params
 
 
 class SimilarityAnchorBase(Anchor):
@@ -425,12 +477,16 @@ class SimilarityAnchorBase(Anchor):
     def featurize(self, data: pd.DataFrame) -> pd.Series:
         raise NotImplementedError()
 
-    # def save(self, path: str, prefix: str):
-    #     raise NotImplementedError("these are not the droids you are looking for")
-
-    # @staticmethod
-    # def load(path: str, prefix: str):
-    #     raise NotImplementedError("these are not the droids you are looking for")
+    def to_dict(self) -> dict[str, any]:
+        """Get a dictionary of all relevant parameters that define this anchor."""
+        params = super().to_dict()
+        self_params = dict(
+            text_col=self.text_col,
+            reference_texts=self.reference_texts,
+            reference_short=self.reference_short,
+        )
+        params.update(self_params)
+        return params
 
 
 class TFIDFAnchor(SimilarityAnchorBase):
@@ -536,3 +592,10 @@ class SimilarityFunctionAnchor(SimilarityAnchorBase):
         # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
         results = model_fn(data, self)
         return results
+
+    def to_dict(self) -> dict[str, any]:
+        """Get a dictionary of all relevant parameters that define this anchor."""
+        params = super().to_dict()
+        self_params = dict(similarity_function=self.similarity_function)
+        params.update(self_params)
+        return params

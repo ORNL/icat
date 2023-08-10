@@ -341,3 +341,53 @@ def test_changing_similarity_function_fires_change_event(fun_df):
     anchor.sim_function_options.fire_event("change", "simple_sim")
 
     assert returns[0][2] == "simple_sim"
+
+
+def test_save_load_dictionary_anchor(data_file_loc):
+    """Saving an anchor and then loading should be populated with all of the
+    correct parameters."""
+
+    a1 = DictionaryAnchor()
+    a1.anchor_name = "I am an anchor"
+    a1.weight = 1.2
+    a1.in_view = False
+    a1.in_model = False
+    a1.text_col = "my_text"
+    a1.keywords_str = "thing"
+    a1.keywords = ["thing"]
+    a1.save("test/exampledata/test.json")
+
+    a2 = DictionaryAnchor()
+    a2.load("test/exampledata/test.json")
+    assert a2.anchor_name == "I am an anchor"
+    assert a2.weight == 1.2
+    assert not a2.in_view
+    assert not a2.in_model
+    assert a2.text_col == "my_text"
+    assert a2.keywords_str == "thing"
+    assert a2.keywords == ["thing"]
+
+
+def test_save_load_similarity_anchor(data_file_loc):
+    """Saving an anchor and then loading should be populated with all of the
+    correct parameters."""
+
+    a1 = SimilarityFunctionAnchor()
+    a1.anchor_name = "I am an anchor"
+    a1.weight = 1.2
+    a1.in_view = False
+    a1.in_model = False
+    a1.text_col = "my_text"
+    a1.reference_texts = ["I am a powerful potato"]
+    a1.reference_short = ["I am a"]
+    a1.save("test/exampledata/test.json")
+
+    a2 = SimilarityFunctionAnchor()
+    a2.load("test/exampledata/test.json")
+    assert a2.anchor_name == "I am an anchor"
+    assert a2.weight == 1.2
+    assert not a2.in_view
+    assert not a2.in_model
+    assert a2.text_col == "my_text"
+    assert a2.reference_texts == ["I am a powerful potato"]
+    assert a2.reference_short == ["I am a"]

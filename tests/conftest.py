@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pandas as pd
 import pytest
 
@@ -55,3 +58,11 @@ def fun_df():
         {"text": "I am your sandwich."},
     ]
     return pd.DataFrame(rows)
+
+
+@pytest.fixture
+def data_file_loc():
+    shutil.rmtree("test/exampledata", ignore_errors=True)
+    os.makedirs("test/exampledata", exist_ok=True)
+    yield
+    shutil.rmtree("test/exampledata", ignore_errors=True)
