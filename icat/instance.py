@@ -8,7 +8,7 @@ import panel as pn
 import traitlets
 
 import icat
-from icat import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
 

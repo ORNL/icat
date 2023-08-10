@@ -5,7 +5,7 @@ from collections.abc import Callable
 import ipyvuetify as v
 import traitlets
 
-from icat import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
 

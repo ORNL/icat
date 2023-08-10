@@ -5,9 +5,9 @@ from collections.abc import Callable
 import ipyvuetify as v
 import panel as pn
 
-from icat import _kill_param_auto_docstring
 from icat.data import DataManager
 from icat.histogram import Histogram
+from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
 

@@ -18,7 +18,7 @@ import param
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from icat import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
 

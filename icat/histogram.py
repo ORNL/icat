@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import panel as pn
 
-from icat import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
 

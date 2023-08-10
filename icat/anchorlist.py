@@ -14,8 +14,8 @@ import param
 import traitlets
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from icat import _kill_param_auto_docstring
 from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
 
