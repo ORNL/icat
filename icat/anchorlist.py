@@ -472,7 +472,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
                 in_viz=anchor._in_view_input,
                 in_model=anchor._in_model_input,
                 widget=anchor.widget,
-                processing=anchor.processing,
+                processing=False,
             )
             items.append(item)
         self.table.items = items

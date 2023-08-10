@@ -52,8 +52,6 @@ class Anchor(param.Parameterized):
     in the featurization call and will update locations inside anchorviz, it simply
     won't be passed to the model.)"""
 
-    processing = param.Boolean(False, precedence=-1)
-
     def __init__(self, container=None, **params):
         self.container = container
         # self.processing = True
@@ -296,10 +294,9 @@ class SimilarityAnchorBase(Anchor):
         self._id_text = v.TextField(
             label="Row ID", v_model="", dense=True, single_line=True, width=40
         )
-        # self._id_text.on_event("change", self._handle_ipv_id_text_changed)
-        # self._id_text.on_event("keydown", self._handle_ipv_id_text_changed)
         self._add_button = v.Btn(children=["Add"])
         self._add_button.on_event("click", self._handle_ipv_add_btn_clicked)
+        self._id_text.on_event("change", self._handle_ipv_id_text_changed)
 
         self.new_id = 0
 
@@ -338,12 +335,16 @@ class SimilarityAnchorBase(Anchor):
             ],
         )
 
-    # def _handle_ipv_id_text_changed(self, widget, event, data):
-    #     print(widget)
-    #     self.new_id = self._id_text.v_model
-    #     print(self.new_id)
+    def _handle_ipv_id_text_changed(self, widget, event, data):
+        self._add_id_text_to_reference_texts()
 
     def _handle_ipv_add_btn_clicked(self, widget, event, data):
+        self._add_id_text_to_reference_texts()
+
+    def _add_id_text_to_reference_texts(self):
+        """Takes whatever was put in the id text and adds either the raw text, or
+        the text at the specified ID (if it was an actual id given and we have
+        data.)"""
         self.new_id = self._id_text.v_model
 
         # get the text of the row id specified, or use as the text itself if not an id/no model
@@ -356,8 +357,8 @@ class SimilarityAnchorBase(Anchor):
             new_text = active_data.loc[int(self.new_id), self.text_col]
         else:
             new_text = self.new_id
-        self.reference_texts = [*self.reference_texts, new_text]
         self._id_text.v_model = ""
+        self.reference_texts = [*self.reference_texts, new_text]
 
     @param.depends("reference_texts", watch=True)
     def _handle_pnl_texts_change(self):
@@ -516,6 +517,7 @@ class SimilarityFunctionAnchor(SimilarityAnchorBase):
 
     def _handle_ipv_sim_function_change(self, widget, event, data):
         self.similarity_function = data
+        self.fire_on_anchor_changed("similarity_function", data)
 
     def _populate_items(self):
         items = []
