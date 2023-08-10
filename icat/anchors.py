@@ -52,8 +52,11 @@ class Anchor(param.Parameterized):
     in the featurization call and will update locations inside anchorviz, it simply
     won't be passed to the model.)"""
 
+    processing = param.Boolean(False, precedence=-1)
+
     def __init__(self, container=None, **params):
         self.container = container
+        # self.processing = True
         # self.event_to_trigger = None
         super().__init__(**params)
 

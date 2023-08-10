@@ -57,6 +57,25 @@ class AnchorListTemplate(v.VuetifyTemplate):
         for callback in self._anchor_removal_callbacks:
             callback(name)
 
+    def _set_processing(self, name: str, processing: bool):
+        """Add or remove a loading spinner on the delete button to indicate anchor activity.
+
+        Args:
+            name (str): The panel component name id.
+            processing (bool): Whether the anchor is busy or not.
+        """
+        new_items = []
+        for item in self.items:
+            if item["name"] == name:
+                # we have to create a new item with the same fields in order for the traitlet
+                # to recognize this is actually a new list
+                new_item = dict(**item)
+                new_item["processing"] = processing
+                new_items.append(new_item)
+            else:
+                new_items.append(item)
+        self.items = new_items
+
     @traitlets.default("template")
     def _template(self):
         return """
@@ -96,6 +115,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
                     x-small
                     class='delete-button'
                     @click="deleteAnchor(item.name)"
+                    :loading="item.processing"
                 >
                     <v-icon>mdi-close-circle-outline</v-icon>
                 </v-btn>
@@ -452,6 +472,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
                 in_viz=anchor._in_view_input,
                 in_model=anchor._in_model_input,
                 widget=anchor.widget,
+                processing=anchor.processing,
             )
             items.append(item)
         self.table.items = items
@@ -561,8 +582,10 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         """
         features = []
         for anchor in self.anchors:
+            self.table._set_processing(anchor.name, True)
             data[f"_{anchor.anchor_name}"] = anchor.featurize(data) * anchor.weight
             features.append(f"_{anchor.anchor_name}")
+            self.table._set_processing(anchor.name, False)
         if normalize:
             if reference_data is not None:
                 data.loc[:, features] = data[features].apply(
