@@ -1,7 +1,8 @@
+import numpy as np
 import pandas as pd
 import pytest
 
-from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 from icat.model import Model
 
 
@@ -316,3 +317,27 @@ def test_similarity_anchor_gets_short_from_text_entry(fun_df):
     assert anchor.reference_texts == ["kid"]
     assert anchor.reference_short == ["kid"]
     assert len(anchor._chips_container.children) == 1
+
+
+@pytest.mark.integration
+def test_changing_similarity_function_fires_change_event(fun_df):
+    """Changing the selected similarity function should fire an event."""
+    returns = []
+
+    def catch_change(name, key, value):
+        nonlocal returns
+        returns.append((name, key, value))
+
+    def simple_sim(data, anchor):
+        return pd.Series(np.ones(len(data)), index=data.index)
+
+    model = Model(fun_df, "text", similarity_functions=[simple_sim])
+    anchor = SimilarityFunctionAnchor()
+    anchor.on_anchor_changed(catch_change)
+    model.add_anchor(anchor)
+
+    assert anchor.sim_function_options.items == ["simple_sim"]
+    anchor.sim_function_options.v_model = "simple_sim"
+    anchor.sim_function_options.fire_event("change", "simple_sim")
+
+    assert returns[0][2] == "simple_sim"

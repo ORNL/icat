@@ -19,6 +19,19 @@ _kill_param_auto_docstring()
 
 
 class Model:
+    """The interactive machine learning model - a basic binary classifier with tools
+    for viewing and interacting with the data and features.
+
+    Args:
+        data (pd.DataFrame): The data to explore with.
+        text_col (str): The name of the text column in the passed data.
+        similarity_functions (list[Callable]): A set of additional functions that can
+            be used for similarity-based features. Any function passed should take a
+            dataframe (representing all of the currently active data,) and an anchor
+            instance. It should return a pandas series with the output similarity values,
+            using the same index as that in the passed dataframe.
+    """
+
     def __init__(
         self,
         data: pd.DataFrame,
@@ -322,3 +335,14 @@ class Model:
         )[:, 1]
 
         return predictions
+
+    def add_anchor(self, anchor: Anchor):
+        """Add the passed anchor to this model's anchor list.
+
+        Args:
+            anchor (Anchor): The Anchor to add to the list.
+
+        Note:
+            See ``AnchorList.add_anchor`` for more details.
+        """
+        self.anchor_list.add_anchor(anchor)

@@ -8,11 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Useful imports to top level module.
-* Activity indicators to anchors in anchor list table
+* Activity indicators to anchors in anchor list table.
+* `add_anchor` function directly to model.
 
 ### Fixed
-* Text fields not applying changes when user clicks away instead of hitting enter
-
+* Text fields not applying changes when user clicks away instead of hitting enter.
+* Similarity function anchor dropdown change not triggering featurization.
 
 
 
