@@ -237,6 +237,15 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         self.coverage_info = {}
         """Dictionary associating panel id of anchor with dictionary of 'coverage', 'pct_positive', and 'pct_negative'"""
 
+        self.expand_toggle = v.Btn(
+            icon=True,
+            fab=True,
+            x_small=True,
+            plain=True,
+            children=[v.Icon(children=["mdi-expand-all"])],
+        )
+        self.expand_toggle.on_event("click", self._handle_ipv_expand_toggle_click)
+
         # creating objects for adding new anchors to list
         self.dictionary_button = pn.widgets.Button(
             name="Add Dictionary Anchor",
@@ -259,7 +268,12 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         self.table.on_anchor_removal(self._handle_table_anchor_deleted)
 
         self.layout = pn.Column(
-            pn.Row(self.dictionary_button, self.tfidf_button, self.similarity_button),
+            pn.Row(
+                self.expand_toggle,
+                self.dictionary_button,
+                self.tfidf_button,
+                self.similarity_button,
+            ),
             self.table,
             height=table_height,
             width=table_width,
@@ -305,6 +319,13 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
     def _handle_pnl_new_similarity_btn_clicked(self, event):
         name = self.get_unique_anchor_name()
         self.add_anchor(SimilarityFunctionAnchor(anchor_name=name))
+
+    def _handle_ipv_expand_toggle_click(self, widget, event, data):
+        # if any are expanded, set expanded to blank list
+        if len(self.table.expanded) > 0:
+            self.table.expanded = []
+        else:
+            self.table.expanded = [{"name": item["name"]} for item in self.table.items]
 
     # ============================================================
     # EVENT SPAWNERS
