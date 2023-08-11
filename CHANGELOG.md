@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Useful imports to top level module.
 * Activity indicators to anchors in anchor list table.
 * `add_anchor` function directly to model.
-* Saving/loading functionality to anchors and anchor lists.
+* Saving/loading functionality to anchors, anchor lists, and models.
+* Add expand/collapse all anchors in anchor list button
 
 ### Fixed
 * Text fields not applying changes when user clicks away instead of hitting enter.
 * Similarity function anchor dropdown change not triggering featurization.
+* Data manager's active data columns incorrectly updating with anchor names if model
+    hasn't been trained yet.
 
 
 
