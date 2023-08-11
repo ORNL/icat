@@ -42,6 +42,9 @@ class AnchorListTemplate(v.VuetifyTemplate):
     height = traitlets.Int(700).tag(sync=True)
     width = traitlets.Int(150).tag(sync=True)
     expanded = traitlets.List([]).tag(sync=True)
+    processing = traitlets.Bool(False).tag(sync=True)
+
+    # TODO: set_all_expanded, set_all_collapsed
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,7 +63,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
         for callback in self._anchor_removal_callbacks:
             callback(name)
 
-    def _set_processing(self, name: str, processing: bool):
+    def _set_anchor_processing(self, name: str, processing: bool):
         """Add or remove a loading spinner on the delete button to indicate anchor activity.
 
         Args:
@@ -88,6 +91,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
             hide-default-footer
             show-expand
             dense
+            :loading="processing"
             :expanded.sync="expanded"
             class="dense-table striped-table softhover-table"
             item-key="name"
@@ -185,6 +189,9 @@ class AnchorListTemplate(v.VuetifyTemplate):
             .dense-table td .v-text-field__details {
                 height: 2px !important;
                 min-height: 2px !important;
+            }
+            div .v-progress-linear {
+                left: -1px !important;
             }
         </style>
         """
@@ -587,12 +594,13 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         Returns:
             The featured dataframe.
         """
+        self.table.processing = True
         features = []
         for anchor in self.anchors:
-            self.table._set_processing(anchor.name, True)
+            self.table._set_anchor_processing(anchor.name, True)
             data[f"_{anchor.anchor_name}"] = anchor.featurize(data) * anchor.weight
             features.append(f"_{anchor.anchor_name}")
-            self.table._set_processing(anchor.name, False)
+            self.table._set_anchor_processing(anchor.name, False)
         if normalize:
             if reference_data is not None:
                 data.loc[:, features] = data[features].apply(
@@ -604,6 +612,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
                 data.loc[:, features] = data[features].apply(
                     self._l1_col_normalize, axis=0
                 )
+        self.table.processing = False
 
         return data
 
