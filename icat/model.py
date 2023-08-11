@@ -3,8 +3,12 @@ contains an associated anchorlist, datamanager, and view. This is sort of the
 primary parent class for interacting with icat.
 """
 
+import json
+import os
 from collections.abc import Callable
+from datetime import datetime
 
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -101,6 +105,7 @@ class Model:
             self.data.active_data.rename(columns={col_name: f"_{value}"}, inplace=True)
             if self.training_data is not None:
                 self.training_data.rename(columns={col_name: f"_{value}"}, inplace=True)
+            self._last_anchor_names[name] = value
         else:
             self.fit()
             self.view.refresh_data()
@@ -346,3 +351,62 @@ class Model:
             See ``AnchorList.add_anchor`` for more details.
         """
         self.anchor_list.add_anchor(anchor)
+
+    def save(self, path: str):
+        """Save the model and all associated data at the specified location."""
+
+        os.makedirs(f"{path}", exist_ok=True)
+
+        # save the anchorlist
+        self.anchor_list.save(path)
+
+        # save any relevant model metadata
+        model_information = {
+            "timestamp": datetime.strftime(datetime.now(), "%d/%m/%y %H:%M:%S"),
+            "text_col": self.text_col,
+            "similarity_function_keys": list(self.similarity_functions.keys()),
+        }
+        with open(f"{path}/model_info.json", "w") as outfile:
+            json.dump(model_information, outfile)
+
+        # save a dump of the training data
+        if self.training_data is not None:
+            self.training_data.to_pickle(f"{path}/training_data.pkl")
+
+        # save a dump of the active data in data manager
+        # TODO: maybe this isn't necessary?
+        self.data.active_data.to_pickle(f"{path}/active_data.pkl")
+
+        # save the classifier
+        joblib.dump(self.classifier, f"{path}/classifier.joblib")
+
+    def load(self, path: str):
+        """Reload into this model all of the data and anchors from the specified location."""
+        # TODO: warn if the same similarity functions are not available as were saved
+
+        # load relevant model metadata
+        with open(f"{path}/model_info.json") as infile:
+            model_information = json.load(infile)
+        self.text_col = model_information["text_col"]
+        self.data.text_col = self.text_col
+
+        # check to make sure we have the correct similarity functions
+        for key in model_information["similarity_function_keys"]:
+            if key not in self.similarity_functions.keys():
+                print(
+                    "WARNING - Similarity function '%s' not passed into model init, please load the function in with 'model.similarity_functions[\"%s\"] = %s'"
+                    % (key, key, key)
+                )
+
+        # load the classifier
+        self.classifier = joblib.load(f"{path}/classifier.joblib")
+
+        # load the active data into the data manager
+        self.data.set_data(pd.read_pickle(f"{path}/active_data.pkl"))
+
+        # load the training data
+        if os.path.exists(f"{path}/training_data.pkl"):
+            self.training_data = pd.read_pickle(f"{path}/training_data.pkl")
+
+        # load the anchorlist
+        self.anchor_list.load(path)

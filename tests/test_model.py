@@ -257,3 +257,26 @@ def test_training_model_sets_anchorlist_coverage(fun_df, dummy_anchor):
             assert model.anchor_list.coverage_info == {}
 
     """A non in_model anchor should not be used in the model's features during training."""
+
+
+@pytest.mark.integration
+def test_changing_anchor_name_twice_before_model_trained_modifies_data(
+    fun_df, dummy_anchor
+):
+    """Changing an anchor name when the fit() function isn't being called should appropriately
+    change model's _last_anchor_names and thus propagate into the data active_data column.
+    """
+
+    model = Model(fun_df, text_col="text")
+    model.anchor_list.add_anchor(dummy_anchor)
+    assert "_test" in model.data.active_data.columns
+
+    model.anchor_list.anchors[0]._anchor_name_input.v_model = "testing"
+    model.anchor_list.anchors[0]._anchor_name_input.fire_event("blur", "testing")
+    assert "_testing" in model.data.active_data.columns
+    assert "_test" not in model.data.active_data.columns
+
+    model.anchor_list.anchors[0]._anchor_name_input.v_model = "testing123"
+    model.anchor_list.anchors[0]._anchor_name_input.fire_event("blur", "testing123")
+    assert "_testing123" in model.data.active_data.columns
+    assert "_testing" not in model.data.active_data.columns
