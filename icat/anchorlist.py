@@ -139,8 +139,8 @@ class AnchorListTemplate(v.VuetifyTemplate):
                 background-color: #333333 !important;
             }
             .delete-button {
-                margin: 5px;
-                margin-left: 15px;
+                margin: 0px;
+                margin-left: 6px;
                 color: var(--md-grey-500) !important;
             }
             .delete-button:hover {

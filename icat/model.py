@@ -377,6 +377,10 @@ class Model:
         # TODO: maybe this isn't necessary?
         self.data.active_data.to_pickle(f"{path}/active_data.pkl")
 
+        # save the sample set
+        with open(f"{path}/active_data_sample.json", "w") as outfile:
+            json.dump(self.data.sample_indices, outfile)
+
         # save the classifier
         joblib.dump(self.classifier, f"{path}/classifier.joblib")
 
@@ -403,6 +407,10 @@ class Model:
 
         # load the active data into the data manager
         self.data.set_data(pd.read_pickle(f"{path}/active_data.pkl"))
+
+        # load the sample set into the data manager
+        with open(f"{path}/active_data_sample.json") as infile:
+            self.data.sample_indices = json.load(infile)
 
         # load the training data
         if os.path.exists(f"{path}/training_data.pkl"):
