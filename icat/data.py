@@ -109,6 +109,25 @@ class DataManager(pn.viewable.Viewer):
 
         self.filtered_df = None
 
+        self.label_all_i_btn = v.Btn(
+            children=["All interesting"],
+            small=True,
+            class_="blue darken-1",
+            style_="margin-left: 2px; margin-right: 2px;",
+        )
+        self.label_all_u_btn = v.Btn(
+            children=["All uninteresting"],
+            small=True,
+            class_="orange darken-1",
+            style_="margin-left: 2px; margin-right: 2px;",
+        )
+        self.label_all_i_btn.on_event("click", self._handle_ipv_label_all_i_btn_click)
+        self.label_all_u_btn.on_event("click", self._handle_ipv_label_all_u_btn_click)
+        self.label_all_row = v.Row(
+            children=[self.label_all_u_btn, self.label_all_i_btn],
+            style_="display: none; text-align: right; margin-right: 5px;",
+        )
+
         # NOTE: ipywidgets_bokeh is a bit broken right now and I'm not yet able
         # to get pn.ipywidget to work correctly - so panel components can only
         # be at the highest level right now, I can't have ipywidgets with panel
@@ -121,7 +140,7 @@ class DataManager(pn.viewable.Viewer):
         # anymore.
         data_layout_stack = v.Container(
             fluid=True,
-            children=[self.data_tabs, self.search_box, self.table],
+            children=[self.data_tabs, self.search_box, self.label_all_row, self.table],
             height=height,
             width=width,
         )
@@ -174,6 +193,16 @@ class DataManager(pn.viewable.Viewer):
     # EVENT HANDLERS
     # ============================================================
 
+    def _handle_ipv_label_all_i_btn_click(self, widget, event, data):
+        indices = self.filtered_df.index.tolist()
+        labels = [1] * len(indices)
+        self._handle_label_changed(indices, labels)
+
+    def _handle_ipv_label_all_u_btn_click(self, widget, event, data):
+        indices = self.filtered_df.index.tolist()
+        labels = [0] * len(indices)
+        self._handle_label_changed(indices, labels)
+
     # TODO: coupling: directly calling refresh data on the model view. Instead, we
     # could have a "sample_changed" event that view listens to.
     def _handle_ipv_resample_btn_click(self, widget, event, data):
@@ -191,6 +220,14 @@ class DataManager(pn.viewable.Viewer):
         # ipyvuetify itself?
         # self.current_data_tab = self.data_tab_list[data]
         self.current_data_tab = self.data_tab_list[self.data_tabs.v_model]
+        if self.current_data_tab == "Selected":
+            self.label_all_row.style_ = (
+                "display: block; text-align: right; margin-right: 5px;"
+            )
+        else:
+            self.label_all_row.style_ = (
+                "display: none; text-align: right; margin-right: 5px;"
+            )
 
     def _handle_ipv_search_changed(self, widget, event, data):
         """Event handler for the vuetify search box change. This changes the search_value

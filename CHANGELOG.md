@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `add_anchor` function directly to model.
 * Saving/loading functionality to anchors, anchor lists, and models.
 * Add expand/collapse all anchors in anchor list button
+* Buttons for label all interesting/uninteresting to selected data tab.
 
 ### Fixed
 * Text fields not applying changes when user clicks away instead of hitting enter.
