@@ -72,27 +72,48 @@ class Model:
 
         self.anchor_list.build_tfidf_features()
 
-    def _on_data_label(self, index: int, new_label: int):
+    def _on_data_label(self, index: int | list[int], new_label: int | list[int]):
         """Event handler for datamanager."""
+
+        # expand a single value pass to list for consistent handling below
+        if type(index) != list:
+            index = [index]
+            new_label = [new_label]
+
         if self.training_data is None:
-            self.training_data = pd.DataFrame([self.data.active_data.loc[index, :]])
+            self.training_data = pd.DataFrame(self.data.active_data.loc[index, :])
+        else:
+            for i in range(len(index)):
+                if (
+                    index[i] in self.training_data.index
+                    and self.training_data.loc[index[i], self.data.text_col]
+                    == self.data.active_data.loc[index[i], self.data.text_col]
+                ):
+                    self.training_data.at[index[i], self.data.label_col] = new_label[i]
+                else:
+                    self.training_data = pd.concat(
+                        [
+                            self.training_data,
+                            pd.DataFrame([self.data.active_data.loc[index[i], :]]),
+                        ]
+                    )
 
         # update if it's a row that's already in the training data
-        elif (
-            index in self.training_data.index
-            and self.training_data.loc[index, self.data.text_col]
-            == self.data.active_data.loc[index, self.data.text_col]
-        ):
-            self.training_data.at[index, self.data.label_col] = new_label
+        # elif (
+        #     index in self.training_data.index
+        #     and self.training_data.loc[index, self.data.text_col]
+        #     == self.data.active_data.loc[index, self.data.text_col]
+        # ):
+        #     self.training_data.at[index, self.data.label_col] = new_label
 
-        else:
-            self.training_data = pd.concat(
-                # self.training_data, pd.DataFrame(self.data.active_data[index, :])
-                [
-                    self.training_data,
-                    pd.DataFrame([self.data.active_data.loc[index, :]]),
-                ]
-            )
+        # else:
+        #     self.training_data = pd.concat(
+        #         # self.training_data, pd.DataFrame(self.data.active_data[index, :])
+        #         [
+        #             self.training_data,
+        #             pd.DataFrame([self.data.active_data.loc[index, :]]),
+        #         ]
+        #     )
         # note that we don't call fit because we don't need to re-featurize, only a label has changed
         self._train_model()
         self.view.refresh_data()

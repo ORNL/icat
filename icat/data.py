@@ -221,8 +221,12 @@ class DataManager(pn.viewable.Viewer):
             # marginally cleaner and make model's interface nicer as well.
             self.model.anchor_list.add_anchor(new_anchor)
 
-    def _handle_label_changed(self, index: int, new_label: int):
-        self.active_data.at[index, self.label_col] = new_label
+    def _handle_label_changed(self, index: int | list[int], new_label: int | list[int]):
+        if type(index) == list:
+            for i in range(len(index)):
+                self.active_data.at[index[i], self.label_col] = new_label[i]
+        else:
+            self.active_data.at[index, self.label_col] = new_label
         self.fire_on_data_labeled(index, new_label)
         self._apply_filters()  # ....this doesn't feel good, but some filters depend on labeling?
 
@@ -242,9 +246,14 @@ class DataManager(pn.viewable.Viewer):
     def on_data_labeled(self, callback: Callable):
         """Register a callback function for the "data label changed" event.
 
+        Note that depending on how it's fired, this can either apply to a single datapoint
+        being labeled, or a set of points.
+
         Callbacks for this event should take two parameters:
-        * index (int)
-        * label (int)
+        * index (int | list[int])
+        * label (int | list[int])
+
+        If index is a list, that means multiple points are being labeled simultaneously.
         """
         self._data_label_callbacks.append(callback)
 
@@ -259,7 +268,7 @@ class DataManager(pn.viewable.Viewer):
         for callback in self._sample_changed_callbacks:
             callback(self.sample_indices)
 
-    def fire_on_data_labeled(self, index: int, label: int):
+    def fire_on_data_labeled(self, index: int | list[int], label: int | list[int]):
         for callback in self._data_label_callbacks:
             callback(index, label)
 
@@ -437,10 +446,25 @@ class DataManager(pn.viewable.Viewer):
     # PUBLIC FUNCTIONS
     # ============================================================
 
-    def apply_label(self, index: int, label: int):
+    def apply_label(self, index: int | list[int], label: int | list[int]):
+        """Provide the label(s) for the specified index/indices.
+
+        Args:
+            index (int | list[int]): Either a single index, or a list of indices.
+            label (int | list[int]): Either the single label to apply or a list of corresponding labels
+                for the provided indices. 1 is "interesting", 0 is "uninteresting".
+        """
         self._handle_label_changed(index, label)
 
     def set_data(self, data: pd.DataFrame):
+        """Replace the current active data with the data specified.
+
+        Note that this won't wipe out the existing training data for the model, model.training_data
+        is a separate data frame that's built up as labels are applied to various datasets.
+
+        Args:
+            data (pd.DataFrame): The dataset to use as the current active data.
+        """
         # TODO: option to allow "Keeping indices/samples", for example if you were
         # doing a bunch of table updates, but no actual row additions/removals/index changes
         self.active_data = data.copy()
@@ -455,6 +479,8 @@ class DataManager(pn.viewable.Viewer):
         self._apply_filters()
 
     def set_random_sample(self):
+        """Randomly choose 100 indices to use for the anchorviz sample."""
+
         if len(self.active_data) > 100:
             self.sample_indices = list(self.active_data.sample(100).index)
         else:

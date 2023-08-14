@@ -1,6 +1,9 @@
 # TODO: test that a random sample is selected?
 
+
 import pytest
+
+from icat import Model
 
 
 def test_manager_selected_indices_effects_selected_tab(dummy_data_manager):
@@ -103,3 +106,40 @@ def test_clicking_label_on_filtered_view_still_works(dummy_data_manager):
     dummy_data_manager.apply_label(5, 1)
     assert returns[0] == 5
     assert returns[1] == 1
+
+
+@pytest.mark.integration
+def test_apply_multiple_labels_sets_model_training_data(fun_df):
+    """Calling apply_label with multiple indices/labels should correctly create initial
+    multiple rows to the model's training data."""
+
+    model = Model(fun_df, text_col="text")
+    model.data.apply_label([0, 1, 2], [1, 1, 0])
+
+    assert len(model.training_data) == 3
+
+
+@pytest.mark.integration
+def test_apply_multiple_labels_updates_model_training_data(fun_df):
+    """Calling apply_label with multiple indices/labels should correctly update
+    multiple rows to the model's training data even if those rows all already exist."""
+
+    model = Model(fun_df, text_col="text")
+    model.data.apply_label([0, 1, 2], [1, 1, 0])
+    model.data.apply_label([0, 1, 2], [0, 0, 1])
+
+    assert len(model.training_data) == 3
+    assert model.training_data["_label"].values.tolist() == [0, 0, 1]
+
+
+@pytest.mark.integration
+def test_apply_multiple_labels_appends_model_training_data(fun_df):
+    """Calling apply_label with multiple indices/labels should correctly append
+    multiple new rows to the model's training data."""
+
+    model = Model(fun_df, text_col="text")
+    model.data.apply_label([0, 1, 2], [1, 1, 0])
+    model.data.apply_label([3, 4, 5], [0, 0, 1])
+
+    assert len(model.training_data) == 6
+    assert model.training_data["_label"].values.tolist() == [1, 1, 0, 0, 0, 1]
