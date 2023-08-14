@@ -4,14 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [0.3.0] - 2023-08-14
 
 ### Added
 * Useful imports to top level module.
 * Activity indicators to anchors in anchor list table.
 * `add_anchor` function directly to model.
 * Saving/loading functionality to anchors, anchor lists, and models.
-* Add expand/collapse all anchors in anchor list button
+* Add expand/collapse all anchors in anchor list button.
 * Buttons for label all interesting/uninteresting to selected data tab.
 
 ### Fixed
@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Similarity function anchor dropdown change not triggering featurization.
 * Data manager's active data columns incorrectly updating with anchor names if model
     hasn't been trained yet.
+
 
 
 
