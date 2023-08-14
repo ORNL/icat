@@ -169,7 +169,9 @@ def test_highlight_regex(kw_set1, kw_set2, expected_result):
     """Special characters should be escaped, esp *"""
 
 
-def test_save_load(data_file_loc, fun_df):
+def test_save_load_anchorlist(data_file_loc, fun_df):
+    """When we save an anchorlist and then reload it, all the anchors should reload into
+    the same spot with the same parameters."""
     model = Model(fun_df, "text")
     a1 = DictionaryAnchor(anchor_name="thing1")
     a1.keywords = ["hello", "there"]
@@ -183,10 +185,10 @@ def test_save_load(data_file_loc, fun_df):
     model.add_anchor(a1)
     model.add_anchor(a2)
 
-    model.anchor_list.save("test/exampledata/thing")
+    model.anchor_list.save(data_file_loc)
 
     model2 = Model(fun_df, "text")
-    model2.anchor_list.load("test/exampledata/thing")
+    model2.anchor_list.load(data_file_loc)
     assert model2.anchor_list.cache["test_cache"] == 13
 
     a21 = model2.anchor_list.anchors[0]

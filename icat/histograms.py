@@ -100,6 +100,8 @@ class Histograms(pn.viewable.Viewer):
     # ============================================================
 
     def refresh_data(self, data: DataManager):
+        if data.active_data is None:
+            return
         if data.prediction_col in data.active_data.columns:
             self.hist_local.set_data(
                 data.active_data.loc[

@@ -652,10 +652,15 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         return kw_regex
 
     def build_tfidf_features(self):
+        # TODO: this eventually needs to use the anchorlist cache, and also
+        # this may need to change when tfidf just becomes a sim function instead
+        # of a dedicated anchor
         if self.model is None:
             raise RuntimeError(
                 "The anchorlist has no associated model to get a dataset from."
             )
+        if self.model.data.active_data is None:
+            return
 
         self.tfidf_vectorizer = TfidfVectorizer(stop_words="english")
         # TODO: coupling: accessing active_data through model

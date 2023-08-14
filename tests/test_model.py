@@ -280,3 +280,19 @@ def test_changing_anchor_name_twice_before_model_trained_modifies_data(
     model.anchor_list.anchors[0]._anchor_name_input.fire_event("blur", "testing123")
     assert "_testing123" in model.data.active_data.columns
     assert "_testing" not in model.data.active_data.columns
+
+
+def test_save_load_model(data_file_loc, fun_df, dummy_anchor):
+    """Saving a model and then reloading it should load in all the same data and anchors."""
+
+    model = Model(fun_df, text_col="text")
+    model.anchor_list.add_anchor(dummy_anchor)
+    model.data.apply_label(0, 1)
+    model.save(data_file_loc)
+
+    model2 = Model(None, text_col="")
+    model2.load(data_file_loc)
+    assert len(model2.data.active_data) == 12
+    assert model2.text_col == "text"
+    assert len(model2.anchor_list.anchors) == 1
+    assert len(model2.training_data) == 1

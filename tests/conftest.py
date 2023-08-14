@@ -64,5 +64,5 @@ def fun_df():
 def data_file_loc():
     shutil.rmtree("test/exampledata", ignore_errors=True)
     os.makedirs("test/exampledata", exist_ok=True)
-    yield
+    yield "test/exampledata/thing"
     shutil.rmtree("test/exampledata", ignore_errors=True)

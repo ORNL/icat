@@ -153,6 +153,9 @@ class InteractiveView(pn.viewable.Viewer):
     def _serialize_data_to_dicts(self) -> dict:
         feature_names = self.model.feature_names()
 
+        if self.model.data.active_data is None:
+            return []
+
         # first we need to see if we are filtering data based on prediction range
         # we reference the sample indices a lot, so just compute this once and reference
         # throughout.

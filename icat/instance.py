@@ -153,6 +153,9 @@ class InstanceViewer(pn.viewable.Viewer):
         """Fill or update all of the fields for the given index. This
         should be called anytime the model updates, or when the user
         clicks/requests to view a new instance."""
+        if self.data.active_data is None:
+            return
+
         self.index = index
         self.index_display.children = [str(index)]
         row = self.data.active_data.iloc[index]
