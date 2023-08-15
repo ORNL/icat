@@ -19,6 +19,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
+    "sphinx_favicon",
 ]
 
 autosummary_generate = True
@@ -46,6 +47,10 @@ html_theme_options = {
     "show_nav_level": 3,
     "navigation_depth": 6,
     "show_toc_level": 2,
+    "logo": {
+        "image_light": "_static/icat_medium_full_light.svg",
+        "image_dark": "_static/icat_medium_full_dark.svg",
+    },
     "icon_links": [
         {
             "name": "GitHub",
@@ -66,3 +71,5 @@ html_theme_options = {
 }
 
 html_context = {"default_mode": "dark"}
+
+favicons = {"rel": "icon", "href": "icat_favicon.svg", "type": "image/svg+xml"}

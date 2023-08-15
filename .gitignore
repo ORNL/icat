@@ -1,3 +1,5 @@
+notebooks/testsaveload/*
+
 # IDEs
 .idea
 .vscode
