@@ -1,3 +1,15 @@
+
+
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="sphinx/source/_static/icat_large_full_dark.svg">
+        <source media="(prefers-color-scheme: light)" srcset="sphinx/source/_static/icat_large_full_light.svg">
+        <img alt='ICAT logo' src="sphinx/source/_static/icat_large_full_light.svg">
+    </picture>
+</p>
+
+
+
 # Interactive Corpus Analysis Tool
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
