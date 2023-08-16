@@ -12,7 +12,7 @@ from icat import (
     table,
     view,
 )
-from icat.anchors import DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 
 # make the important things directly accessible off top level module
 from icat.model import Model

@@ -487,7 +487,8 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
     @param.depends("anchors", watch=True)
     def refresh_anchors_table(self):
-        """Re-populate the list of anchors and coverage stats."""
+        """Re-populate the list of anchors and coverage stats. This function is
+        called automatically anytime the anchors property changes."""
         items = []
         for anchor in self.anchors:
             coverage = ""
@@ -519,13 +520,13 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             anchor (Anchor): The anchor to add to the list.
 
         Important:
-            This function should be used rather than directly mutating the internal :code:`anchors`
-            list with :code:`anchors.append`. Panel/param won't detect this change, and certain functionality
-            will probably not work on the frontend.
+            This function should be used rather than directly mutating the internal ``anchors``
+            list with ``anchors.append``. Panel/param won't detect this change, and certain
+            functionality will probably not work on the frontend.
 
         Note:
-            This triggers the "anchor added" event. You can watch for it by specifying a callback function
-            to :code:`on_anchor_added()`
+            This triggers the "anchor added" event. You can watch for it by specifying a
+            callback function to ``on_anchor_added()``
         """
         anchor.container = self  # TODO: remove once tfidf anchor is handled
         anchor.on_anchor_changed(self.fire_on_anchor_changed)
@@ -548,13 +549,13 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             anchor (Anchor): The anchor to remove from the list.
 
         Important:
-            This function should be used rather than directly mutating the internal :code:`anchors`
-            list with :code:`anchors.remove`. Panel/param won't detect this change, and certain functionality
-            will probably not work on the frontend.
+            This function should be used rather than directly mutating the internal
+            ``anchors`` list with ``anchors.remove``. Panel/param won't detect this
+            change, and certain functionality will probably not work on the frontend.
 
         Note:
-            This triggers the "anchor removed" event. You can watch for it by specifying a callback function
-            to :code:`on_anchor_removed()`
+            This triggers the "anchor removed" event. You can watch for it by specifying
+            a callback function to ``on_anchor_removed()``
         """
         self.anchors.remove(anchor)
         self.refresh_anchors_table()
@@ -564,10 +565,10 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         """Set the anchor coverage data, to be updated and displayed in the table.
 
         Args:
-            coverage_info (dict[str, dict[str, Union[int, float]]]): Dictionary (keys being the
-                anchor panel ids) and the value being a dictionary with the "row" of data to
-                display in the table.
-                Keys expected: "total", "pos", "neg", "total_pct", "pos_pct", "neg_pct"
+            coverage_info (dict[str, dict[str, Union[int, float]]]): Dictionary (keys
+                being the anchor panel ids) and the value being a dictionary with the
+                "row" of data to display in the table.  Keys expected: "total", "pos",
+                "neg", "total_pct", "pos_pct", "neg_pct"
         """
         self.coverage_info = coverage_info
 

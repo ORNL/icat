@@ -38,7 +38,7 @@ pip install icat-iml
 
 The primary ring visualization is called AnchorViz, a technique from IML literature. (See Chen, Nan-Chen, et al. "[AnchorViz: Facilitating classifier error discovery through interactive semantic data exploration](https://dl.acm.org/doi/abs/10.1145/3172944.3172950)")
 
-We implemented an ipywidget version of this visualization and use it in this project, it can be found separately at [https://github.com/ORNL/ipyanchorviz](https://github.com/ORNL/ipyanchorviz)
+We implemented an ipywidget version of AnchorViz and use it in this project, it can be found separately at [https://github.com/ORNL/ipyanchorviz](https://github.com/ORNL/ipyanchorviz)
 
 <!-- documentation section -->
 
