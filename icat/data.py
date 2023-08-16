@@ -70,7 +70,7 @@ class DataManager(pn.viewable.Viewer):
         )
         self.instance_viewer.on_label_changed(self._handle_label_changed)
 
-        self.data_tab_list = ["Sample", "Labeled", "Interesting", "Selected"]
+        self.data_tab_list = ["Sample", "Labeled", "Interesting", "Selected", "All"]
         self.data_tabs = v.Tabs(
             v_model=0,
             fixed_tabs=True,
@@ -153,6 +153,7 @@ class DataManager(pn.viewable.Viewer):
             v_model=0,
             height=35,
             background_color="primary",
+            width=width,
             children=[
                 v.Tab(children=["Data"]),
                 v.Tab(children=["Instance"]),
@@ -161,6 +162,7 @@ class DataManager(pn.viewable.Viewer):
         )
         self.tabs_items_component = v.TabsItems(
             v_model=0,
+            width=width,
             children=[
                 v.TabItem(children=[data_layout_stack]),
                 v.TabItem(children=[self.instance_viewer.widget]),

@@ -206,12 +206,30 @@ class Anchor(param.Parameterized):
 
 class DictionaryAnchor(Anchor):
     """A bag-of-words feature that returns raw count value sum of the
-    number of occurrences of each word in the given keywords."""
+    number of occurrences of each word in the given keywords.
+
+    Args:
+        container (AnchorList): The containing anchor list parent instance.
+            This can usually be left ``None`` if defining an anchor manually,
+            any time ``add_anchor`` is called, the anchor list will take care
+            of setting this on all children anchors.
+
+    Example:
+
+        .. code-block:: python
+            my_keywords_anchor = DictionaryAnchor(anchor_name="ML", keywords=["machine learning", "artificial intelligence"])
+            my_model.add_anchor(my_keywords_anchor)
+    """
 
     keywords_str = param.String(label="Keywords")
+    """The direct 'backend model' for what's in the keywords text field. This is really
+    only needed for internal use, any programmatic manipulation of the anchor's keywords
+    should be done through the ``keywords`` parameter."""
     text_col = param.String(precedence=-1)
+    """The column in the dataset containing the texts to search through."""
 
     keywords = param.List(precedence=-1)
+    """The list of keywords this anchor is searching for."""
 
     def __init__(self, container=None, **params):
         if "keywords" in params:
