@@ -2,9 +2,9 @@
 
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="sphinx/source/_static/icat_large_full_dark.svg">
-        <source media="(prefers-color-scheme: light)" srcset="sphinx/source/_static/icat_large_full_light.svg">
-        <img alt='ICAT logo' src="sphinx/source/_static/icat_large_full_light.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="sphinx/source/_static/icat_large_full_dark.svg" />
+        <source media="(prefers-color-scheme: light)" srcset="sphinx/source/_static/icat_large_full_light.svg" />
+        <img alt='ICAT logo' src="https://raw.githubusercontent.com/ORNL/icat/main/sphinx/source/_static/icat_large_full_light.svg" />
     </picture>
 </p>
 
