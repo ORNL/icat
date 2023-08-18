@@ -139,10 +139,10 @@ class DataManager(pn.viewable.Viewer):
                 {
                     "text": self.text_col,
                     "value": "text",
-                    "width": f"{self.width-110-75-32}px",
+                    "width": f"{self.width-95-60-36}px",
                 },
-                {"text": "id", "value": "index", "width": "75px"},
-                {"text": "Actions", "value": "actions", "width": "110px"},
+                {"text": "id", "value": "index", "width": "60px"},
+                {"text": "Actions", "value": "actions", "width": "95px"},
             ],
             width=width,
             height=height - 240,
