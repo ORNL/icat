@@ -94,8 +94,12 @@ class DataManager(pn.viewable.Viewer):
 
         self.table = TableContentsTemplate(
             headers=[
-                {"text": self.text_col, "value": "text"},
-                {"text": "id", "value": "index"},
+                {
+                    "text": self.text_col,
+                    "value": "text",
+                    "width": f"{self.width-110-75-32}px",
+                },
+                {"text": "id", "value": "index", "width": "75px"},
                 {"text": "Actions", "value": "actions", "width": "110px"},
             ],
             width=width,
@@ -175,10 +179,15 @@ class DataManager(pn.viewable.Viewer):
         )
 
         layout_stack = v.Container(
-            fluid=True, children=[self.tabs_component, self.tabs_items_component]
+            children=[self.tabs_component, self.tabs_items_component],
+            style_="padding: 0px;",
         )
-        self.layout = pn.Column(layout_stack, height=height, width=width)
-        self.widget = v.Container(children=[layout_stack], height=height, width=width)
+        self.layout = pn.Column(
+            layout_stack, height=height, width=width, styles={"padding": "0px"}
+        )
+        self.widget = v.Container(
+            children=[layout_stack], height=height, width=width, style_="padding: 0px;"
+        )
 
         self._data_label_callbacks: list[Callable] = []
         self._row_selected_callbacks: list[Callable] = []

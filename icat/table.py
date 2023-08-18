@@ -121,6 +121,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
             class='softhover-table'
             :height="height"
             :width="width"
+            dense
             :items="items"
             :headers="headers"
             :server-items-length="total_length"
@@ -128,7 +129,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
             @update:options="updateOptions"
         >
             <template #body="{ items }">
-                <tbody>
+                <tbody :width="width">
                     <tr v-for="item in items" :key="item.id" @click="selectPoint(item.id)" @mouseover="hoverPoint(item.id)">
                         <td class="break-word" v-html="item.text" />
                         <td style='vertical-align: top;'>{{ item.id }}</td>
@@ -155,6 +156,9 @@ class TableContentsTemplate(v.VuetifyTemplate):
             .softhover-table table tbody tr:hover {
                 background-color: #333333 !important;
             }
+            /*.softhover-table table {
+                table-layout: fixed;
+            }*/
             .break-word {
                 word-break: break-word;
             }
