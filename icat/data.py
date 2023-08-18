@@ -92,6 +92,42 @@ class DataManager(pn.viewable.Viewer):
         self.search_box.on_event("keyup", self._handle_ipv_search_changed)
         self.search_box.on_event("click:clear", self._handle_ipv_search_cleared)
 
+        self.search_add_new_btn = v.Btn(
+            small=True,
+            children=[v.Icon(children=["mdi-plus"]), "new"],
+            style_="margin-top: 15px; margin-left: 5px;",
+            v_on="add_tooltip.on",
+        )
+        self.search_add_sel_btn = v.Btn(
+            small=True,
+            children=[v.Icon(children=["mdi-plus"]), "sel"],
+            style_="margin-top: 15px; margin-left: 5px;",
+            v_on="sel_tooltip.on",
+        )
+
+        self.search_add_new_tooltip = v.Tooltip(
+            top=True,
+            v_slots=[
+                {
+                    "name": "activator",
+                    "variable": "add_tooltip",
+                    "children": self.search_add_new_btn,
+                }
+            ],
+            children=["Add search text to a new dictionary anchor."],
+        )
+        self.search_add_sel_tooltip = v.Tooltip(
+            top=True,
+            v_slots=[
+                {
+                    "name": "activator",
+                    "variable": "sel_tooltip",
+                    "children": self.search_add_sel_btn,
+                }
+            ],
+            children=["Add search text to currently selected dictionary anchor."],
+        )
+
         self.table = TableContentsTemplate(
             headers=[
                 {
@@ -145,7 +181,19 @@ class DataManager(pn.viewable.Viewer):
         # anymore.
         data_layout_stack = v.Container(
             fluid=True,
-            children=[self.data_tabs, self.search_box, self.label_all_row, self.table],
+            children=[
+                self.data_tabs,
+                v.Row(
+                    children=[
+                        self.search_box,
+                        self.search_add_new_tooltip,
+                        self.search_add_sel_tooltip,
+                    ],
+                    style_="padding-left: 10px; padding-right: 10px;",
+                ),
+                self.label_all_row,
+                self.table,
+            ],
             height=height,
             width=width,
         )
