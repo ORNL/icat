@@ -106,6 +106,7 @@ class DataManager(pn.viewable.Viewer):
         self.table.on_select_point(self.fire_on_row_selected)
         self.table.on_select_point(self._handle_row_selected)
         self.table.on_add_example(self._handle_example_added)
+        self.table.on_add_to_sample(self._handle_sample_added)
 
         self.filtered_df = None
 
@@ -209,7 +210,6 @@ class DataManager(pn.viewable.Viewer):
     # could have a "sample_changed" event that view listens to.
     def _handle_ipv_resample_btn_click(self, widget, event, data):
         self.set_random_sample()
-        self.model.view.refresh_data()
 
     def _handle_ipv_tab_changed(self, widget, event, data: int):
         """Event handler for the vuetify tabs change. This changes the current_data_tab
@@ -260,6 +260,10 @@ class DataManager(pn.viewable.Viewer):
             # marginally cleaner and make model's interface nicer as well.
             self.model.anchor_list.add_anchor(new_anchor)
 
+    def _handle_sample_added(self, point_id):
+        """Event handler for when the 'sample' button is clicked."""
+        self.sample_indices = [*self.sample_indices, point_id]
+
     def _handle_label_changed(self, index: int | list[int], new_label: int | list[int]):
         if type(index) == list:
             for i in range(len(index)):
@@ -303,6 +307,7 @@ class DataManager(pn.viewable.Viewer):
         """
         self._row_selected_callbacks.append(callback)
 
+    @param.depends("sample_indices", watch=True)
     def fire_on_sample_changed(self):
         for callback in self._sample_changed_callbacks:
             callback(self.sample_indices)
@@ -354,6 +359,10 @@ class DataManager(pn.viewable.Viewer):
             # I think this function gets triggered on table widget init, which isn't
             # necessary, so just ignore
             return
+
+        if self.text_col is None:
+            return
+
         df = self.filtered_df
         page_num = 1
         if "page" in options:
@@ -410,7 +419,14 @@ class DataManager(pn.viewable.Viewer):
                         labeled = "orange"
                     labeled = f"<span class='{labeled}--text darken-1'>Labeled</span>"
 
-            rows.append(dict(id=index, text=text, labeled=labeled))
+            rows.append(
+                dict(
+                    id=index,
+                    text=text,
+                    labeled=labeled,
+                    in_sample=(index in self.sample_indices),
+                )
+            )
         self.table.items = rows
 
     @staticmethod
@@ -524,4 +540,3 @@ class DataManager(pn.viewable.Viewer):
             self.sample_indices = list(self.active_data.sample(100).index)
         else:
             self.sample_indices = list(self.active_data.index)
-        self.fire_on_sample_changed()

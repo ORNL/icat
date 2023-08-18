@@ -4,6 +4,7 @@
 import pytest
 
 from icat import Model
+from icat.data import DataManager
 
 
 def test_manager_selected_indices_effects_selected_tab(dummy_data_manager):
@@ -143,3 +144,67 @@ def test_apply_multiple_labels_appends_model_training_data(fun_df):
 
     assert len(model.training_data) == 6
     assert model.training_data["_label"].values.tolist() == [1, 1, 0, 0, 0, 1]
+
+
+def test_datamanager_with_none_text_col_doesnot_error(fun_df):
+    """Technically it's allowed to have a data manager without a text col, it just
+    shouldn't show anything."""
+    DataManager(fun_df)
+
+
+def test_datamanager_with_none_data_doesnot_error():
+    """Technically it's allowed to have a data manager without any actual data, it just
+    shouldn't show anything."""
+    DataManager(None)
+
+
+def test_setting_sample_indices_fires_event(dummy_data_manager):
+    """Manually setting the sample of the data manager should fire the on_sample_changed event."""
+    returns = []
+
+    def catch_change(sample_indices):
+        nonlocal returns
+        returns.append(sample_indices)
+
+    dummy_data_manager.sample_indices = [1, 2, 3, 4, 5, 6]
+    dummy_data_manager.on_sample_changed(catch_change)
+    dummy_data_manager.sample_indices = [1, 2, 3]
+    assert len(returns) == 1
+    assert returns[0] == [1, 2, 3]
+
+
+@pytest.mark.integration
+def test_adding_single_point_to_sample_fires_event(dummy_data_manager):
+    """A sample added button click (from the data manager's event handler) should fire the
+    on_sample_changed event."""
+    returns = []
+
+    def catch_change(sample_indices):
+        nonlocal returns
+        returns.append(sample_indices)
+
+    dummy_data_manager.sample_indices = [1, 2, 3]
+    dummy_data_manager.on_sample_changed(catch_change)
+    dummy_data_manager.table.vue_addToSample(4)
+    assert len(returns) == 1
+    assert returns[0] == [1, 2, 3, 4]
+
+
+def test_resampling_fires_event(dummy_data_manager):
+    """Clicking the resample button should fire the on_sample_changed event."""
+    returns = []
+
+    def catch_change(sample_indices):
+        nonlocal returns
+        returns.append(sample_indices)
+
+    dummy_data_manager.sample_indices = [1, 2, 3]
+    dummy_data_manager.on_sample_changed(catch_change)
+    dummy_data_manager.set_random_sample()
+    assert len(returns) == 1
+    assert returns[0] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+
+# @pytest.mark.integration
+# # def
+# """"""

@@ -19,6 +19,15 @@ _kill_param_auto_docstring()
 
 
 class InteractiveView(pn.viewable.Viewer):
+    """The GUI/widget dashboard for interacting with the model, data, and anchors.
+
+    This class glues all of the events together across the various components (anchorlist,
+    datamanager, ipyanchorviz etc.), and itself is the layout container for the full dashboard.
+
+    Args:
+        model (icat.Model): The parent model that this view is associated with.
+    """
+
     # TODO: coupling: technically coupling model and view, I think I care a lot less about it
     # here since view is already loosely orchestrating all of the gui stuff. If anything,
     # _more_ of the model event handlers should be handled in here instead of in the model?
@@ -58,11 +67,19 @@ class InteractiveView(pn.viewable.Viewer):
             self._trigger_selected_points_change, names="lassoedPointIDs"
         )
         self.model.data.table.on_point_hover(self._set_anchorviz_selected_point)
+        self.model.data.on_sample_changed(self._handle_data_sample_changed)
         self.histograms.on_range_changed(self._histograms_range_changed)
         super().__init__(**params)
         self.refresh_data()
 
+    def _handle_data_sample_changed(self, new_sample_indices: list[int]):
+        """When the model's data manager sample_indices changes, it fires the
+        on_sample_changed event."""
+        self.refresh_data()
+
     def _histograms_range_changed(self, range: list[int]):
+        """Limit the set of points displayed in anchorviz to only prediction
+        outputs within the specified range. [min, max]"""
         self.model.data.pred_min = range[0]
         self.model.data.pred_max = range[1]
         self.anchorviz.set_points(self._serialize_data_to_dicts())

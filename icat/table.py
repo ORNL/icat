@@ -25,6 +25,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
         self._add_selected_text_callbacks: list[Callable] = []
         self._select_point_callbacks: list[Callable] = []
         self._apply_label_callbacks: list[Callable] = []
+        self._add_to_sample_callbacks: list[Callable] = []
         self._update_options_callbacks: list[Callable] = []
         self._hover_point_callbacks: list[Callable] = []
         self._add_example_callbacks: list[Callable] = []
@@ -41,6 +42,10 @@ class TableContentsTemplate(v.VuetifyTemplate):
     def on_apply_label(self, callback: callable):
         """Expect a point id and a label value (0 or 1)"""
         self._apply_label_callbacks.append(callback)
+
+    def on_add_to_sample(self, callback: callable):
+        """Expect a point id"""
+        self._add_to_sample_callbacks.append(callback)
 
     def on_update_options(self, callback: callable):
         """Expect a dictionary with:
@@ -98,6 +103,10 @@ class TableContentsTemplate(v.VuetifyTemplate):
         for callback in self._update_options_callbacks:
             callback(data)
 
+    def vue_addToSample(self, point_id):
+        for callback in self._add_to_sample_callbacks:
+            callback(point_id)
+
     # NOTE: I'm leaving this here for reference, I don't actually think there's any reason to need to go this direction
     # but this is a functioning way to do it (note that this will _retrigger_ the updateOptions handler)
     # def change_page(self, page_num):
@@ -132,6 +141,9 @@ class TableContentsTemplate(v.VuetifyTemplate):
                             </v-btn>
                             <v-btn x-small class="purple darken-1" @click.stop="addToExampleAnchor(item.id)">
                                 example
+                            </v-btn>
+                            <v-btn x-small v-if="!item.in_sample" @click.stop="addToSample(item.id)">
+                                sample
                             </v-btn>
                             <div v-html="item.labeled" />
                         </td>
