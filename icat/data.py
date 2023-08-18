@@ -107,6 +107,9 @@ class DataManager(pn.viewable.Viewer):
             style_="margin-top: 15px; margin-left: 5px;",
             v_on="sel_tooltip.on",
         )
+        self.search_add_sel_btn.on_event(
+            "click", self._handle_ipv_search_add_sel_btn_click
+        )
 
         self.search_add_new_tooltip = v.Tooltip(
             top=True,
@@ -259,9 +262,19 @@ class DataManager(pn.viewable.Viewer):
     def _handle_ipv_search_add_new_btn_click(self, widget, event, data):
         """Event handler for when the add search box text to new anchor button is clicked."""
         if self.search_value != "":
-            self.model.add_anchor(DictionaryAnchor(keywords=[self.search_value]))
+            new_anchor = DictionaryAnchor(keywords=[self.search_value])
+            self.model.add_anchor(new_anchor)
+            self.model.view.anchorviz.selectedAnchorID = new_anchor.name
         # self.search_box.v_model = ""
         # self.search_value = ""
+
+    def _handle_ipv_search_add_sel_btn_click(self, widget, event, data):
+        """Event handler for when the add search box text to new anchor button is clicked."""
+        if self.search_value != "":
+            anchor = self.model.anchor_list.get_anchor_by_panel_id(
+                self.model.view.anchorviz.selectedAnchorID
+            )
+            anchor.keywords = [*anchor.keywords, self.search_value]
 
     def _handle_ipv_label_all_i_btn_click(self, widget, event, data):
         indices = self.filtered_df.index.tolist()

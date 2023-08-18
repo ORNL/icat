@@ -10,9 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * "All" tab in data manager to allow searching through entire dataset.
 * Sample buttons for data manager rows that aren't already in sample.
 * Coverage stats for unseeded models.
+* Buttons to add to anchors from search box.
 
-<!--### Fixed
-* Issues adding two anchors with the same name.-->
+### Fixed
+* Issues adding two anchors with the same name.
+* Data manager not updating highlighting after new anchor added.
 
 
 
