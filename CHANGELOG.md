@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * "All" tab in data manager to allow searching through entire dataset.
 * Sample buttons for data manager rows that aren't already in sample.
+* Coverage stats for unseeded models.
 
 
 

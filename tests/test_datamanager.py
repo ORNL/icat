@@ -203,8 +203,3 @@ def test_resampling_fires_event(dummy_data_manager):
     dummy_data_manager.set_random_sample()
     assert len(returns) == 1
     assert returns[0] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-
-
-# @pytest.mark.integration
-# # def
-# """"""

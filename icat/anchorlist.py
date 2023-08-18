@@ -202,7 +202,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
     This is what handles creating features for a dataset. This class is also a
     visual component for interacting with and modifying those anchors in a table
-    format, and is used as part of the greater model interactive view.
+    format and is used as part of the greater model interactive view.
 
     Args:
         model: The parent model.
@@ -235,7 +235,8 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         super().__init__(**params)  # required for panel components
 
         self.coverage_info = {}
-        """Dictionary associating panel id of anchor with dictionary of 'coverage', 'pct_positive', and 'pct_negative'"""
+        """Dictionary associating panel id of anchor with dictionary of 'coverage', 'pct_positive',
+        and 'pct_negative' stats."""
 
         self.expand_toggle = v.Btn(
             icon=True,
@@ -280,9 +281,6 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         )
         """The full component layout for panel to display."""
 
-        self.coverage: dict[dict] = None
-        """Keys are anchor ids, value is a dictionary of metrics to display"""
-
         self.cache: dict[str, any] = {}
         """This cache gets pickled on save, useful for anchors to store results of
         processing-intensive tasks to reduce featurizing time."""
@@ -291,6 +289,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         self.tfidf_features = None
 
         self.model = model
+        """The parent model these anchors apply to."""
 
         # callback collections
         self._anchor_changed_callbacks: list[Callable] = []
@@ -358,10 +357,20 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         self._anchor_removed_callbacks.append(callback)
 
     def fire_on_anchor_added(self, anchor: Anchor):
+        """Trigger the event to notify that a new anchor was added.
+
+        Args:
+            anchor (icat.Anchor): the anchor that was added.
+        """
         for callback in self._anchor_added_callbacks:
             callback(anchor)
 
     def fire_on_anchor_removed(self, anchor: Anchor):
+        """Trigger the event to notify that an anchor was removed.
+
+        Args:
+            anchor (icat.Anchor): the anchor that was removed.
+        """
         for callback in self._anchor_removed_callbacks:
             callback(anchor)
 
@@ -451,7 +460,10 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         equal to) 1, and with each feature value scaled relative to the maximum reference value of
         that feature. I don't know if this is a valid normalization method, but it seems to maintain
         the relative scales in both axes while also directly fitting within [0-1] which is necessary
-        for anchorviz."""
+        for anchorviz.
+        """
+        # NOTE: this function isn't currently in use. _if_ we normalize down below in featurize, we use
+        # l1_col_normalize, but the default in model featurize right now is false.
 
         feature_vals = features_data.vals
         if reference_features is not None:
@@ -488,7 +500,8 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
     @param.depends("anchors", watch=True)
     def refresh_anchors_table(self):
         """Re-populate the list of anchors and coverage stats. This function is
-        called automatically anytime the anchors property changes."""
+        called automatically anytime the anchors property changes.
+        """
         items = []
         for anchor in self.anchors:
             coverage = ""
@@ -576,16 +589,21 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             cov_pct_text = str(float(coverage_info[anchor_name]["total_pct"]) * 100.0)[
                 0:4
             ]
-            pos_pct_text = str(float(coverage_info[anchor_name]["pos_pct"]) * 100.0)[
-                0:4
-            ]
-            neg_pct_text = str(float(coverage_info[anchor_name]["neg_pct"]) * 100.0)[
-                0:4
-            ]
+            if self.model.is_seeded():
+                pos_pct_text = str(
+                    float(coverage_info[anchor_name]["pos_pct"]) * 100.0
+                )[0:4]
+                neg_pct_text = str(
+                    float(coverage_info[anchor_name]["neg_pct"]) * 100.0
+                )[0:4]
 
             cov_txt = f"{cov_pct_text}% ({int(coverage_info[anchor_name]['total'])})"
-            pos_txt = f"{pos_pct_text}% ({int(coverage_info[anchor_name]['pos'])})"
-            neg_txt = f"{neg_pct_text}% ({int(coverage_info[anchor_name]['neg'])})"
+            pos_txt = ""
+            neg_txt = ""
+
+            if self.model.is_seeded():
+                pos_txt = f"{pos_pct_text}% ({int(coverage_info[anchor_name]['pos'])})"
+                neg_txt = f"{neg_pct_text}% ({int(coverage_info[anchor_name]['neg'])})"
 
             self.coverage_info[anchor_name]["cov_text"] = cov_txt
             self.coverage_info[anchor_name]["pos_text"] = pos_txt
@@ -640,7 +658,12 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
     def highlight_regex(self) -> str:
         """Construct a regex for all keywords in dictionary anchors, for
-        use in highlighting keywords in a text."""
+        use in highlighting keywords in a text.
+
+        Returns:
+            A regex string that is essentially just the "|" or'd regexes
+            of the individual anchors.
+        """
 
         kw_regex = "|".join(
             [
@@ -671,7 +694,8 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
     def save(self, path: str):
         """Save the configuration for each individual anchor, and pickle the cache,
-        at the specified location."""
+        at the specified location.
+        """
         anchors_info = []
 
         os.makedirs(f"{path}/anchors", exist_ok=True)
@@ -705,7 +729,8 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
     def load(self, path: str):
         """Reload parameters for and re-add all anchors from specified location, as
-        well as unpickle any previously saved cache."""
+        well as unpickle any previously saved cache.
+        """
         # load the anchor information
         with open(f"{path}/anchorlist.json") as infile:
             anchors_info = json.load(infile)

@@ -253,8 +253,8 @@ def test_training_model_sets_anchorlist_coverage(fun_df, dummy_anchor):
 
         if model.is_seeded() and model.is_trained():
             assert dummy_anchor.name in model.anchor_list.coverage_info
-        else:
-            assert model.anchor_list.coverage_info == {}
+            assert model.anchor_list.coverage_info[dummy_anchor.name]["pos_pct"] != 0.0
+            assert model.anchor_list.coverage_info[dummy_anchor.name]["neg_pct"] == 0.0
 
     """A non in_model anchor should not be used in the model's features during training."""
 

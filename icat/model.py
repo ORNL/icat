@@ -166,6 +166,10 @@ class Model:
         assumes the data has already been featurized."""
 
         if not self.is_seeded():
+            # we short circuit training the model here, but we do still want to show
+            # coverage stats even if it's not seeded, so compute and set here
+            coverage_info = self.compute_coverage()
+            self.anchor_list.set_coverage(coverage_info)
             return False
 
         if len(self.feature_names(in_model_only=True)) < 1:
@@ -288,6 +292,7 @@ class Model:
             anchor.name: anchor.anchor_name for anchor in self.anchor_list.anchors
         }
         if len(features) == 0:
+            # we can't train if we have no features!
             return
 
         # self.norm_reference = self.featurize(self.data.active_data, normalize=False)[

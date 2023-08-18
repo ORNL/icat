@@ -23,8 +23,6 @@ def test_populate_called_on_model_trained(mocker, fun_df, dummy_anchor):
 
         if model.is_seeded() and model.is_trained():
             assert dummy_anchor.name in model.anchor_list.coverage_info
-        else:
-            assert model.anchor_list.coverage_info == {}
 
     assert spy.call_count == 11
     assert spy.call_args.args == (5,)
