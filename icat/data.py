@@ -18,7 +18,7 @@ import panel as pn
 import param
 
 import icat
-from icat.anchors import TFIDFAnchor
+from icat.anchors import DictionaryAnchor, TFIDFAnchor
 from icat.instance import InstanceViewer
 from icat.table import TableContentsTemplate
 from icat.utils import _kill_param_auto_docstring
@@ -97,6 +97,9 @@ class DataManager(pn.viewable.Viewer):
             children=[v.Icon(children=["mdi-plus"]), "new"],
             style_="margin-top: 15px; margin-left: 5px;",
             v_on="add_tooltip.on",
+        )
+        self.search_add_new_btn.on_event(
+            "click", self._handle_ipv_search_add_new_btn_click
         )
         self.search_add_sel_btn = v.Btn(
             small=True,
@@ -252,6 +255,12 @@ class DataManager(pn.viewable.Viewer):
     # ============================================================
     # EVENT HANDLERS
     # ============================================================
+
+    def _handle_ipv_search_add_new_btn_click(self, widget, event, data):
+        """Event handler for when the add search box text to new anchor button is clicked."""
+        self.model.add_anchor(DictionaryAnchor(keywords=[self.search_value]))
+        # self.search_box.v_model = ""
+        # self.search_value = ""
 
     def _handle_ipv_label_all_i_btn_click(self, widget, event, data):
         indices = self.filtered_df.index.tolist()

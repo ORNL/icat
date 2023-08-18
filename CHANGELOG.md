@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Sample buttons for data manager rows that aren't already in sample.
 * Coverage stats for unseeded models.
 
+<!--### Fixed
+* Issues adding two anchors with the same name.-->
+
 
 
 

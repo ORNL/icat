@@ -541,6 +541,12 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             This triggers the "anchor added" event. You can watch for it by specifying a
             callback function to ``on_anchor_added()``
         """
+
+        # make sure the name is unique
+        for other_anchor in self.anchors:
+            if other_anchor.anchor_name == anchor.anchor_name:
+                anchor.anchor_name = self.get_unique_anchor_name()
+
         anchor.container = self  # TODO: remove once tfidf anchor is handled
         anchor.on_anchor_changed(self.fire_on_anchor_changed)
         self.anchors.append(anchor)
