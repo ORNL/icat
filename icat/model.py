@@ -121,6 +121,20 @@ class Model:
     def _on_anchor_change(self, name: str, property: str, value: any):
         """Event handler for anchorlist."""
         if property == "anchor_name":
+            # short-circuit if the name is the same as another anchor - if we continue with
+            # the code below, then two _last_anchor_names will have the same value and the
+            # columns in the dataframe end up the same and can't be "de-synced" in the interface.
+            anchor = self.anchor_list.get_anchor_by_panel_id(name)
+            if f"_{value}" in self.data.active_data.columns:
+                anchor._anchor_name_input.error = True
+                anchor._anchor_name_input.error_messages = (
+                    "Another anchor is using this name."
+                )
+                return
+            else:
+                anchor._anchor_name_input.error = False
+                anchor._anchor_name_input.error_messages = ""
+
             # no anchor value changes, so no need to re-featurize
             col_name = f"_{self._last_anchor_names[name]}"
             self.data.active_data.rename(columns={col_name: f"_{value}"}, inplace=True)

@@ -258,7 +258,8 @@ class DataManager(pn.viewable.Viewer):
 
     def _handle_ipv_search_add_new_btn_click(self, widget, event, data):
         """Event handler for when the add search box text to new anchor button is clicked."""
-        self.model.add_anchor(DictionaryAnchor(keywords=[self.search_value]))
+        if self.search_value != "":
+            self.model.add_anchor(DictionaryAnchor(keywords=[self.search_value]))
         # self.search_box.v_model = ""
         # self.search_value = ""
 
