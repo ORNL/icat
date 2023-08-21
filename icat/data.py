@@ -321,6 +321,8 @@ class DataManager(pn.viewable.Viewer):
     def _handle_ipv_search_cleared(self, widget, event, data):
         """Event handler for the vuetify search box "x" button pressed, resetting search field."""
         self.search_value = ""
+        self.search_box.success = False
+        self.search_box.error = False
 
     def _handle_row_selected(self, point_id):
         """Event handler from table row select."""
