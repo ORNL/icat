@@ -82,14 +82,12 @@ class DataManager(pn.viewable.Viewer):
 
         self.search_box = v.TextField(
             v_model="",
-            # dense=True,
-            color="success",
-            # class_="success--text",
-            # append_icon="mdi-magnify",
+            dense=True,
+            append_icon="mdi-magnify",
             label="Search (use 'ID:X' to search index)",
-            # clearable=True,
-            # clear_icon="mdi-close",
-            # style_="padding-top: 7px",
+            clearable=True,
+            clear_icon="mdi-close",
+            style_="padding-top: 7px",
         )
         self.search_box.on_event("keyup", self._handle_ipv_search_changed)
         self.search_box.on_event("click:clear", self._handle_ipv_search_cleared)
@@ -486,6 +484,16 @@ class DataManager(pn.viewable.Viewer):
                     highlighted_str = re.sub(
                         kw_regex,
                         r"<span style='background-color: yellow; color: black;'>\g<1></span>",
+                        text,
+                        flags=re.IGNORECASE,
+                    )
+                    text = highlighted_str
+
+                # do a search term highlight as well
+                if self.search_value != "":
+                    highlighted_str = re.sub(
+                        f"({self.search_value})",
+                        r"<span style='background-color: white; color: black;'>\g<1></span>",
                         text,
                         flags=re.IGNORECASE,
                     )

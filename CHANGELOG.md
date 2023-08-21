@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+* Index searching to data manager.
+* Search highlighting in data manager.
+
 ### Fixed
 * Data column sorting not working.
 
