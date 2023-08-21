@@ -132,7 +132,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
                 <tbody :width="width">
                     <tr v-for="item in items" :key="item.id" @click="selectPoint(item.id)" @mouseover="hoverPoint(item.id)">
                         <td class="break-word" v-html="item.text" style="padding-left: 2px; padding-right: 2px;" />
-                        <td style='vertical-align: top; padding-left: 2px; padding-right: 2px;' style="color: grey;">{{ item.id }}</td>
+                        <td style="vertical-align: top; padding-left: 2px; padding-right: 2px; color: grey;">{{ item.id }}</td>
                         <td style="vertical-align: top; padding-bottom: 5px; padding-left: 2px;">
                             <v-btn x-small class="orange darken-1" @click.stop="applyAbsoluteLabelUninteresting(item.id)">
                                 U

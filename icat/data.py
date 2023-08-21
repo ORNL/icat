@@ -451,6 +451,15 @@ class DataManager(pn.viewable.Viewer):
         if "itemsPerPage" in options:
             count = options["itemsPerPage"]
 
+        # sort the dataframe if requested (has to be done here since data external to JS)
+        if "sortBy" in options and len(options["sortBy"]) > 0:
+            if options["sortBy"][0] == "index":
+                df = df.sort_index(ascending=(not options["sortDesc"][0]))
+            else:
+                df = df.sort_values(
+                    by=options["sortBy"][0], ascending=(not options["sortDesc"][0])
+                )
+
         # calculate the range in the dataframe based on current page
         total_len = df.shape[0]
         end_index = page_num * count
