@@ -94,6 +94,10 @@ class TableContentsTemplate(v.VuetifyTemplate):
         for callback in self._apply_label_callbacks:
             callback(point_id, 1)
 
+    def vue_applyAbsoluteLabelUnlabeled(self, point_id):
+        for callback in self._apply_label_callbacks:
+            callback(point_id, -1)
+
     def vue_addToExampleAnchor(self, point_id):
         for callback in self._add_example_callbacks:
             callback(point_id)
@@ -152,6 +156,9 @@ class TableContentsTemplate(v.VuetifyTemplate):
                                 <span>Add this instance to the current sample set.</span>
                             </v-tooltip>
                             <div v-html="item.labeled" />
+                            <v-btn x-small v-if="item.labeled != ''" class="red darken-3" @click.stop="applyAbsoluteLabelUnlabeled(item.id)">
+                                unlabel
+                            </v-btn>
                         </td>
                     </tr>
                 </tbody>

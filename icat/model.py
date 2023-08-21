@@ -73,7 +73,11 @@ class Model:
         self.anchor_list.build_tfidf_features()
 
     def _on_data_label(self, index: int | list[int], new_label: int | list[int]):
-        """Event handler for datamanager."""
+        """Event handler for datamanager.
+
+        if a -1 is passed for (or in the list of) new_label, remove it from the
+        training data, if found.
+        """
 
         # expand a single value pass to list for consistent handling below
         if type(index) != list:
@@ -98,22 +102,12 @@ class Model:
                         ]
                     )
 
-        # update if it's a row that's already in the training data
-        # elif (
-        #     index in self.training_data.index
-        #     and self.training_data.loc[index, self.data.text_col]
-        #     == self.data.active_data.loc[index, self.data.text_col]
-        # ):
-        #     self.training_data.at[index, self.data.label_col] = new_label
+        # Remove any rows from the resulting table where the label_col is "-1", indicating an
+        # unlabelling operation
+        self.training_data = self.training_data.drop(
+            self.training_data[self.training_data[self.data.label_col] == -1].index
+        )
 
-        # else:
-        #     self.training_data = pd.concat(
-        #         # self.training_data, pd.DataFrame(self.data.active_data[index, :])
-        #         [
-        #             self.training_data,
-        #             pd.DataFrame([self.data.active_data.loc[index, :]]),
-        #         ]
-        #     )
         # note that we don't call fit because we don't need to re-featurize, only a label has changed
         self._train_model()
         self.view.refresh_data()

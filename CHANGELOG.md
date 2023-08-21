@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Index searching to data manager.
 * Search highlighting in data manager.
+* "Unlabel" option to remove previously labeled data from training set.
 
 ### Fixed
 * Data column sorting not working.
 * Needing to render the notebook's first model view cell twice for ipyvuetify
-    stylesheets to propagate.
+    stylesheets to propagate. (Use `icat.initialize()` now, instead of
+    `pn.extension()`)
 
 
 

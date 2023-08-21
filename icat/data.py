@@ -323,6 +323,7 @@ class DataManager(pn.viewable.Viewer):
         self.search_value = ""
         self.search_box.success = False
         self.search_box.error = False
+        self.search_box.label = "Search (use 'ID:X' to search index)"
 
     def _handle_row_selected(self, point_id):
         """Event handler from table row select."""
