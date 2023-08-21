@@ -343,3 +343,21 @@ def test_unlabel_multi(fun_df, dummy_anchor):
     assert len(model.training_data) == 2
     model.data.apply_label([1, 2], [-1, -1])
     assert len(model.training_data) == 0
+
+
+def test_untraining_removes_pred_col(fun_df, dummy_anchor):
+    """When a model 'untrains' because the label count fell beneath seeding requirements,
+    also remove any previous predictions from the active_data"""
+
+    model = Model(fun_df, text_col="text")
+    model.add_anchor(dummy_anchor)
+    for i in range(0, 10):
+        if i in [3, 6, 7]:
+            model.data.apply_label(i, 1)
+        else:
+            model.data.apply_label(i, 0)
+    assert model.is_seeded()
+    assert model.is_trained()
+    model.data.apply_label(7, -1)
+    assert not model.is_trained()
+    assert model.data.prediction_col not in model.data.active_data.columns

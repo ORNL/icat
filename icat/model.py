@@ -183,6 +183,9 @@ class Model:
             # it untrained
             if self.is_trained():
                 del self.classifier.classes_
+                self.data.active_data = self.data.active_data.drop(
+                    self.data.prediction_col, axis=1
+                )
             return False
 
         if len(self.feature_names(in_model_only=True)) < 1:
