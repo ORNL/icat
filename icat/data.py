@@ -84,7 +84,7 @@ class DataManager(pn.viewable.Viewer):
             v_model="",
             dense=True,
             append_icon="mdi-magnify",
-            label="Search",
+            label="Search (use 'id:X' to search index)",
             clearable=True,
             clear_icon="mdi-close",
             style_="padding-top: 7px",
@@ -525,7 +525,10 @@ class DataManager(pn.viewable.Viewer):
         column: str,
     ) -> pd.DataFrame:
         """This function searches for a given string in code:`pattern` and applies it to the code:`column` within the
-        code:`df`."""
+        code:`df`.
+
+        if the search is "id:" or "ID:", we directly search the index column instead
+        """
         # TODO: possibly move to a utils.py
         if not pattern:
             return df

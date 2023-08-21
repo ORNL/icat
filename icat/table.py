@@ -143,9 +143,14 @@ class TableContentsTemplate(v.VuetifyTemplate):
                             <v-btn x-small class="purple darken-1" @click.stop="addToExampleAnchor(item.id)">
                                 example
                             </v-btn>
-                            <v-btn x-small v-if="!item.in_sample" @click.stop="addToSample(item.id)">
-                                sample
-                            </v-btn>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn x-small v-if="!item.in_sample" @click.stop="addToSample(item.id)" v-bind="attrs" v-on="on">
+                                        sample
+                                    </v-btn>
+                                </template>
+                                <span>Add this instance to the current sample set.</span>
+                            </v-tooltip>
                             <div v-html="item.labeled" />
                         </td>
                     </tr>
