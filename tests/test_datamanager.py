@@ -203,3 +203,12 @@ def test_resampling_fires_event(dummy_data_manager):
     dummy_data_manager.set_random_sample()
     assert len(returns) == 1
     assert returns[0] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+
+def test_id_search_shows_only_id_row(dummy_data_manager):
+    """Using a search string like ID:5 should only return a row with that index."""
+    dummy_data_manager.search_value = "ID:5"
+    assert len(dummy_data_manager.filtered_df) == 1
+    assert (
+        dummy_data_manager.filtered_df.iloc[0].text == "Hey kid, you can't skate here!"
+    )

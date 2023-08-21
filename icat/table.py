@@ -143,7 +143,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
                             <v-btn x-small class="purple darken-1" @click.stop="addToExampleAnchor(item.id)">
                                 example
                             </v-btn>
-                            <v-tooltip bottom>
+                            <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn x-small v-if="!item.in_sample" @click.stop="addToSample(item.id)" v-bind="attrs" v-on="on">
                                         sample

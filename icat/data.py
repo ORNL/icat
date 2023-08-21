@@ -82,12 +82,14 @@ class DataManager(pn.viewable.Viewer):
 
         self.search_box = v.TextField(
             v_model="",
-            dense=True,
-            append_icon="mdi-magnify",
-            label="Search (use 'id:X' to search index)",
-            clearable=True,
-            clear_icon="mdi-close",
-            style_="padding-top: 7px",
+            # dense=True,
+            color="success",
+            # class_="success--text",
+            # append_icon="mdi-magnify",
+            label="Search (use 'ID:X' to search index)",
+            # clearable=True,
+            # clear_icon="mdi-close",
+            # style_="padding-top: 7px",
         )
         self.search_box.on_event("keyup", self._handle_ipv_search_changed)
         self.search_box.on_event("click:clear", self._handle_ipv_search_cleared)
@@ -113,6 +115,7 @@ class DataManager(pn.viewable.Viewer):
 
         self.search_add_new_tooltip = v.Tooltip(
             top=True,
+            open_delay=500,
             v_slots=[
                 {
                     "name": "activator",
@@ -124,6 +127,7 @@ class DataManager(pn.viewable.Viewer):
         )
         self.search_add_sel_tooltip = v.Tooltip(
             top=True,
+            open_delay=500,
             v_slots=[
                 {
                     "name": "activator",
@@ -423,7 +427,7 @@ class DataManager(pn.viewable.Viewer):
         df = self._current_tab_filter(
             df, self.current_data_tab, self.sample_indices, self.selected_indices
         )
-        df = DataManager._search_box_filter(df, self.search_value, self.text_col)
+        df = self._search_box_filter(df, self.search_value, self.text_col)
         df = self._prediction_range_filter(df)
         self.filtered_df = df
 
@@ -518,8 +522,8 @@ class DataManager(pn.viewable.Viewer):
             )
         self.table.items = rows
 
-    @staticmethod
     def _search_box_filter(
+        self,
         df: pd.DataFrame,
         pattern: str,
         column: str,
@@ -527,11 +531,28 @@ class DataManager(pn.viewable.Viewer):
         """This function searches for a given string in code:`pattern` and applies it to the code:`column` within the
         code:`df`.
 
-        if the search is "id:" or "ID:", we directly search the index column instead
+        If the search is "ID:", we directly search the index column instead.
         """
-        # TODO: possibly move to a utils.py
         if not pattern:
             return df
+
+        # check for an index search
+        if pattern.startswith("ID:"):
+            requested_index = str(pattern[3:])
+            if requested_index.isnumeric():
+                self.search_box.label = "Search (index search mode)"
+                if int(requested_index) in df.index:
+                    self.search_box.success = True
+                    self.search_box.error = False
+                    return df.iloc[[int(requested_index)]]
+                else:
+                    self.search_box.success = False
+                    self.search_box.error = True
+                    return pd.DataFrame()
+
+        self.search_box.label = "Search (use 'ID:X' to search index)"
+        self.search_box.success = False
+        self.search_box.error = False
         return df[df[column].str.contains(pattern, case=False)]
 
     # TODO: either make this static and add prediction col,
