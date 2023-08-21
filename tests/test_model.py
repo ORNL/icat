@@ -296,3 +296,50 @@ def test_save_load_model(data_file_loc, fun_df, dummy_anchor):
     assert model2.text_col == "text"
     assert len(model2.anchor_list.anchors) == 1
     assert len(model2.training_data) == 1
+
+
+def test_unlabel_removes_from_training_set(fun_df, dummy_anchor):
+    """Labeling a point and then unlabeling it should remove it from the training set."""
+    model = Model(fun_df, text_col="text")
+    model.add_anchor(dummy_anchor)
+    model.data.apply_label(1, 1)
+    assert len(model.training_data) == 1
+    model.data.apply_label(1, -1)
+    assert len(model.training_data) == 0
+
+
+def test_unlabel_when_no_corresp_row_does_not_break(fun_df, dummy_anchor):
+    """Specifying to 'unlabel' a row that isn't in the training set shouldn't throw
+    an error, the training data should simply still not contain that row."""
+    model = Model(fun_df, text_col="text")
+    model.add_anchor(dummy_anchor)
+    model.data.apply_label(1, -1)
+    assert len(model.training_data) == 0
+
+
+def test_unlabel_after_seed_correctly_unseeds(fun_df, dummy_anchor):
+    """Unlabeling a point immediately after a model is seeded should effectively
+    unseed the model without causing an error."""
+    model = Model(fun_df, text_col="text")
+    model.add_anchor(dummy_anchor)
+    for i in range(0, 10):
+        if i in [3, 6, 7]:
+            model.data.apply_label(i, 1)
+        else:
+            model.data.apply_label(i, 0)
+    assert model.is_seeded()
+    assert model.is_trained()
+    model.data.apply_label(7, -1)
+    assert not model.is_seeded()
+    assert not model.is_trained()
+
+
+def test_unlabel_multi(fun_df, dummy_anchor):
+    """Calling label function with multiple -1's should correctly unlabel
+    multiple points."""
+    model = Model(fun_df, text_col="text")
+    model.add_anchor(dummy_anchor)
+    model.data.apply_label([1, 2], [1, 1])
+    assert len(model.training_data) == 2
+    model.data.apply_label([1, 2], [-1, -1])
+    assert len(model.training_data) == 0

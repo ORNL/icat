@@ -178,6 +178,11 @@ class Model:
             # coverage stats even if it's not seeded, so compute and set here
             coverage_info = self.compute_coverage()
             self.anchor_list.set_coverage(coverage_info)
+
+            # if this model _was_ trained but we unlabel sufficiently many points, we need to consider
+            # it untrained
+            if self.is_trained():
+                del self.classifier.classes_
             return False
 
         if len(self.feature_names(in_model_only=True)) < 1:

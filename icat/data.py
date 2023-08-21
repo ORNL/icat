@@ -631,7 +631,8 @@ class DataManager(pn.viewable.Viewer):
         Args:
             index (int | list[int]): Either a single index, or a list of indices.
             label (int | list[int]): Either the single label to apply or a list of corresponding labels
-                for the provided indices. 1 is "interesting", 0 is "uninteresting".
+                for the provided indices. 1 is "interesting", 0 is "uninteresting". If a -1 is provided,
+                this resets or "unlabels", removing it from the container model's training set.
         """
         self._handle_label_changed(index, label)
 
