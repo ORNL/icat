@@ -244,8 +244,22 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             x_small=True,
             plain=True,
             children=[v.Icon(children=["mdi-expand-all"])],
+            v_on="tooltip.on",
         )
         self.expand_toggle.on_event("click", self._handle_ipv_expand_toggle_click)
+
+        self.expand_toggle_tooltip = v.Tooltip(
+            top=True,
+            open_delay=500,
+            v_slots=[
+                {
+                    "name": "activator",
+                    "variable": "tooltip",
+                    "children": self.expand_toggle,
+                }
+            ],
+            children=["Collapse/expand all."],
+        )
 
         # creating objects for adding new anchors to list
         self.dictionary_button = pn.widgets.Button(
@@ -270,7 +284,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
         self.layout = pn.Column(
             pn.Row(
-                self.expand_toggle,
+                self.expand_toggle_tooltip,
                 self.dictionary_button,
                 self.tfidf_button,
                 self.similarity_button,

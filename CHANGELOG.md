@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Data column sorting not working.
+* Needing to render the notebook's first model view cell twice for ipyvuetify
+    stylesheets to propagate.
 
 
 
