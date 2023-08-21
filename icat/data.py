@@ -554,7 +554,7 @@ class DataManager(pn.viewable.Viewer):
                 if int(requested_index) in df.index:
                     self.search_box.success = True
                     self.search_box.error = False
-                    return df.iloc[[int(requested_index)]]
+                    return df.loc[[int(requested_index)]]
                 else:
                     self.search_box.success = False
                     self.search_box.error = True

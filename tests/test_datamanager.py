@@ -212,3 +212,17 @@ def test_id_search_shows_only_id_row(dummy_data_manager):
     assert (
         dummy_data_manager.filtered_df.iloc[0].text == "Hey kid, you can't skate here!"
     )
+    assert dummy_data_manager.filtered_df.iloc[[0]].index[0] == 5
+
+
+def test_id_search_correct_id_in_subsample(dummy_data_manager):
+    """When a currently filtered dataframe is a subsample, the search ID should still
+    be the returned ID."""
+    dummy_data_manager.sample_indices = [4, 5, 6]
+    assert len(dummy_data_manager.filtered_df) == 3
+    dummy_data_manager.search_value = "ID:5"
+    assert len(dummy_data_manager.filtered_df) == 1
+    assert (
+        dummy_data_manager.filtered_df.iloc[0].text == "Hey kid, you can't skate here!"
+    )
+    assert dummy_data_manager.filtered_df.iloc[[0]].index[0] == 5
