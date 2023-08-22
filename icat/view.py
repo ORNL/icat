@@ -258,7 +258,7 @@ class InteractiveView(pn.viewable.Viewer):
 
     def refresh_data(self):
         self.anchorviz.set_points(self._serialize_data_to_dicts())
-        self.model.data.instance_viewer.populate(self.model.data.instance_viewer.index)
+        self.model.data.item_viewer.populate(self.model.data.item_viewer.index)
         self.histograms.refresh_data(self.model.data)
 
     def __panel__(self):

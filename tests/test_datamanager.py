@@ -234,4 +234,4 @@ def test_instance_click_in_non_sequential(non_sequential_df):
 
     data = DataManager(non_sequential_df, text_col="text")
     data.table.vue_selectPoint(3)
-    assert data.instance_viewer.index == 3
+    assert data.item_viewer.index == 3

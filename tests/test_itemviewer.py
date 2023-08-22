@@ -1,4 +1,4 @@
-"""Tests for the instance viewer - the other tab with the datamanager."""
+"""Tests for the item viewer - the other tab with the datamanager."""
 
 import pytest
 
@@ -11,9 +11,9 @@ def test_populate_called_on_model_trained(mocker, fun_df, dummy_anchor):
     whatever the current instance index is."""
     model = Model(fun_df, text_col="text")
     model.anchor_list.add_anchor(dummy_anchor)
-    model.data.instance_viewer.populate(5)
+    model.data.item_viewer.populate(5)
 
-    spy = mocker.spy(model.data.instance_viewer, "populate")
+    spy = mocker.spy(model.data.item_viewer, "populate")
 
     for i in range(11):
         if i in [4, 6, 7]:
@@ -41,13 +41,13 @@ def test_clicking_interesting_button_correctly_labels(fun_df):
 
     model = Model(fun_df, text_col="text")
     model.data.on_data_labeled(catch_label)
-    model.data.instance_viewer.populate(5)
-    model.data.instance_viewer.interesting_button.fire_event("click", True)
+    model.data.item_viewer.populate(5)
+    model.data.item_viewer.interesting_button.fire_event("click", True)
 
     assert returns[0] == 5
     assert returns[1] == 1
-    assert model.data.instance_viewer.current_label.children == ["Labeled"]
-    assert model.data.instance_viewer.current_label.class_ == "orange--text darken-1"
+    assert model.data.item_viewer.current_label.children == ["Labeled"]
+    assert model.data.item_viewer.current_label.class_ == "orange--text darken-1"
 
 
 @pytest.mark.integration
@@ -63,10 +63,10 @@ def test_clicking_uninteresting_button_correct_labels(fun_df):
 
     model = Model(fun_df, text_col="text")
     model.data.on_data_labeled(catch_label)
-    model.data.instance_viewer.populate(5)
-    model.data.instance_viewer.uninteresting_button.fire_event("click", True)
+    model.data.item_viewer.populate(5)
+    model.data.item_viewer.uninteresting_button.fire_event("click", True)
 
     assert returns[0] == 5
     assert returns[1] == 0
-    assert model.data.instance_viewer.current_label.children == ["Labeled"]
-    assert model.data.instance_viewer.current_label.class_ == "blue--text darken-1"
+    assert model.data.item_viewer.current_label.children == ["Labeled"]
+    assert model.data.item_viewer.current_label.class_ == "blue--text darken-1"

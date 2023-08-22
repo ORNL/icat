@@ -8,7 +8,7 @@ from icat import (
     data,
     histogram,
     histograms,
-    instance,
+    item,
     model,
     table,
     view,

@@ -18,7 +18,7 @@ import param
 
 import icat
 from icat.anchors import DictionaryAnchor, TFIDFAnchor
-from icat.instance import InstanceViewer
+from icat.item import ItemViewer
 from icat.table import TableContentsTemplate
 from icat.utils import _kill_param_auto_docstring, add_highlights
 
@@ -65,10 +65,8 @@ class DataManager(pn.viewable.Viewer):
         self.label_col: str = "_label"
         self.prediction_col: str = "_pred"
 
-        self.instance_viewer: InstanceViewer = InstanceViewer(
-            height=height, width=width, data=self
-        )
-        self.instance_viewer.on_label_changed(self._handle_label_changed)
+        self.item_viewer: ItemViewer = ItemViewer(height=height, width=width, data=self)
+        self.item_viewer.on_label_changed(self._handle_label_changed)
 
         self.data_tab_list = ["Sample", "Labeled", "Interesting", "Selected", "All"]
         self.data_tabs = v.Tabs(
@@ -232,7 +230,7 @@ class DataManager(pn.viewable.Viewer):
             width=width,
             children=[
                 v.Tab(children=["Data"]),
-                v.Tab(children=["Instance"]),
+                v.Tab(children=["Item"]),
                 v.Tab(children=["Sampling"]),
             ],
         )
@@ -241,7 +239,7 @@ class DataManager(pn.viewable.Viewer):
             width=width,
             children=[
                 v.TabItem(children=[data_layout_stack]),
-                v.TabItem(children=[self.instance_viewer.widget]),
+                v.TabItem(children=[self.item_viewer.widget]),
                 v.TabItem(children=[self.sampling_controls]),
             ],
         )
@@ -342,7 +340,7 @@ class DataManager(pn.viewable.Viewer):
 
     def _handle_row_selected(self, point_id):
         """Event handler from table row select."""
-        self.instance_viewer.populate(point_id)
+        self.item_viewer.populate(point_id)
         self.tabs_component.v_model = 1
 
     def _handle_example_added(self, point_id):

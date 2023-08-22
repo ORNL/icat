@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Interesting and uninteresting colors to orange and blue respectively (swapped to better indicate
     'warm' as interesting and 'cold' as uninteresting.)
+* "Instance" viewer to "item" viewer.
 
 ### Fixed
 * Instance viewer missing search highlight.

@@ -25,8 +25,8 @@ class HtmlContents(v.VuetifyTemplate):
         """
 
 
-class InstanceViewer(pn.viewable.Viewer):
-    """Interface for viewing and labeling a single instance, useful for looking
+class ItemViewer(pn.viewable.Viewer):
+    """Interface for viewing and labeling a single item, useful for looking
     at more than just a snippet of the full text."""
 
     def __init__(
