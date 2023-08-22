@@ -204,7 +204,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
         """
 
 
-class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
+class AnchorList(pn.viewable.Viewer):
     """A model's list tracking and managing a collection of anchors.
 
     This is what handles creating features for a dataset. This class is also a
@@ -320,9 +320,11 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
                 self.table,
             ],
             width=table_width,
-            style_="padding-left: 0; padding-right: 0px;",
+            style_="padding-left: 0; padding-right: 0px;, padding-bottom: 0px;",
         )
         """The full component layout for panel to display."""
+
+        self.anchor_types_layout = v.Col(style_=f"width: {table_width}px")
 
         self.tabs_component = v.Tabs(
             v_model=0,
@@ -331,6 +333,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             width=table_width,
             children=[
                 v.Tab(children=["Anchors"]),
+                v.Tab(children=["Anchor Types"]),
             ],
         )
         self.tabs_items_component = v.TabsItems(
@@ -338,6 +341,7 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             width=table_width,
             children=[
                 v.TabItem(children=[self.anchors_layout]),
+                v.TabItem(children=[self.anchor_types_layout]),
             ],
         )
         ipw.jslink(
@@ -410,18 +414,18 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
     @param.depends("possible_anchor_types", watch=True)
     def _handle_pnl_possible_anchor_types_changed(self):
         new_anchor_buttons = []
-        for anchor_type in self.possible_anchor_types:
+        for anchor_type_dict in self.possible_anchor_types:
             new_button = v.Btn(
-                children=[anchor_type["name"]],
+                children=[anchor_type_dict["name"]],
                 small=True,
-                color=anchor_type["color"],
+                color=anchor_type_dict["color"],
                 style_="margin-left: 2px; margin-right: 2px",
             )
             new_button.on_event(
                 "click",
                 partial(
                     self._handle_ipv_new_anchor_generic_click,
-                    type_ref=anchor_type["ref"],
+                    type_ref=anchor_type_dict["ref"],
                 ),
             )
             new_anchor_buttons.append(new_button)
@@ -582,11 +586,91 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
 
         return feature_vals
 
+    def _handle_ipv_color_picker_input(self, widget, event, data, anchor_type: type):
+        # NOTE: need to set this up with a partial that specifies the anchor_type
+        self.modify_anchor_type(anchor_type, "color", data)
+
+    def _handle_ipv_anchor_type_name_changed(
+        self, widget, event, data, anchor_type: type
+    ):
+        # NOTE: need to set this up with a partial that specifies the anchor_type
+        self.modify_anchor_type(anchor_type, "name", data)
+
+    def _populate_anchor_types_col(self):
+        children = []
+        # for anchor_type in Anchor.anchor_types():
+        for anchor_type_dict in self.possible_anchor_types:
+            color_picker = v.ColorPicker(
+                hide_inputs=True, v_model=anchor_type_dict["color"]
+            )
+            color_picker.on_event(
+                "input",
+                partial(
+                    self._handle_ipv_color_picker_input,
+                    anchor_type=anchor_type_dict["ref"],
+                ),
+            )
+
+            anchor_type_name = v.TextField(v_model=anchor_type_dict["name"], width=50)
+            anchor_type_name.on_event(
+                "input",
+                partial(
+                    self._handle_ipv_anchor_type_name_changed,
+                    anchor_type=anchor_type_dict["ref"],
+                ),
+            )
+
+            children.append(
+                v.Row(
+                    children=[
+                        v.Col(
+                            children=[
+                                anchor_type_name,
+                                f"({anchor_type_dict['ref']})",
+                            ]
+                        ),
+                        v.Spacer(),
+                        color_picker,
+                    ]
+                )
+            )
+        for anchor_type in Anchor.anchor_types():
+            # check if we've already added it
+            found = False
+            for anchor_type_dict in self.possible_anchor_types:
+                if anchor_type_dict["ref"] == anchor_type:
+                    found = True
+                    break
+            if not found and anchor_type.__qualname__ not in [
+                "Anchor",
+                "SimilarityAnchorBase",
+            ]:
+                children.append(
+                    v.Row(
+                        children=[
+                            v.Col(
+                                children=[
+                                    v.TextField(
+                                        v_model=anchor_type.__qualname__, width=50
+                                    ),
+                                    f"({str(anchor_type)})",
+                                ]
+                            ),
+                            v.Btn(
+                                children=["add"],
+                                style_="margin-top: 20px; margin-right: 20px;",
+                            ),
+                        ]
+                    )
+                )
+
+        self.anchor_types_layout.children = children
+
     # ============================================================
     # PUBLIC FUNCTIONS
     # ============================================================
 
-    def add_anchor_type(self, anchor_type: type, name: str = None, color: str = "grey"):
+    def add_anchor_type(self, anchor_type: type, name: str = None, color: str = "#777"):
         self.possible_anchor_types = [
             *self.possible_anchor_types,
             {
@@ -595,6 +679,26 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
                 "color": color,
             },
         ]
+
+    def modify_anchor_type(self, anchor_type: type, key: str, val: str):
+        prev_anchors = []
+        updated_anchor = None
+        next_anchors = []
+
+        for anchor_type_dict in self.possible_anchor_types:
+            if anchor_type_dict["ref"] == anchor_type:
+                anchor_type_dict[key] = val
+                updated_anchor = anchor_type_dict
+            elif updated_anchor is None:
+                prev_anchors.append(anchor_type_dict)
+            else:
+                next_anchors.append(anchor_type_dict)
+
+        if updated_anchor is None:
+            # TODO: error, wasn't found
+            pass
+
+        self.possible_anchor_types = [*prev_anchors, updated_anchor, *next_anchors]
 
     def get_unique_anchor_name(self) -> str:
         """Returns a name for a new anchor that won't conflict with any existing."""
