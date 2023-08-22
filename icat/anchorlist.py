@@ -4,6 +4,7 @@ import json
 import os
 import pickle
 from collections.abc import Callable
+from functools import partial
 
 import ipyvuetify as v
 import ipywidgets as ipw
@@ -193,6 +194,12 @@ class AnchorListTemplate(v.VuetifyTemplate):
             div .v-progress-linear {
                 left: -1px !important;
             }
+
+            /* this should probably go somewhere else, these are
+             vars for anchorviz. */
+            :host {
+                --selectedAnchorColor: #FFF;
+            }
         </style>
         """
 
@@ -220,6 +227,9 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         functions on this class such as ``add_anchor`` and so on. Notably, entire list replacements,
         e.g. ``anchors = [my_anchor, some_anchor]``, work as expected.
     """
+
+    possible_anchor_types = param.List([])
+    # will need to be dictionaries, with each containing string name, class type ref, and color
 
     # TODO: coupling: model is used to retrieve model.data.active_data
     # NOTE: one way around this would be to have a "reference_data" property,
@@ -268,38 +278,85 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
         """
 
         # creating objects for adding new anchors to list
-        self.dictionary_button = pn.widgets.Button(
-            name="Add Dictionary Anchor",
-            stylesheets=[button_stylesheet],
-        )
-        self.dictionary_button.on_click(self._handle_pnl_new_dictionary_btn_clicked)
-        self.tfidf_button = pn.widgets.Button(
-            name="Add TF-IDF Anchor",
-            stylesheets=[button_stylesheet],
-        )
-        self.tfidf_button.on_click(self._handle_pnl_new_tfidf_btn_clicked)
+        # self.dictionary_button = pn.widgets.Button(
+        #     name="Add Dictionary Anchor",
+        #     stylesheets=[button_stylesheet],
+        # )
+        # self.dictionary_button.on_click(self._handle_pnl_new_dictionary_btn_clicked)
+        # self.tfidf_button = pn.widgets.Button(
+        #     name="Add TF-IDF Anchor",
+        #     stylesheets=[button_stylesheet],
+        # )
+        # self.tfidf_button.on_click(self._handle_pnl_new_tfidf_btn_clicked)
 
-        self.similarity_button = pn.widgets.Button(
-            name="Add Similarity Anchor",
-            stylesheets=[button_stylesheet],
-        )
-        self.similarity_button.on_click(self._handle_pnl_new_similarity_btn_clicked)
+        # self.similarity_button = pn.widgets.Button(
+        #     name="Add Similarity Anchor",
+        #     stylesheets=[button_stylesheet],
+        # )
+        # self.similarity_button.on_click(self._handle_pnl_new_similarity_btn_clicked)
 
         self.table = AnchorListTemplate()
         self.table.on_anchor_removal(self._handle_table_anchor_deleted)
 
-        self.layout = pn.Column(
-            pn.Row(
+        # self.anchors_layout = pn.Column(
+        #     pn.Row(
+        #         self.expand_toggle_tooltip,
+        #         self.dictionary_button,
+        #         self.tfidf_button,
+        #         self.similarity_button,
+        #     ),
+        #     self.table,
+        #     height=table_height,
+        #     width=table_width,
+        # )
+        self.anchor_buttons = v.Row(
+            children=[
                 self.expand_toggle_tooltip,
-                self.dictionary_button,
-                self.tfidf_button,
-                self.similarity_button,
-            ),
-            self.table,
-            height=table_height,
+            ]
+        )
+        self.anchors_layout = v.Col(
+            children=[
+                self.anchor_buttons,
+                self.table,
+            ],
             width=table_width,
+            style_="padding-left: 0; padding-right: 0px;",
         )
         """The full component layout for panel to display."""
+
+        self.tabs_component = v.Tabs(
+            v_model=0,
+            height=35,
+            background_color="primary",
+            width=table_width,
+            children=[
+                v.Tab(children=["Anchors"]),
+            ],
+        )
+        self.tabs_items_component = v.TabsItems(
+            v_model=0,
+            width=table_width,
+            children=[
+                v.TabItem(children=[self.anchors_layout]),
+            ],
+        )
+        ipw.jslink(
+            (self.tabs_component, "v_model"), (self.tabs_items_component, "v_model")
+        )
+
+        self.layout_stack = v.Container(
+            children=[self.tabs_component, self.tabs_items_component],
+            width=table_width,
+            style_="padding: 0px;",
+        )
+        self.layout = pn.Column(
+            self.layout_stack,
+            width=table_width,
+            styles={"padding": "0px"},
+        )
+        self.widget = v.Container(
+            children=[self.layout_stack], width=table_width, style_="padding: 0px;"
+        )
 
         self.cache: dict[str, any] = {}
         """This cache gets pickled on save, useful for anchors to store results of
@@ -345,6 +402,30 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             self.table.expanded = []
         else:
             self.table.expanded = [{"name": item["name"]} for item in self.table.items]
+
+    def _handle_ipv_new_anchor_generic_click(self, widget, event, data, type_ref):
+        name = self.get_unique_anchor_name()
+        self.add_anchor(type_ref(anchor_name=name))
+
+    @param.depends("possible_anchor_types", watch=True)
+    def _handle_pnl_possible_anchor_types_changed(self):
+        new_anchor_buttons = []
+        for anchor_type in self.possible_anchor_types:
+            new_button = v.Btn(
+                children=[anchor_type["name"]],
+                small=True,
+                color=anchor_type["color"],
+                style_="margin-left: 2px; margin-right: 2px",
+            )
+            new_button.on_event(
+                "click",
+                partial(
+                    self._handle_ipv_new_anchor_generic_click,
+                    type_ref=anchor_type["ref"],
+                ),
+            )
+            new_anchor_buttons.append(new_button)
+        self.anchor_buttons.children = [self.expand_toggle_tooltip, *new_anchor_buttons]
 
     # ============================================================
     # EVENT SPAWNERS
@@ -504,6 +585,16 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
     # ============================================================
     # PUBLIC FUNCTIONS
     # ============================================================
+
+    def add_anchor_type(self, anchor_type: type, name: str = None, color: str = "grey"):
+        self.possible_anchor_types = [
+            *self.possible_anchor_types,
+            {
+                "name": anchor_type.__qualname__ if name is None else name,
+                "ref": anchor_type,
+                "color": color,
+            },
+        ]
 
     def get_unique_anchor_name(self) -> str:
         """Returns a name for a new anchor that won't conflict with any existing."""

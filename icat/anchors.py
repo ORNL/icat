@@ -160,6 +160,20 @@ class Anchor(param.Parameterized):
         """
         raise NotImplementedError()
 
+    @staticmethod
+    def anchor_types():
+        """Get a list of references to all defined Anchor subclasses (directly and indirectly.)"""
+        # https://stackoverflow.com/questions/5881873/python-find-all-classes-which-inherit-from-this-one
+        subclasses = []
+        to_process = [Anchor]
+        while to_process:
+            parent_class = to_process.pop()
+            for child_class in parent_class.__subclasses__():
+                if child_class not in subclasses:
+                    subclasses.append(child_class)
+                    to_process.append(child_class)
+        return subclasses
+
     def row_view(self) -> pn.Row:
         return pn.Row(self.param)
 
@@ -172,25 +186,6 @@ class Anchor(param.Parameterized):
             in_view=self.in_view,
             in_model=self.in_model,
         )
-
-    # def save(self, path: str):
-    #     """Save the information for this anchor at the specified path, such that calling
-    #     load() with the same path will return all values as they were.
-
-    #     Note:
-    #         Expected to be overriden in subclasses. It's recommended that you implement
-    #         a ``to_dict`` function that updates a dictionary from the parent anchor's
-    #         ``to_dict`` function to get all relevant information.
-    #     """
-    #     raise NotImplementedError()
-
-    # def load(self, path: str):
-    #     """Load an anchor's parameters from the specified path.
-
-    #     Note:
-    #         Expected to be overriden in subclasses.
-    #     """
-    #     raise NotImplementedError()
 
     def save(self, path: str):
         """Save anchor to specified path."""
