@@ -11,6 +11,8 @@ def get_property(prop):
 
 
 with open("README.md", encoding="utf-8") as infile:
+    # TODO: will have to remove the <picture><source ...</picture>
+    # since pypi doesn't support
     long_description = infile.read()
 
 setup(

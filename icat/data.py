@@ -7,7 +7,6 @@ all of the sample data and so on for the model.
 # * Manages interaction with model as far as setting the training data and so on.
 # * Tabulator and search and "tabs" component
 
-import re
 from collections.abc import Callable
 from typing import Optional
 
@@ -21,7 +20,7 @@ import icat
 from icat.anchors import DictionaryAnchor, TFIDFAnchor
 from icat.instance import InstanceViewer
 from icat.table import TableContentsTemplate
-from icat.utils import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring, add_highlights
 
 _kill_param_auto_docstring()
 
@@ -483,24 +482,8 @@ class DataManager(pn.viewable.Viewer):
                 # there's a better way of doing it anyway. We _have_ to know about the anchors
                 # here somehow
                 kw_regex = self.model.anchor_list.highlight_regex()
-                if kw_regex != "":
-                    highlighted_str = re.sub(
-                        kw_regex,
-                        r"<span style='background-color: yellow; color: black;'>\g<1></span>",
-                        text,
-                        flags=re.IGNORECASE,
-                    )
-                    text = highlighted_str
-
-                # do a search term highlight as well
-                if self.search_value != "":
-                    highlighted_str = re.sub(
-                        f"({self.search_value})",
-                        r"<span style='background-color: white; color: black;'>\g<1></span>",
-                        text,
-                        flags=re.IGNORECASE,
-                    )
-                    text = highlighted_str
+                text = add_highlights(text, kw_regex)
+                text = add_highlights(text, f"({self.search_value})", "white")
 
             # set the color of the text based on the prediction
             if self.prediction_col in row.keys():

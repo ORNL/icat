@@ -1,6 +1,5 @@
 """Class for interface to view and interact with a single sample/instance point."""
 
-import re
 from collections.abc import Callable
 
 import ipyvuetify as v
@@ -8,7 +7,7 @@ import panel as pn
 import traitlets
 
 import icat
-from icat.utils import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring, add_highlights
 
 _kill_param_auto_docstring()
 
@@ -157,21 +156,16 @@ class InstanceViewer(pn.viewable.Viewer):
             return
 
         self.index = index
-        self.index_display.children = [str(index)]
+        self.index_display.children = [f"ID:{index}"]
         row = self.data.active_data.iloc[index]
 
         # highlight text
         text = row[self.data.text_col]
         if self.data.model is not None:
             kw_regex = self.data.model.anchor_list.highlight_regex()
-            if kw_regex != "":
-                highlighted_str = re.sub(
-                    kw_regex,
-                    r"<span style='background-color: yellow; color: black'>\g<1></span>",
-                    text,
-                    flags=re.IGNORECASE,
-                )
-                text = highlighted_str
+            text = add_highlights(text, kw_regex)
+            text = add_highlights(text, f"({self.data.search_value})", "white")
+
         self.contents.content = text
 
         # set color of prediction value

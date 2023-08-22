@@ -1,3 +1,8 @@
+"""Utility functions that are needed in multiple places."""
+
+import re
+
+
 def _kill_param_auto_docstring():
     """As cool as param.parameterized is, it's doing some things with automatic
     docstring generation that break my sphinx docs, and end up spitting a lot of
@@ -29,3 +34,28 @@ def populate_anchor_from_dictionary(anchor, parameters: dict[str, any]):
     """
     for key, value in parameters.items():
         setattr(anchor, key, value)
+
+
+def add_highlights(text: str, regex: str, color: str = "yellow") -> str:
+    """Adds HTML span tag highlights around any matches in the text for the given regex.
+
+    Args:
+        text (str): The text to add highlights to.
+        regex (str): The regular expression to search for and sub in the text. Note that
+            this needs to have one capture group, so the regex should be wrapped in '()'.
+        color (str): The background color to highlight the text with.
+
+    Note:
+        The regular expression will be treated as *case insensitive*.
+    """
+    # if blank regular expression, don't modify, including this here just
+    # simplifies some of the places I'm calling this function.
+    if regex == "" or regex == "()":
+        return text
+
+    return re.sub(
+        regex,
+        f"<span style='background-color: {color}; color: black;'>\\g<1></span>",
+        text,
+        flags=re.IGNORECASE,
+    )

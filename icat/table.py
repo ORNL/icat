@@ -135,7 +135,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
             <template #body="{ items }">
                 <tbody :width="width">
                     <tr v-for="item in items" :key="item.id" @click="selectPoint(item.id)" @mouseover="hoverPoint(item.id)">
-                        <td class="break-word" v-html="item.text" style="padding-left: 2px; padding-right: 2px;" />
+                        <td v-html="item.text" style="padding-left: 2px; padding-right: 2px; word-break: break-word;" />
                         <td style="vertical-align: top; padding-left: 2px; padding-right: 2px; color: grey;">{{ item.id }}</td>
                         <td style="vertical-align: top; padding-bottom: 5px; padding-left: 2px;">
                             <v-btn x-small class="orange darken-1" @click.stop="applyAbsoluteLabelUninteresting(item.id)">
@@ -171,12 +171,6 @@ class TableContentsTemplate(v.VuetifyTemplate):
             .softhover-table table thead tr th {
                 padding-left: 5px !important;
                 padding-right: 5px !important;
-            }
-            /*.softhover-table table {
-                table-layout: fixed;
-            }*/
-            .break-word {
-                word-break: break-word;
             }
         </style>
         """

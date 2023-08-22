@@ -45,4 +45,5 @@ def initialize():
     # trying to make it so the user doesn't have to execute their first model.view cell twice.
     from icat.anchorlist import AnchorListTemplate
 
+    # TODO: may need to do the same for the data table
     return pn.Row(AnchorListTemplate(), styles={"display": "none"})
