@@ -512,6 +512,7 @@ class AnchorList(pn.viewable.Viewer):
         self._anchor_changed_callbacks: list[Callable] = []
         self._anchor_added_callbacks: list[Callable] = []
         self._anchor_removed_callbacks: list[Callable] = []
+        self._anchor_types_changed_callbacks: list[Callable] = []
 
     # ============================================================
     # EVENT HANDLERS
@@ -598,6 +599,14 @@ class AnchorList(pn.viewable.Viewer):
         """
         self._anchor_removed_callbacks.append(callback)
 
+    def on_anchor_types_changed(self, callback: Callable):
+        """Register a callback functino for the "anchor types changed" event.
+
+        Callbacks for this event should take the list of dictionaries of type information,
+        expect each dictionary to contain "name", "ref", and "color".
+        ."""
+        self._anchor_types_changed_callbacks.append(callback)
+
     def fire_on_anchor_added(self, anchor: Anchor):
         """Trigger the event to notify that a new anchor was added.
 
@@ -630,6 +639,12 @@ class AnchorList(pn.viewable.Viewer):
         """
         for callback in self._anchor_changed_callbacks:
             callback(name, key, value)
+
+    def fire_on_anchor_types_changed(self):
+        """Trigger the event to notify that the anchor types have been changed."""
+
+        for callback in self._anchor_types_changed_callbacks:
+            callback(self.possible_anchor_types)
 
     # ============================================================
     # INTERNAL FUNCTIONS
@@ -836,6 +851,7 @@ class AnchorList(pn.viewable.Viewer):
             pass
 
         self.possible_anchor_types = [*prev_anchors, updated_anchor, *next_anchors]
+        self.fire_on_anchor_types_changed()
 
     def get_anchor_type_config(self, anchor_type: type):
         for anchor_type_dict in self.possible_anchor_types:

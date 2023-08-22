@@ -63,6 +63,9 @@ class InteractiveView(pn.viewable.Viewer):
         )
         self.model.anchor_list.on_anchor_added(self._update_data_table_on_anchor_added)
         self.model.anchor_list.on_anchor_removed(self._remove_list_anchor_from_viz)
+        self.model.anchor_list.on_anchor_types_changed(
+            self._update_viz_anchor_colors_from_type
+        )
         self.anchorviz.on_anchor_add(self._add_viz_anchor_to_list)
         self.anchorviz.observe(
             self._trigger_selected_points_change, names="lassoedPointIDs"
@@ -105,10 +108,13 @@ class InteractiveView(pn.viewable.Viewer):
             anchor.theta if hasattr(anchor, "theta") else random.uniform(0, 2 * 3.14)
         )
         anchor_dict = dict(id=anchor.name, name=anchor.anchor_name, theta=theta)
-        if type(anchor) == TFIDFAnchor:
-            anchor_dict["color"] = "#8e24aa"
-        elif type(anchor) == SimilarityFunctionAnchor:
-            anchor_dict["color"] = "#248eaa"
+        # if type(anchor) == TFIDFAnchor:
+        #     anchor_dict["color"] = "#8e24aa"
+        # elif type(anchor) == SimilarityFunctionAnchor:
+        #     anchor_dict["color"] = "#248eaa"
+        anchor_dict["color"] = self.model.anchor_list.get_anchor_type_config(
+            type(anchor)
+        )["color"]
         self.anchorviz.add_anchor(anchor_dict)
 
     def _remove_list_anchor_from_viz(self, anchor: Anchor):
@@ -135,8 +141,26 @@ class InteractiveView(pn.viewable.Viewer):
         # send the actual name to be the id for the visualization
         self.anchorviz.modify_anchor_by_id(new_anchor_dict["id"], "id", new_anchor.name)
         self.anchorviz.modify_anchor_by_id(new_anchor.name, "name", name)
+        self.anchorviz.modify_anchor_by_id(
+            new_anchor.name,
+            "color",
+            self.model.anchor_list.get_anchor_type_config(type(new_anchor))["color"],
+        )
 
         self.model.anchor_list.add_anchor(new_anchor)
+
+    def _update_viz_anchor_colors_from_type(
+        self, anchor_type_dicts: list[dict[str, any]]
+    ):
+        for anchor in self.model.anchor_list.anchors:
+            if anchor.in_view:
+                self.anchorviz.modify_anchor_by_id(
+                    anchor.name,
+                    "color",
+                    self.model.anchor_list.get_anchor_type_config(type(anchor))[
+                        "color"
+                    ],
+                )
 
     # TODO: need tests for this one
     def _send_anchorlist_anchor_modification_to_viz(
