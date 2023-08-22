@@ -261,21 +261,27 @@ class AnchorList(pn.viewable.Layoutable, pn.viewable.Viewer):
             children=["Collapse/expand all."],
         )
 
+        button_stylesheet = """
+            button {
+                background-color: #1e88e5 !important;
+            }
+        """
+
         # creating objects for adding new anchors to list
         self.dictionary_button = pn.widgets.Button(
             name="Add Dictionary Anchor",
-            button_type="primary",
+            stylesheets=[button_stylesheet],
         )
         self.dictionary_button.on_click(self._handle_pnl_new_dictionary_btn_clicked)
         self.tfidf_button = pn.widgets.Button(
             name="Add TF-IDF Anchor",
-            button_type="primary",
+            stylesheets=[button_stylesheet],
         )
         self.tfidf_button.on_click(self._handle_pnl_new_tfidf_btn_clicked)
 
         self.similarity_button = pn.widgets.Button(
             name="Add Similarity Anchor",
-            button_type="primary",
+            stylesheets=[button_stylesheet],
         )
         self.similarity_button.on_click(self._handle_pnl_new_similarity_btn_clicked)
 
