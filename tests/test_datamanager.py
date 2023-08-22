@@ -226,3 +226,12 @@ def test_id_search_correct_id_in_subsample(dummy_data_manager):
         dummy_data_manager.filtered_df.iloc[0].text == "Hey kid, you can't skate here!"
     )
     assert dummy_data_manager.filtered_df.iloc[[0]].index[0] == 5
+
+
+def test_instance_click_in_non_sequential(non_sequential_df):
+    """Clicking on a row with a non-sequential-id should still open the correct id
+    in the instance viewer."""
+
+    data = DataManager(non_sequential_df, text_col="text")
+    data.table.vue_selectPoint(3)
+    assert data.instance_viewer.index == 3

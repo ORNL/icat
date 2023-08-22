@@ -61,6 +61,11 @@ def fun_df():
 
 
 @pytest.fixture
+def non_sequential_df(fun_df):
+    return fun_df.drop([0, 1])
+
+
+@pytest.fixture
 def data_file_loc():
     shutil.rmtree("test/exampledata", ignore_errors=True)
     os.makedirs("test/exampledata", exist_ok=True)
