@@ -198,5 +198,8 @@ class TableContentsTemplate(v.VuetifyTemplate):
                 padding-left: 5px !important;
                 padding-right: 5px !important;
             }
+            .v-data-table__wrapper {
+                overscroll-behavior: contain !important;
+            }
         </style>
         """
