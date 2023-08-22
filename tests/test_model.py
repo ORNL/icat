@@ -285,7 +285,7 @@ def test_changing_anchor_name_twice_before_model_trained_modifies_data(
 def test_save_load_model(data_file_loc, fun_df, dummy_anchor):
     """Saving a model and then reloading it should load in all the same data and anchors."""
 
-    model = Model(fun_df, text_col="text")
+    model = Model(fun_df, text_col="text", default_sample_size=200)
     model.anchor_list.add_anchor(dummy_anchor)
     model.data.apply_label(0, 1)
     model.save(data_file_loc)
@@ -296,6 +296,7 @@ def test_save_load_model(data_file_loc, fun_df, dummy_anchor):
     assert model2.text_col == "text"
     assert len(model2.anchor_list.anchors) == 1
     assert len(model2.training_data) == 1
+    assert model2.data.sample_size_txt.v_model == "200"
 
 
 def test_unlabel_removes_from_training_set(fun_df, dummy_anchor):

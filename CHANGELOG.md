@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Offline mode arg to ``icat.initialize()``.
+* Sample size configuration through model constructor and text field in sample tab.
 
 ### Fixed
 * Instance viewer missing search highlight.

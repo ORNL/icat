@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
+import icat
 from icat.anchorlist import AnchorList
 from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
 from icat.data import DataManager
@@ -34,6 +35,8 @@ class Model:
             dataframe (representing all of the currently active data,) and an anchor
             instance. It should return a pandas series with the output similarity values,
             using the same index as that in the passed dataframe.
+        default_sample_size (int): The initial number of points to sample for the
+            visualizations.
     """
 
     def __init__(
@@ -41,6 +44,7 @@ class Model:
         data: pd.DataFrame,
         text_col: str,
         similarity_functions: list[Callable] = [],
+        default_sample_size: int = 100,
     ):
         self.training_data: pd.DataFrame = None
         """The rows (and only those rows) of the original data explicitly used for training."""
@@ -51,7 +55,12 @@ class Model:
         )
 
         self.anchor_list: AnchorList = AnchorList(model=self)
-        self.data: DataManager = DataManager(data=data, text_col=text_col, model=self)
+        self.data: DataManager = DataManager(
+            data=data,
+            text_col=text_col,
+            model=self,
+            default_sample_size=default_sample_size,
+        )
         self.view: InteractiveView = InteractiveView(model=self)
 
         # set up necessary behind-the-scenes glue for anchors and data
@@ -404,8 +413,10 @@ class Model:
 
         # save any relevant model metadata
         model_information = {
+            "icat_version": icat.__version__,
             "timestamp": datetime.strftime(datetime.now(), "%d/%m/%y %H:%M:%S"),
             "text_col": self.text_col,
+            "sample_size": self.data.sample_size_txt.v_model,
             "similarity_function_keys": list(self.similarity_functions.keys()),
         }
         with open(f"{path}/model_info.json", "w") as outfile:
@@ -435,6 +446,8 @@ class Model:
             model_information = json.load(infile)
         self.text_col = model_information["text_col"]
         self.data.text_col = self.text_col
+        if "sample_size" in model_information:
+            self.data.sample_size_txt.v_model = model_information["sample_size"]
 
         # check to make sure we have the correct similarity functions
         for key in model_information["similarity_function_keys"]:

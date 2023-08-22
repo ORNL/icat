@@ -51,6 +51,7 @@ class DataManager(pn.viewable.Viewer):
         model: Optional["icat.model.Model"] = None,
         width: int = 700,
         height: int = 800,
+        default_sample_size: int = 100,
         **params,
     ):
         self.active_data = None
@@ -207,7 +208,22 @@ class DataManager(pn.viewable.Viewer):
 
         self.resample_btn = v.Btn(children=["Resample"])
         self.resample_btn.on_event("click", self._handle_ipv_resample_btn_click)
-        self.sampling_controls = v.Container(children=[self.resample_btn])
+        self.sample_size_txt = v.TextField(
+            v_model=str(default_sample_size), label="Sample size"
+        )
+        self.sampling_controls = v.Container(
+            children=[
+                v.Row(
+                    children=[
+                        self.sample_size_txt,
+                        self.resample_btn,
+                    ],
+                    style_="padding-left: 10px; padding-right: 10px;",
+                ),
+            ],
+            height=height,
+            width=width,
+        )
 
         self.tabs_component = v.Tabs(
             v_model=0,
@@ -644,7 +660,9 @@ class DataManager(pn.viewable.Viewer):
     def set_random_sample(self):
         """Randomly choose 100 indices to use for the anchorviz sample."""
 
-        if len(self.active_data) > 100:
-            self.sample_indices = list(self.active_data.sample(100).index)
+        sample_size = int(self.sample_size_txt.v_model)
+
+        if len(self.active_data) > sample_size:
+            self.sample_indices = list(self.active_data.sample(sample_size).index)
         else:
             self.sample_indices = list(self.active_data.index)
