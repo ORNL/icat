@@ -94,46 +94,62 @@ class AnchorListTemplate(v.VuetifyTemplate):
             dense
             :loading="processing"
             :expanded.sync="expanded"
-            class="dense-table striped-table softhover-table"
+            class="dense-table striped-table"
             item-key="name"
         >
-            <template v-slot:item.anchor_name="{ item }">
-                <div><jupyter-widget :widget="item.anchor_name" /></div>
-            </template>
+            <template v-slot:item="{ item, expand, isExpanded }">
+                <tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/40%) 0 0)' }">
+                    <td>
+                        <v-btn icon x-small @click="expand(!isExpanded)">
+                            <v-icon v-if="isExpanded">mdi-chevron-down</v-icon>
+                            <v-icon v-if="!isExpanded">mdi-chevron-up</v-icon>
+                        </v-btn>
+                    </td>
 
-            <template v-slot:item.in_viz="{ item }">
-                <div><jupyter-widget :widget="item.in_viz" /></div>
-            </template>
 
-            <template v-slot:item.in_model="{ item }">
-                <div><jupyter-widget :widget="item.in_model" /></div>
-            </template>
-
-            <template v-slot:item.pct_negative="{ item }">
-                <div class='blue--text darken-1'>{{ item.pct_negative }}</div>
-            </template>
-
-            <template v-slot:item.pct_positive="{ item }">
-                <div class='orange--text darken-1'>{{ item.pct_positive }}</div>
-            </template>
-
-            <template v-slot:item.delete="{ item }">
-                <v-btn
-                    icon
-                    x-small
-                    class='delete-button'
-                    @click="deleteAnchor(item.name)"
-                    :loading="item.processing"
-                >
-                    <v-icon>mdi-close-circle-outline</v-icon>
-                </v-btn>
+                    <td><div><jupyter-widget :widget="item.anchor_name" /></div></td>
+                    <td><div>{{ item.coverage }}</div></td>
+                    <td><div class='blue--text darken-1'>{{ item.pct_negative }}</div></td>
+                    <td><div class='orange--text darken-1'>{{ item.pct_positive }}</div></td>
+                    <td><div><jupyter-widget :widget="item.in_viz" /></div></td>
+                    <td><div><jupyter-widget :widget="item.in_model" /></div></td>
+                    <td>
+                        <v-btn
+                            icon
+                            x-small
+                            class='delete-button'
+                            @click="deleteAnchor(item.name)"
+                            :loading="item.processing"
+                        >
+                            <v-icon>mdi-close-circle-outline</v-icon>
+                        </v-btn>
+                    </td>
+                </tr>
             </template>
 
             <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                    <jupyter-widget :widget="item.widget" />
-                </td>
+                <tr class="v-data-table__expanded__content" :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/80%) 0 0)' }">
+                    <td :colspan="headers.length+1">
+                        <jupyter-widget :widget="item.widget" />
+                    </td>
+                </tr>
             </template>
+
+            <!--<template #body="{ items }">
+                <tbody :width="width">
+                    <tr v-for="item in items">
+                        <td><slot name="item.data-table-expand" /></td>
+                        <td><div><jupyter-widget :widget="item.anchor_name" /></div></td>
+                        <td><div><jupyter-widget :widget="item.in_viz" /></div></td>
+                        <td><div><jupyter-widget :widget="item.in_model" /></div></td>
+                        <td><div class='blue--text darken-1'>{{ item.pct_negative }}</div></td>
+                        <td><div class='orange--text darken-1'>{{ item.pct_positive }}</div></td>
+                    </tr>
+                </tbody>
+            </template>
+            <template v-for="(slot, name) in $scopedSlots" v-slot:[name]="item">
+                <slot :name="name" v-bind="item"></slot>
+            </template>-->
         </v-data-table>
         <style id='table-styles'>
             .softhover-table table tbody tr:hover {
@@ -151,7 +167,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
                 background-color: rgba(0, 0, 0, 0.35);
             }
             .striped-table .v-data-table__expanded__content td {
-                background-color: #263238;
+                /*background-color: #263238; */
             }
             .dense-table .row {
                 flex-wrap: nowrap;
@@ -200,8 +216,128 @@ class AnchorListTemplate(v.VuetifyTemplate):
             :host {
                 --selectedAnchorColor: #FFF;
             }
-        </style>
+            </style>
         """
+
+    # @traitlets.default("template")
+    # def _template_old(self):
+    #     return """
+    #     <v-data-table
+    #         :headers="headers"
+    #         :items="items"
+    #         hide-default-footer
+    #         show-expand
+    #         dense
+    #         :loading="processing"
+    #         :expanded.sync="expanded"
+    #         class="dense-table striped-table softhover-table"
+    #         item-key="name"
+    #     >
+    #         <template v-slot:item.anchor_name="{ item }">
+    #             <div><jupyter-widget :widget="item.anchor_name" /></div>
+    #         </template>
+
+    #         <template v-slot:item.in_viz="{ item }">
+    #             <div><jupyter-widget :widget="item.in_viz" /></div>
+    #         </template>
+
+    #         <template v-slot:item.in_model="{ item }">
+    #             <div><jupyter-widget :widget="item.in_model" /></div>
+    #         </template>
+
+    #         <template v-slot:item.pct_negative="{ item }">
+    #             <div class='blue--text darken-1'>{{ item.pct_negative }}</div>
+    #         </template>
+
+    #         <template v-slot:item.pct_positive="{ item }">
+    #             <div class='orange--text darken-1'>{{ item.pct_positive }}</div>
+    #         </template>
+
+    #         <template v-slot:item.delete="{ item }">
+    #             <v-btn
+    #                 icon
+    #                 x-small
+    #                 class='delete-button'
+    #                 @click="deleteAnchor(item.name)"
+    #                 :loading="item.processing"
+    #             >
+    #                 <v-icon>mdi-close-circle-outline</v-icon>
+    #             </v-btn>
+    #         </template>
+
+    #         <template v-slot:expanded-item="{ headers, item }">
+    #             <td :colspan="headers.length">
+    #                 <jupyter-widget :widget="item.widget" />
+    #             </td>
+    #         </template>
+    #     </v-data-table>
+    #     <style id='table-styles'>
+    #         .softhover-table table tbody tr:hover {
+    #             background-color: #333333 !important;
+    #         }
+    #         .delete-button {
+    #             margin: 0px;
+    #             margin-left: 6px;
+    #             color: var(--md-grey-500) !important;
+    #         }
+    #         .delete-button:hover {
+    #             color: var(--md-red-500) !important;
+    #         }
+    #         .striped-table tbody tr:nth-child(even) {
+    #             background-color: rgba(0, 0, 0, 0.35);
+    #         }
+    #         .striped-table .v-data-table__expanded__content td {
+    #             background-color: #263238;
+    #         }
+    #         .dense-table .row {
+    #             flex-wrap: nowrap;
+    #         }
+    #         .dense-table td {
+    #             padding: 0 4px !important;
+    #             height: 30px !important;
+    #             max-height: 30px !important;
+    #             vertical-align: middle;
+    #         }
+    #         .dense-table th {
+    #             padding: 0 4px !important;
+    #         }
+    #         .dense-table td .v-input {
+    #             margin: 0;
+    #             /* margin-top: 5px; */
+    #         }
+    #         .dense-table td .v-input__slot {
+    #             margin-bottom: 0;
+    #         }
+    #         .dense-table td .v-input--selection-controls__input {
+    #             margin-top: -5px;
+    #         }
+    #         .dense-table td .v-input--selection-controls__ripple {
+    #             margin: 7px;
+    #             height: 25px !important;
+    #             width: 25px !important;
+    #         }
+    #         .dense-table td .v-icon.v-icon::after {
+    #             transform: scale(1.2) !important;
+    #         }
+    #         .dense-table td .v-input .v-messages {
+    #             display: none;
+    #             height: 0;
+    #         }
+    #         .dense-table td .v-text-field__details {
+    #             height: 2px !important;
+    #             min-height: 2px !important;
+    #         }
+    #         div .v-progress-linear {
+    #             left: -1px !important;
+    #         }
+
+    #         /* this should probably go somewhere else, these are
+    #          vars for anchorviz. */
+    #         :host {
+    #             --selectedAnchorColor: #FFF;
+    #         }
+    #     </style>
+    #     """
 
 
 class AnchorList(pn.viewable.Viewer):
@@ -430,6 +566,7 @@ class AnchorList(pn.viewable.Viewer):
             )
             new_anchor_buttons.append(new_button)
         self.anchor_buttons.children = [self.expand_toggle_tooltip, *new_anchor_buttons]
+        self.refresh_anchors_table()
 
     # ============================================================
     # EVENT SPAWNERS
@@ -700,6 +837,12 @@ class AnchorList(pn.viewable.Viewer):
 
         self.possible_anchor_types = [*prev_anchors, updated_anchor, *next_anchors]
 
+    def get_anchor_type_config(self, anchor_type: type):
+        for anchor_type_dict in self.possible_anchor_types:
+            if anchor_type_dict["ref"] == anchor_type:
+                return anchor_type_dict
+        return None
+
     def get_unique_anchor_name(self) -> str:
         """Returns a name for a new anchor that won't conflict with any existing."""
         name = "New Anchor"
@@ -728,6 +871,7 @@ class AnchorList(pn.viewable.Viewer):
                 pct_positive = self.coverage_info[anchor.name]["pos_text"]
 
             item = dict(
+                color=self.get_anchor_type_config(type(anchor))["color"],
                 name=anchor.name,
                 anchor_name=anchor._anchor_name_input,
                 coverage=coverage,
