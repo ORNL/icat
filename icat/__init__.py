@@ -21,7 +21,7 @@ from icat.model import Model
 __version__ = "0.5.0"
 
 
-def initialize():
+def initialize(offline: bool = False):
     """Set up panel and ICAT-specific stylesheets.
 
     Call this function before running any ICAT model ``.view`` cells.
@@ -35,8 +35,12 @@ def initialize():
     Note that there's a weird conflict between ipyvuetify and panel where if you don't
     run this initialize function, you may need to run your first ``model.view`` cell twice
     for the stylesheets to correctly apply to some of the ipyvuetify datatables.
+
+    Args:
+        offline (bool): If set to true, will configure panel to draw js/css resources from
+            local packages rather than hitting a CDN for them.
     """
-    pn.extension("vega")
+    pn.extension("vega", inline=offline)
 
     # pre render the anchorlist template once (invisibly) so that the css gets loaded
     # (there's a weird conflict between the ghost dom that panel uses and how ipyvuetify
@@ -44,6 +48,8 @@ def initialize():
     # Yes this is a ridiculous hack. No, I no longer care, I've spent way too much time
     # trying to make it so the user doesn't have to execute their first model.view cell twice.
     from icat.anchorlist import AnchorListTemplate
+    from icat.table import TableContentsTemplate
 
-    # TODO: may need to do the same for the data table
-    return pn.Row(AnchorListTemplate(), styles={"display": "none"})
+    return pn.Row(
+        AnchorListTemplate(), TableContentsTemplate(), styles={"display": "none"}
+    )
