@@ -138,15 +138,30 @@ class TableContentsTemplate(v.VuetifyTemplate):
                         <td v-html="item.text" style="padding-left: 2px; padding-right: 2px; word-break: break-word;" />
                         <td style="vertical-align: top; padding-left: 2px; padding-right: 2px; color: grey;">{{ item.id }}</td>
                         <td style="vertical-align: top; padding-bottom: 5px; padding-left: 2px;">
-                            <v-btn x-small class="orange darken-1" @click.stop="applyAbsoluteLabelUninteresting(item.id)">
-                                U
-                            </v-btn>
-                            <v-btn x-small class="blue darken-1" @click.stop="applyAbsoluteLabelInteresting(item.id)">
-                                I
-                            </v-btn>
-                            <v-btn x-small class="purple darken-1" @click.stop="addToExampleAnchor(item.id)">
-                                example
-                            </v-btn>
+                            <v-tooltip bottom open-delay=500>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn x-small class="orange darken-1" @click.stop="applyAbsoluteLabelUninteresting(item.id)" v-bind="attrs" v-on="on">
+                                        U
+                                    </v-btn>
+                                </template>
+                                <span>Label this instance as <span class="orange--text lighten-4"><b>uninteresting</b></span> (cold).</span>
+                            </v-tooltip>
+                            <v-tooltip bottom open-delay=500>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn x-small class="blue darken-1" @click.stop="applyAbsoluteLabelInteresting(item.id)" v-bind="attrs" v-on="on">
+                                        I
+                                    </v-btn>
+                                </template>
+                                <span>Label this instance as <span class="blue--text lighten-5"><b>interesting</b></span> (warm).</span>
+                            </v-tooltip>
+                            <v-tooltip bottom open-delay=500>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn x-small class="purple darken-1" @click.stop="addToExampleAnchor(item.id)" v-bind="attrs" v-on="on">
+                                        example
+                                    </v-btn>
+                                </template>
+                                <span>Create a similarity anchor with this instance as the target.</span>
+                            </v-tooltip>
                             <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn x-small v-if="!item.in_sample" @click.stop="addToSample(item.id)" v-bind="attrs" v-on="on">
@@ -156,9 +171,14 @@ class TableContentsTemplate(v.VuetifyTemplate):
                                 <span>Add this instance to the current sample set.</span>
                             </v-tooltip>
                             <div v-html="item.labeled" />
-                            <v-btn x-small v-if="item.labeled != ''" class="red darken-3" @click.stop="applyAbsoluteLabelUnlabeled(item.id)">
-                                unlabel
-                            </v-btn>
+                            <v-tooltip bottom open-delay=500 v-if="item.labeled != ''">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn x-small class="red darken-4" @click.stop="applyAbsoluteLabelUnlabeled(item.id)" v-bind="attrs" v-on="on">
+                                        unlabel
+                                    </v-btn>
+                                </template>
+                                <span>Remove the label from this instance.</span>
+                            </v-tooltip>
                         </td>
                     </tr>
                 </tbody>
