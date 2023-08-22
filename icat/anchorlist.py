@@ -109,11 +109,11 @@ class AnchorListTemplate(v.VuetifyTemplate):
             </template>
 
             <template v-slot:item.pct_negative="{ item }">
-                <div class='orange--text darken-1'>{{ item.pct_negative }}</div>
+                <div class='blue--text darken-1'>{{ item.pct_negative }}</div>
             </template>
 
             <template v-slot:item.pct_positive="{ item }">
-                <div class='blue--text darken-1'>{{ item.pct_positive }}</div>
+                <div class='orange--text darken-1'>{{ item.pct_positive }}</div>
             </template>
 
             <template v-slot:item.delete="{ item }">

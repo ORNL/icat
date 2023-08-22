@@ -47,7 +47,7 @@ def test_clicking_interesting_button_correctly_labels(fun_df):
     assert returns[0] == 5
     assert returns[1] == 1
     assert model.data.instance_viewer.current_label.children == ["Labeled"]
-    assert model.data.instance_viewer.current_label.class_ == "blue--text darken-1"
+    assert model.data.instance_viewer.current_label.class_ == "orange--text darken-1"
 
 
 @pytest.mark.integration
@@ -69,4 +69,4 @@ def test_clicking_uninteresting_button_correct_labels(fun_df):
     assert returns[0] == 5
     assert returns[1] == 0
     assert model.data.instance_viewer.current_label.children == ["Labeled"]
-    assert model.data.instance_viewer.current_label.class_ == "orange--text darken-1"
+    assert model.data.instance_viewer.current_label.class_ == "blue--text darken-1"

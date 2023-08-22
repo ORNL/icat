@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Offline mode arg to ``icat.initialize()``.
 * Sample size configuration through model constructor and text field in sample tab.
 
+### Changed
+* Interesting and uninteresting colors to orange and blue respectively (swapped to better indicate
+    'warm' as interesting and 'cold' as uninteresting.)
+
 ### Fixed
 * Instance viewer missing search highlight.
 

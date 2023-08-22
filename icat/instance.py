@@ -49,14 +49,16 @@ class InstanceViewer(pn.viewable.Viewer):
 
         self.contents = HtmlContents(content="<p>No instance selected.</p>")
         self.interesting_button = v.Btn(
-            style_="padding: 5px; margin: 5px;", color="blue", children=["Interesting"]
+            style_="padding: 5px; margin: 5px;",
+            color="orange",
+            children=["Interesting"],
         )
         self.interesting_button.on_event(
             "click", self._handle_ipv_interesting_btn_clicked
         )
         self.uninteresting_button = v.Btn(
             style_="padding: 5px; margin: 5px;",
-            color="orange",
+            color="blue",
             children=["Uninteresting"],
         )
         self.uninteresting_button.on_event(
@@ -174,18 +176,18 @@ class InstanceViewer(pn.viewable.Viewer):
                 f"Prediction: {row[self.data.prediction_col]}"
             ]
             if row[self.data.prediction_col] > 0.5:
-                color = "blue"
-            else:
                 color = "orange"
+            else:
+                color = "blue"
             self.current_prediction.class_ = f"{color}--text darken-1"
 
         # set the "labeled" label and color if applicable
         if self.data.label_col in row and row[self.data.label_col] != -1:
             self.current_label.children = ["Labeled"]
             if row[self.data.label_col] >= 0.5:
-                color = "blue"
-            else:
                 color = "orange"
+            else:
+                color = "blue"
             self.current_label.class_ = f"{color}--text darken-1"
         else:
             self.current_label.children = ["Not labeled"]

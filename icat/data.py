@@ -161,13 +161,13 @@ class DataManager(pn.viewable.Viewer):
         self.label_all_i_btn = v.Btn(
             children=["All interesting"],
             small=True,
-            class_="blue darken-1",
+            class_="orange darken-1",
             style_="margin-left: 2px; margin-right: 2px;",
         )
         self.label_all_u_btn = v.Btn(
             children=["All uninteresting"],
             small=True,
-            class_="orange darken-1",
+            class_="blue darken-1",
             style_="margin-left: 2px; margin-right: 2px;",
         )
         self.label_all_i_btn.on_event("click", self._handle_ipv_label_all_i_btn_click)
@@ -504,9 +504,9 @@ class DataManager(pn.viewable.Viewer):
             # set the color of the text based on the prediction
             if self.prediction_col in row.keys():
                 if row[self.prediction_col] > 0.5:
-                    color = "blue"
-                else:
                     color = "orange"
+                else:
+                    color = "blue"
                 text = f"<span class='{color}--text darken-1'>{text}</span>"
             else:
                 text = f"<span>{text}</span>"
@@ -517,9 +517,9 @@ class DataManager(pn.viewable.Viewer):
                     labeled = ""
                 else:
                     if row[self.label_col] == 1:
-                        labeled = "blue"
-                    elif row[self.label_col] == 0:
                         labeled = "orange"
+                    elif row[self.label_col] == 0:
+                        labeled = "blue"
                     labeled = f"<span class='{labeled}--text darken-1'>Labeled</span>"
 
             rows.append(

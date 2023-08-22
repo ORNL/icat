@@ -80,8 +80,8 @@ class Histogram(pn.viewable.Viewer):
                 ),
                 color=alt.condition(
                     "datum.bin >= 0.5",
-                    if_true={"value": "#2196F3"},
-                    if_false={"value": "#FB8C00"},
+                    if_false={"value": "#2196F3"},
+                    if_true={"value": "#FB8C00"},
                 ),
             )
             .configure(background="transparent")

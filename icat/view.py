@@ -32,8 +32,8 @@ class InteractiveView(pn.viewable.Viewer):
     # here since view is already loosely orchestrating all of the gui stuff. If anything,
     # _more_ of the model event handlers should be handled in here instead of in the model?
     def __init__(self, model, **params):
-        self.interesting_color = "#2196F3"  # blue
-        self.uninteresting_color = "#FB8C00"  # orange darken-1
+        self.uninteresting_color = "#2196F3"  # blue
+        self.interesting_color = "#FB8C00"  # orange darken-1
 
         self.model = model
 

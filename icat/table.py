@@ -140,19 +140,19 @@ class TableContentsTemplate(v.VuetifyTemplate):
                         <td style="vertical-align: top; padding-bottom: 5px; padding-left: 2px;">
                             <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-btn x-small class="orange darken-1" @click.stop="applyAbsoluteLabelUninteresting(item.id)" v-bind="attrs" v-on="on">
+                                    <v-btn x-small class="blue darken-1" @click.stop="applyAbsoluteLabelUninteresting(item.id)" v-bind="attrs" v-on="on">
                                         U
                                     </v-btn>
                                 </template>
-                                <span>Label this instance as <span class="orange--text lighten-4"><b>uninteresting</b></span> (cold).</span>
+                                <span>Label this item as <span class="blue--text lighten-4"><b>uninteresting</b></span> (cold).</span>
                             </v-tooltip>
                             <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-btn x-small class="blue darken-1" @click.stop="applyAbsoluteLabelInteresting(item.id)" v-bind="attrs" v-on="on">
+                                    <v-btn x-small class="orange darken-1" @click.stop="applyAbsoluteLabelInteresting(item.id)" v-bind="attrs" v-on="on">
                                         I
                                     </v-btn>
                                 </template>
-                                <span>Label this instance as <span class="blue--text lighten-5"><b>interesting</b></span> (warm).</span>
+                                <span>Label this item as <span class="orange--text lighten-5"><b>interesting</b></span> (warm).</span>
                             </v-tooltip>
                             <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">
@@ -160,7 +160,7 @@ class TableContentsTemplate(v.VuetifyTemplate):
                                         example
                                     </v-btn>
                                 </template>
-                                <span>Create a similarity anchor with this instance as the target.</span>
+                                <span>Create a similarity anchor with this item as the target.</span>
                             </v-tooltip>
                             <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">
@@ -168,16 +168,22 @@ class TableContentsTemplate(v.VuetifyTemplate):
                                         sample
                                     </v-btn>
                                 </template>
-                                <span>Add this instance to the current sample set.</span>
+                                <span>Add this item to the current sample set.</span>
                             </v-tooltip>
-                            <div v-html="item.labeled" />
+                            <v-tooltip bottom open-delay=500>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <div v-html="item.labeled" v-bind="attrs" v-on="on" />
+                                </template>
+                                <span v-if="item.labeled.indexOf('orange') > -1"><span class="orange--text lighten-5"><b>interesting</b></span> (warm).</span>
+                                <span v-if="item.labeled.indexOf('blue') > -1"><span class="blue--text lighten-4"><b>uninteresting</b></span> (cold).</span>
+                            </v-tooltip>
                             <v-tooltip bottom open-delay=500 v-if="item.labeled != ''">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn x-small class="red darken-4" @click.stop="applyAbsoluteLabelUnlabeled(item.id)" v-bind="attrs" v-on="on">
                                         unlabel
                                     </v-btn>
                                 </template>
-                                <span>Remove the label from this instance.</span>
+                                <span>Remove the label from this item.</span>
                             </v-tooltip>
                         </td>
                     </tr>
