@@ -15,6 +15,14 @@ with open("README.md", encoding="utf-8") as infile:
     # since pypi doesn't support
     long_description = infile.read()
 
+    # remove non-pypi friendly picture/source tags
+    lines = long_description.split("\n")
+    del lines[5]
+    del lines[3]
+    del lines[2]
+    del lines[1]
+    long_description = "\n".join(lines)
+
 setup(
     name="icat-iml",
     version=get_property("__version__"),
