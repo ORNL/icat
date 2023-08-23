@@ -436,8 +436,7 @@ class AnchorList(pn.viewable.Viewer):
                 self.anchor_buttons,
                 self.table,
             ],
-            width=table_width,
-            style_="padding-left: 0; padding-right: 0px;, padding-bottom: 0px;",
+            style_=f"padding-left: 0; padding-right: 0px; padding-bottom: 0px; width: {table_width}px;",
         )
         """The full component layout for panel to display."""
 
@@ -451,7 +450,8 @@ class AnchorList(pn.viewable.Viewer):
         )
 
         self.anchor_settings_layout = v.Col(
-            children=[self.example_anchor_types_dropdown]
+            children=[self.example_anchor_types_dropdown],
+            style_=f"width: {table_width}px",
         )
 
         self.tabs_component = v.Tabs(
@@ -597,7 +597,15 @@ class AnchorList(pn.viewable.Viewer):
             )
 
             new_anchor_buttons.append(button_tooltip)
-        self.anchor_buttons.children = [self.expand_toggle_tooltip, *new_anchor_buttons]
+        self.anchor_buttons.children = [
+            self.expand_toggle_tooltip,
+            v.Html(
+                tag="p",
+                children=["New:"],
+                style_="margin-bottom: 0px; margin-left: 18px; margin-top: 4px; margin-right: 3px;",
+            ),
+            *new_anchor_buttons,
+        ]
         self.refresh_anchors_table()
 
     def _handle_ipv_default_example_anchor_type_changed(self, widget, event, data):
@@ -803,7 +811,7 @@ class AnchorList(pn.viewable.Viewer):
                 ),
             )
 
-            anchor_type_name = v.TextField(v_model=anchor_type_dict["name"], width=50)
+            anchor_type_name = v.TextField(v_model=anchor_type_dict["name"], width=100)
             anchor_type_name.on_event(
                 "change",
                 partial(
@@ -827,6 +835,7 @@ class AnchorList(pn.viewable.Viewer):
                                 anchor_type_name,
                                 v.Html(
                                     tag="p",
+                                    style_="color: grey;",
                                     children=[
                                         v.Html(
                                             tag="small",
@@ -857,7 +866,7 @@ class AnchorList(pn.viewable.Viewer):
                 "SimilarityAnchorBase",
             ]:
                 new_anchor_type_name_text = v.TextField(
-                    v_model=anchor_type.__qualname__, width=50
+                    v_model=anchor_type.__qualname__, width=100
                 )
                 add_btn = v.Btn(
                     children=["add"],
@@ -878,7 +887,20 @@ class AnchorList(pn.viewable.Viewer):
                             v.Col(
                                 children=[
                                     new_anchor_type_name_text,
-                                    v.Html(tag="p", children=[f"({str(anchor_type)})"]),
+                                    v.Html(
+                                        tag="p",
+                                        style_="color: grey;",
+                                        children=[
+                                            v.Html(
+                                                tag="small",
+                                                children=[f"({str(anchor_type)})"],
+                                            )
+                                        ],
+                                    ),
+                                    v.Html(
+                                        tag="p",
+                                        children=[f"{anchor_type.DESCRIPTION}"],
+                                    ),
                                 ]
                             ),
                             add_btn,
