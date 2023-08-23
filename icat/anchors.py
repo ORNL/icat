@@ -40,6 +40,8 @@ class Anchor(param.Parameterized):
         in_model (bool): Whether to include this feature in the training process.
     """
 
+    DESCRIPTION: str = ""
+
     anchor_name = param.String(default="New Anchor")
     """Not to be confused with just ``name``, which is the panel component id."""
     weight = param.Number(1.0, bounds=(0.0, 5.0))
@@ -503,6 +505,8 @@ class SimilarityAnchorBase(Anchor):
 
 
 class TFIDFAnchor(SimilarityAnchorBase):
+    DESCRIPTION = "Uses cosine similarity between TF-IDF vectors as the feature value."
+
     def __init__(self, container=None, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
 

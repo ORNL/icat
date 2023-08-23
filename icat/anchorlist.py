@@ -393,30 +393,6 @@ class AnchorList(pn.viewable.Viewer):
             children=["Collapse/expand all."],
         )
 
-        button_stylesheet = """
-            button {
-                background-color: #1e88e5 !important;
-            }
-        """
-
-        # creating objects for adding new anchors to list
-        # self.dictionary_button = pn.widgets.Button(
-        #     name="Add Dictionary Anchor",
-        #     stylesheets=[button_stylesheet],
-        # )
-        # self.dictionary_button.on_click(self._handle_pnl_new_dictionary_btn_clicked)
-        # self.tfidf_button = pn.widgets.Button(
-        #     name="Add TF-IDF Anchor",
-        #     stylesheets=[button_stylesheet],
-        # )
-        # self.tfidf_button.on_click(self._handle_pnl_new_tfidf_btn_clicked)
-
-        # self.similarity_button = pn.widgets.Button(
-        #     name="Add Similarity Anchor",
-        #     stylesheets=[button_stylesheet],
-        # )
-        # self.similarity_button.on_click(self._handle_pnl_new_similarity_btn_clicked)
-
         self.table = AnchorListTemplate()
         self.table.on_anchor_removal(self._handle_table_anchor_deleted)
 
@@ -543,6 +519,7 @@ class AnchorList(pn.viewable.Viewer):
                 small=True,
                 color=anchor_type_dict["color"],
                 style_="margin-left: 2px; margin-right: 2px",
+                v_on="tooltip.on",
             )
             new_button.on_event(
                 "click",
@@ -551,7 +528,21 @@ class AnchorList(pn.viewable.Viewer):
                     type_ref=anchor_type_dict["ref"],
                 ),
             )
-            new_anchor_buttons.append(new_button)
+
+            button_tooltip = v.Tooltip(
+                bottom=True,
+                open_delay=500,
+                v_slots=[
+                    {
+                        "name": "activator",
+                        "variable": "tooltip",
+                        "children": new_button,
+                    }
+                ],
+                children=[anchor_type_dict["ref"].DESCRIPTION],
+            )
+
+            new_anchor_buttons.append(button_tooltip)
         self.anchor_buttons.children = [self.expand_toggle_tooltip, *new_anchor_buttons]
         self.refresh_anchors_table()
 
@@ -764,7 +755,19 @@ class AnchorList(pn.viewable.Viewer):
                         v.Col(
                             children=[
                                 anchor_type_name,
-                                f"({anchor_type_dict['ref']})",
+                                v.Html(
+                                    tag="p",
+                                    children=[
+                                        v.Html(
+                                            tag="small",
+                                            children=[f"({anchor_type_dict['ref']})"],
+                                        )
+                                    ],
+                                ),
+                                v.Html(
+                                    tag="p",
+                                    children=[f"{anchor_type_dict['ref'].DESCRIPTION}"],
+                                ),
                             ]
                         ),
                         v.Spacer(),
