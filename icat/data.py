@@ -17,7 +17,7 @@ import panel as pn
 import param
 
 import icat
-from icat.anchors import DictionaryAnchor, TFIDFAnchor
+from icat.anchors import DictionaryAnchor
 from icat.item import ItemViewer
 from icat.table import TableContentsTemplate
 from icat.utils import _kill_param_auto_docstring, add_highlights
@@ -357,9 +357,10 @@ class DataManager(pn.viewable.Viewer):
     def _handle_example_added(self, point_id):
         """Event handler for when the 'example' button is clicked."""
         if self.model is not None:
-            new_anchor = TFIDFAnchor(
+            new_anchor = self.model.anchor_list.default_example_anchor_type_dict["ref"](
                 text_col=self.text_col, container=self.model.anchor_list
             )
+
             # TODO: an example of where it would be cleaner to just be able to pass in ID's
             # directly on init
             new_anchor.reference_texts = [self.active_data.loc[point_id, self.text_col]]
