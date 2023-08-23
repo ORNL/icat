@@ -372,7 +372,10 @@ class AnchorList(pn.viewable.Viewer):
         model=None,
         table_width: int = 700,
         table_height: int = 150,
-        anchor_types: list[type | dict[str, any]] = [DictionaryAnchor, TFIDFAnchor],
+        anchor_types: list[type | dict[str, any]] = [
+            DictionaryAnchor,
+            {"ref": TFIDFAnchor, "color": "#FF00FF"},
+        ],
         **params,
     ):
         super().__init__(**params)  # required for panel components
@@ -501,9 +504,7 @@ class AnchorList(pn.viewable.Viewer):
         self._anchor_types_changed_callbacks: list[Callable] = []
         self._default_example_anchor_type_changed_callbacks: list[Callable] = []
 
-        if len(anchor_types) > 0:
-            for anchor_type in anchor_types:
-                self.add_anchor_type(anchor_type)
+        self.add_anchor_types(anchor_types)
 
     # ============================================================
     # EVENT HANDLERS
@@ -546,6 +547,16 @@ class AnchorList(pn.viewable.Viewer):
         # must be assigned with partial and assigning type_ref and text_field_ref
         self.add_anchor_type(type_ref, name=text_field_ref.v_model)
         self.refresh_anchor_types()
+
+    def _handle_ipv_color_picker_input(self, widget, event, data, anchor_type: type):
+        # NOTE: need to set this up with a partial that specifies the anchor_type
+        self.modify_anchor_type(anchor_type, "color", data)
+
+    def _handle_ipv_anchor_type_name_changed(
+        self, widget, event, data, anchor_type: type
+    ):
+        # NOTE: need to set this up with a partial that specifies the anchor_type
+        self.modify_anchor_type(anchor_type, "name", widget.v_model)
 
     @param.depends("possible_anchor_types", watch=True)
     def _handle_pnl_possible_anchor_types_changed(self):
@@ -772,16 +783,6 @@ class AnchorList(pn.viewable.Viewer):
 
         return feature_vals
 
-    def _handle_ipv_color_picker_input(self, widget, event, data, anchor_type: type):
-        # NOTE: need to set this up with a partial that specifies the anchor_type
-        self.modify_anchor_type(anchor_type, "color", data)
-
-    def _handle_ipv_anchor_type_name_changed(
-        self, widget, event, data, anchor_type: type
-    ):
-        # NOTE: need to set this up with a partial that specifies the anchor_type
-        self.modify_anchor_type(anchor_type, "name", data)
-
     def _populate_anchor_types_col(self):
         children = []
         # for anchor_type in Anchor.anchor_types():
@@ -898,6 +899,14 @@ class AnchorList(pn.viewable.Viewer):
         self._populate_anchor_types_col()
         self._populate_example_anchor_types_dropdown()
 
+    def add_anchor_types(self, anchor_types: list[type | dict[str, any]]):
+        for anchor_type in anchor_types:
+            if isinstance(anchor_type, type):
+                self.add_anchor_type(anchor_type)
+            if isinstance(anchor_type, dict):
+                ref = anchor_type.pop("ref")
+                self.add_anchor_type(ref, **anchor_type)
+
     def add_anchor_type(self, anchor_type: type, name: str = None, color: str = "#777"):
         if name is not None:
             # if the user specified a specific name, use that.
@@ -909,15 +918,26 @@ class AnchorList(pn.viewable.Viewer):
             # otherwise directly use the class name
             anchor_type_name = anchor_type.__qualname__
 
+        new_anchor_type_dict = {
+            "name": anchor_type_name,
+            "ref": anchor_type,
+            "color": color,
+        }
         self.possible_anchor_types = [
             *self.possible_anchor_types,
-            {
-                "name": anchor_type_name,
-                "ref": anchor_type,
-                "color": color,
-            },
+            new_anchor_type_dict,
         ]
         self.refresh_anchor_types()
+
+        # assign anchor type to the default example anchor type if we don't already have one, and
+        # this new anchor meets the criteria (subclasses similarity base)
+        if "ref" not in self.default_example_anchor_type_dict:
+            if isinstance(anchor_type(), SimilarityAnchorBase):
+                self.example_anchor_types_dropdown.v_model = (
+                    self.possible_anchor_types.index(new_anchor_type_dict)
+                )
+                self.default_example_anchor_type_dict = new_anchor_type_dict
+                self.fire_on_default_example_anchor_type_changed()
 
     def modify_anchor_type(self, anchor_type: type, key: str, val: str):
         prev_anchors = []

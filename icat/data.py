@@ -154,9 +154,16 @@ class DataManager(pn.viewable.Viewer):
         self.table.on_add_example(self._handle_example_added)
         self.table.on_add_to_sample(self._handle_sample_added)
 
-        self.model.anchor_list.on_default_example_anchor_type_changed(
-            self._handle_default_example_anchor_type_changed
-        )
+        if self.model is not None:
+            self.model.anchor_list.on_default_example_anchor_type_changed(
+                self._handle_default_example_anchor_type_changed
+            )
+            # in case the anchor list has already been initialized with anchor types,
+            # make sure to grab the existing anchor type as needed.
+            if "ref" in self.model.anchor_list.default_example_anchor_type_dict:
+                self._handle_default_example_anchor_type_changed(
+                    self.model.anchor_list.default_example_anchor_type_dict
+                )
 
         self.filtered_df = None
 
@@ -289,7 +296,7 @@ class DataManager(pn.viewable.Viewer):
 
     def _handle_ipv_search_add_sel_btn_click(self, widget, event, data):
         """Event handler for when the add search box text to new anchor button is clicked."""
-        if self.search_value != "":
+        if self.search_value != "" and self.model is not None:
             anchor = self.model.anchor_list.get_anchor_by_panel_id(
                 self.model.view.anchorviz.selectedAnchorID
             )

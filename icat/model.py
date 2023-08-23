@@ -44,6 +44,10 @@ class Model:
         data: pd.DataFrame,
         text_col: str,
         similarity_functions: list[Callable] = [],
+        anchor_types: list[type | dict[str, any]] = [
+            DictionaryAnchor,
+            {"ref": TFIDFAnchor, "color": "#FF00FF"},
+        ],
         default_sample_size: int = 100,
     ):
         self.training_data: pd.DataFrame = None
@@ -54,7 +58,7 @@ class Model:
             class_weight="balanced"
         )
 
-        self.anchor_list: AnchorList = AnchorList(model=self)
+        self.anchor_list: AnchorList = AnchorList(model=self, anchor_types=anchor_types)
         self.data: DataManager = DataManager(
             data=data,
             text_col=text_col,
