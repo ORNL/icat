@@ -41,6 +41,7 @@ class Anchor(param.Parameterized):
     """
 
     DESCRIPTION: str = ""
+    NAME: str = ""
 
     anchor_name = param.String(default="New Anchor")
     """Not to be confused with just ``name``, which is the panel component id."""
@@ -218,6 +219,9 @@ class DictionaryAnchor(Anchor):
             my_model.add_anchor(my_keywords_anchor)
     """
 
+    DESCRIPTION = "Bag of Words (feature is count of specified keyword occurrences.)"
+    NAME = "Dictionary"
+
     keywords_str = param.String(label="Keywords")
     """The direct 'backend model' for what's in the keywords text field. This is really
     only needed for internal use, any programmatic manipulation of the anchor's keywords
@@ -393,7 +397,7 @@ class SimilarityAnchorBase(Anchor):
                         ),
                         v.Col(
                             dense=True,
-                            style_="padding: 0",
+                            style_="padding: 0; margin-left: 5px;",
                             class_="col-2",
                             children=[self._add_button],
                         ),
@@ -506,6 +510,7 @@ class SimilarityAnchorBase(Anchor):
 
 class TFIDFAnchor(SimilarityAnchorBase):
     DESCRIPTION = "Uses cosine similarity between TF-IDF vectors as the feature value."
+    NAME = "TF-IDF"
 
     def __init__(self, container=None, *args, **kwargs):
         super().__init__(container, *args, **kwargs)

@@ -530,7 +530,7 @@ class AnchorList(pn.viewable.Viewer):
             )
 
             button_tooltip = v.Tooltip(
-                bottom=True,
+                top=True,
                 open_delay=500,
                 v_slots=[
                     {
@@ -812,10 +812,20 @@ class AnchorList(pn.viewable.Viewer):
     # ============================================================
 
     def add_anchor_type(self, anchor_type: type, name: str = None, color: str = "#777"):
+        if name is not None:
+            # if the user specified a specific name, use that.
+            anchor_type_name = name
+        elif anchor_type.NAME != "":
+            # otherwise, if there's a static name specified in the class, use _that_.
+            anchor_type_name = anchor_type.NAME
+        else:
+            # otherwise directly use the class name
+            anchor_type_name = anchor_type.__qualname__
+
         self.possible_anchor_types = [
             *self.possible_anchor_types,
             {
-                "name": anchor_type.__qualname__ if name is None else name,
+                "name": anchor_type_name,
                 "ref": anchor_type,
                 "color": color,
             },
