@@ -98,11 +98,13 @@ class AnchorListTemplate(v.VuetifyTemplate):
             item-key="name"
         >
             <template v-slot:item="{ item, expand, isExpanded }">
-                <tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/40%) 0 0)' }">
+                <!--<tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/40%) 0 0)' }">-->
+                <!--<tr>-->
+                <tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(50 50 50/95%) 0 0)' }">
                     <td>
-                        <v-btn icon x-small @click="expand(!isExpanded)">
-                            <v-icon v-if="isExpanded">mdi-chevron-down</v-icon>
-                            <v-icon v-if="!isExpanded">mdi-chevron-up</v-icon>
+                        <v-btn icon x-small @click="expand(!isExpanded)" :style="{ backgroundColor: item.color }">
+                            <v-icon v-if="isExpanded" style="margin-left: -1px; margin-top: 1px;">mdi-chevron-down</v-icon>
+                            <v-icon v-if="!isExpanded" style="margin-left: -1px; margin-top: 1px;">mdi-chevron-up</v-icon>
                         </v-btn>
                     </td>
 
@@ -134,22 +136,6 @@ class AnchorListTemplate(v.VuetifyTemplate):
                     </td>
                 </tr>
             </template>
-
-            <!--<template #body="{ items }">
-                <tbody :width="width">
-                    <tr v-for="item in items">
-                        <td><slot name="item.data-table-expand" /></td>
-                        <td><div><jupyter-widget :widget="item.anchor_name" /></div></td>
-                        <td><div><jupyter-widget :widget="item.in_viz" /></div></td>
-                        <td><div><jupyter-widget :widget="item.in_model" /></div></td>
-                        <td><div class='blue--text darken-1'>{{ item.pct_negative }}</div></td>
-                        <td><div class='orange--text darken-1'>{{ item.pct_positive }}</div></td>
-                    </tr>
-                </tbody>
-            </template>
-            <template v-for="(slot, name) in $scopedSlots" v-slot:[name]="item">
-                <slot :name="name" v-bind="item"></slot>
-            </template>-->
         </v-data-table>
         <style id='table-styles'>
             .softhover-table table tbody tr:hover {
