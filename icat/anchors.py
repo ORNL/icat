@@ -509,7 +509,7 @@ class SimilarityAnchorBase(Anchor):
 
 
 class TFIDFAnchor(SimilarityAnchorBase):
-    DESCRIPTION = "Uses cosine similarity between TF-IDF vectors as the feature value."
+    DESCRIPTION = "Uses cosine similarity between TF-IDF vectors of data and target text as the feature value."
     NAME = "TF-IDF"
 
     def __init__(self, container=None, *args, **kwargs):

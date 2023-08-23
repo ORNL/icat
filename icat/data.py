@@ -154,6 +154,10 @@ class DataManager(pn.viewable.Viewer):
         self.table.on_add_example(self._handle_example_added)
         self.table.on_add_to_sample(self._handle_sample_added)
 
+        self.model.anchor_list.on_default_example_anchor_type_changed(
+            self._handle_default_example_anchor_type_changed
+        )
+
         self.filtered_df = None
 
         self.label_all_i_btn = v.Btn(
@@ -370,6 +374,12 @@ class DataManager(pn.viewable.Viewer):
             self.active_data.at[index, self.label_col] = new_label
         self.fire_on_data_labeled(index, new_label)
         self._apply_filters()  # ....this doesn't feel good, but some filters depend on labeling?
+
+    def _handle_default_example_anchor_type_changed(
+        self, anchor_type_dict: dict[str, any]
+    ):
+        self.table.example_btn_color = anchor_type_dict["color"]
+        self.table.example_type_name = anchor_type_dict["name"]
 
     # ============================================================
     # EVENT SPAWNERS

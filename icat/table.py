@@ -21,6 +21,10 @@ class TableContentsTemplate(v.VuetifyTemplate):
 
     options = traitlets.Dict().tag(sync=True)
 
+    example_btn_color = traitlets.Unicode("").tag(sync=True)
+    example_type_name = traitlets.Unicode("similarity").tag(sync=True)
+    # example_btn_color = traitlets.Unicode("#FFEE22").tag(sync=True)
+
     def __init__(self, *args, **kwargs):
         self._add_selected_text_callbacks: list[Callable] = []
         self._select_point_callbacks: list[Callable] = []
@@ -154,13 +158,13 @@ class TableContentsTemplate(v.VuetifyTemplate):
                                 </template>
                                 <span>Label this item as <span class="orange--text lighten-5"><b>interesting</b></span> (warm).</span>
                             </v-tooltip>
-                            <v-tooltip bottom open-delay=500>
+                            <v-tooltip bottom open-delay=500 v-if="example_btn_color != ''">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-btn x-small class="purple darken-1" @click.stop="addToExampleAnchor(item.id)" v-bind="attrs" v-on="on">
+                                    <v-btn x-small :style="{ backgroundColor: example_btn_color }" @click.stop="addToExampleAnchor(item.id)" v-bind="attrs" v-on="on">
                                         example
                                     </v-btn>
                                 </template>
-                                <span>Create a similarity anchor with this item as the target.</span>
+                                <span>Create a {{ example_type_name }} anchor with this item as the target.</span>
                             </v-tooltip>
                             <v-tooltip bottom open-delay=500>
                                 <template v-slot:activator="{ on, attrs }">

@@ -15,7 +15,13 @@ import param
 import traitlets
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+from icat.anchors import (
+    Anchor,
+    DictionaryAnchor,
+    SimilarityAnchorBase,
+    SimilarityFunctionAnchor,
+    TFIDFAnchor,
+)
 from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
@@ -350,6 +356,10 @@ class AnchorList(pn.viewable.Viewer):
         e.g. ``anchors = [my_anchor, some_anchor]``, work as expected.
     """
 
+    # TODO: I don't love that this dictionary is exactly replicating the info of one item
+    # in possible_anchor_types, could potentially lead to desyncing issues if not handled carefully
+    default_example_anchor_type_dict = param.Dict({})
+
     possible_anchor_types = param.List([])
     # will need to be dictionaries, with each containing string name, class type ref, and color
 
@@ -424,6 +434,17 @@ class AnchorList(pn.viewable.Viewer):
 
         self.anchor_types_layout = v.Col(style_=f"width: {table_width}px")
 
+        self.example_anchor_types_dropdown = v.Select(
+            label="Default example anchor type", items=[{}]
+        )
+        self.example_anchor_types_dropdown.on_event(
+            "change", self._handle_ipv_default_example_anchor_type_changed
+        )
+
+        self.anchor_settings_layout = v.Col(
+            children=[self.example_anchor_types_dropdown]
+        )
+
         self.tabs_component = v.Tabs(
             v_model=0,
             height=35,
@@ -432,6 +453,7 @@ class AnchorList(pn.viewable.Viewer):
             children=[
                 v.Tab(children=["Anchors"]),
                 v.Tab(children=["Anchor Types"]),
+                v.Tab(children=["Settings"]),
             ],
         )
         self.tabs_items_component = v.TabsItems(
@@ -440,6 +462,7 @@ class AnchorList(pn.viewable.Viewer):
             children=[
                 v.TabItem(children=[self.anchors_layout]),
                 v.TabItem(children=[self.anchor_types_layout]),
+                v.TabItem(children=[self.anchor_settings_layout]),
             ],
         )
         ipw.jslink(
@@ -475,6 +498,7 @@ class AnchorList(pn.viewable.Viewer):
         self._anchor_added_callbacks: list[Callable] = []
         self._anchor_removed_callbacks: list[Callable] = []
         self._anchor_types_changed_callbacks: list[Callable] = []
+        self._default_example_anchor_type_changed_callbacks: list[Callable] = []
 
     # ============================================================
     # EVENT HANDLERS
@@ -507,8 +531,16 @@ class AnchorList(pn.viewable.Viewer):
             self.table.expanded = [{"name": item["name"]} for item in self.table.items]
 
     def _handle_ipv_new_anchor_generic_click(self, widget, event, data, type_ref):
+        # must be assigned with partial and assigning type_ref
         name = self.get_unique_anchor_name()
         self.add_anchor(type_ref(anchor_name=name))
+
+    def _handle_ipv_new_anchor_type_add_click(
+        self, widget, event, data, type_ref, text_field_ref: v.TextField
+    ):
+        # must be assigned with partial and assigning type_ref and text_field_ref
+        self.add_anchor_type(type_ref, name=text_field_ref.v_model)
+        self._populate_anchor_types_col()
 
     @param.depends("possible_anchor_types", watch=True)
     def _handle_pnl_possible_anchor_types_changed(self):
@@ -530,8 +562,9 @@ class AnchorList(pn.viewable.Viewer):
             )
 
             button_tooltip = v.Tooltip(
-                top=True,
+                bottom=True,
                 open_delay=500,
+                max_width=400,
                 v_slots=[
                     {
                         "name": "activator",
@@ -545,6 +578,10 @@ class AnchorList(pn.viewable.Viewer):
             new_anchor_buttons.append(button_tooltip)
         self.anchor_buttons.children = [self.expand_toggle_tooltip, *new_anchor_buttons]
         self.refresh_anchors_table()
+
+    def _handle_ipv_default_example_anchor_type_changed(self, widget, event, data):
+        self.default_example_anchor_type_dict = self.possible_anchor_types[data]
+        self.fire_on_default_example_anchor_type_changed()
 
     # ============================================================
     # EVENT SPAWNERS
@@ -581,8 +618,18 @@ class AnchorList(pn.viewable.Viewer):
 
         Callbacks for this event should take the list of dictionaries of type information,
         expect each dictionary to contain "name", "ref", and "color".
-        ."""
+        """
         self._anchor_types_changed_callbacks.append(callback)
+
+    def on_default_example_anchor_type_changed(self, callback: Callable):
+        """Register a callback function for the "default example anchor changed
+        event.
+
+        Callbacks for this event should take the anchor type config dictionary, which
+        contains "name", "ref", and "color".
+        """
+        self._default_example_anchor_type_changed_callbacks.append(callback)
+        pass
 
     def fire_on_anchor_added(self, anchor: Anchor):
         """Trigger the event to notify that a new anchor was added.
@@ -619,9 +666,14 @@ class AnchorList(pn.viewable.Viewer):
 
     def fire_on_anchor_types_changed(self):
         """Trigger the event to notify that the anchor types have been changed."""
-
         for callback in self._anchor_types_changed_callbacks:
             callback(self.possible_anchor_types)
+
+    def fire_on_default_example_anchor_type_changed(self):
+        """Trigger the event to notify that the default anchor type used for 'example'
+        instances is changed."""
+        for callback in self._default_example_anchor_type_changed_callbacks:
+            callback(self.default_example_anchor_type_dict)
 
     # ============================================================
     # INTERNAL FUNCTIONS
@@ -786,26 +838,44 @@ class AnchorList(pn.viewable.Viewer):
                 "Anchor",
                 "SimilarityAnchorBase",
             ]:
+                new_anchor_type_name_text = v.TextField(
+                    v_model=anchor_type.__qualname__, width=50
+                )
+                add_btn = v.Btn(
+                    children=["add"],
+                    style_="margin-top: 20px; margin-right: 20px;",
+                )
+                add_btn.on_event(
+                    "click",
+                    partial(
+                        self._handle_ipv_new_anchor_type_add_click,
+                        type_ref=anchor_type,
+                        text_field_ref=new_anchor_type_name_text,
+                    ),
+                )
+
                 children.append(
                     v.Row(
                         children=[
                             v.Col(
                                 children=[
-                                    v.TextField(
-                                        v_model=anchor_type.__qualname__, width=50
-                                    ),
-                                    f"({str(anchor_type)})",
+                                    new_anchor_type_name_text,
+                                    v.Html(tag="p", children=[f"({str(anchor_type)})"]),
                                 ]
                             ),
-                            v.Btn(
-                                children=["add"],
-                                style_="margin-top: 20px; margin-right: 20px;",
-                            ),
+                            add_btn,
                         ]
                     )
                 )
 
         self.anchor_types_layout.children = children
+
+    def _populate_example_anchor_types_dropdown(self):
+        items = []
+        for i, anchor_type_dict in enumerate(self.possible_anchor_types):
+            if isinstance(anchor_type_dict["ref"](), SimilarityAnchorBase):
+                items.append(dict(text=anchor_type_dict["name"], value=i))
+        self.example_anchor_types_dropdown.items = items
 
     # ============================================================
     # PUBLIC FUNCTIONS
@@ -851,6 +921,14 @@ class AnchorList(pn.viewable.Viewer):
 
         self.possible_anchor_types = [*prev_anchors, updated_anchor, *next_anchors]
         self.fire_on_anchor_types_changed()
+
+        # check if it was the default example anchor and if we need to modify its dictinoary too
+        if (
+            "ref" in self.default_example_anchor_type_dict
+            and self.default_example_anchor_type_dict["ref"] == anchor_type
+        ):
+            self.default_example_anchor_type_dict[key] = val
+            self.fire_on_default_example_anchor_type_changed()
 
     def get_anchor_type_config(self, anchor_type: type):
         for anchor_type_dict in self.possible_anchor_types:
