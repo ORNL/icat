@@ -390,6 +390,11 @@ class AnchorList(pn.viewable.Viewer):
             x_small=True,
             plain=True,
             children=[v.Icon(children=["mdi-expand-all"])],
+            visible=False,
+            style_="position: absolute; margin-top: 28px; margin-left: 10px;",
+            # jaaaaaaaaank, but it works and this way I don't have to re-implement the entire
+            # header row slot in the anchorlisttemplate, which would have to include the sorting
+            # actions and icons etc.
             v_on="tooltip.on",
         )
         self.expand_toggle.on_event("click", self._handle_ipv_expand_toggle_click)
@@ -993,6 +998,17 @@ class AnchorList(pn.viewable.Viewer):
         """Re-populate the list of anchors and coverage stats. This function is
         called automatically anytime the anchors property changes.
         """
+
+        # show or hide the collapse/expand anchors button based on whether there's
+        # any anchors or not (otherwise header will cover the button)
+        if len(self.anchors) == 0:
+            if "visibility" not in self.expand_toggle.style_:
+                self.expand_toggle.style_ += "visibility: hidden;"
+        else:
+            self.expand_toggle.style_ = self.expand_toggle.style_.removesuffix(
+                "visibility: hidden;"
+            )
+
         items = []
         for anchor in self.anchors:
             coverage = ""
