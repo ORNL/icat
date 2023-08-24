@@ -9,6 +9,7 @@ searches for.)
 # NOTE: "container" refers to the containing anchorlist instance
 
 import json
+import pickle
 from collections.abc import Callable
 
 import ipyvuetify as v
@@ -56,11 +57,31 @@ class Anchor(param.Parameterized):
     in the featurization call and will update locations inside anchorviz, it simply
     won't be passed to the model.)"""
 
+    @property
+    def global_cache(self) -> dict[str, any]:
+        """An anchor list level cache, (dictionary of key-value pairs) any keys set
+        here are accessible by all other anchors.
+
+        This is useful to use if a particular anchor type has computation heavy steps
+        that should only need to run once, e.g. if a transformer needs to pre-compute
+        the embeddings of all points in the dataset (and every anchor using that
+        transformer should have access to the same embeddings.)
+        """
+        return self.container.cache
+
+    @property
+    def cache(self) -> dict[str, any]:
+        """A cache (dictionary of key-value pairs) specific to this one anchor
+        instance."""
+        return self._cache
+
     def __init__(self, container=None, **params):
         self.container = container
         # self.processing = True
         # self.event_to_trigger = None
         super().__init__(**params)
+
+        self._cache: dict[str, any] = {}
 
         self._anchor_name_input = v.TextField(
             dense=True, label="Anchor Name", v_model=self.anchor_name, single_line=True
@@ -120,6 +141,9 @@ class Anchor(param.Parameterized):
 
     @param.depends("weight", watch=True)
     def _handle_pnl_weight_changed(self):
+        """Panel event handler for when the weight changes. This is goes in the
+        _other_ direction from the ipv_weight_input_changed above, making sure
+        the ipyvuetify widget is synced with the param."""
         self._weight_input.v_model = self.weight
         self.fire_on_anchor_changed("weight", self.weight)
 
@@ -194,12 +218,16 @@ class Anchor(param.Parameterized):
         """Save anchor to specified path."""
         with open(f"{path}.json", "w") as outfile:
             json.dump(self.to_dict(), outfile, indent=4)
+        with open(f"{path}_cache.pkl", "wb") as outfile:
+            pickle.dump(self.cache, outfile)
 
     def load(self, path: str):
         """Load anchor from specified path."""
         with open(f"{path}.json") as infile:
             params = json.load(infile)
         icat.utils.populate_anchor_from_dictionary(self, params)
+        with open(f"{path}_cache.pkl", "rb") as infile:
+            self.cache = pickle.load(infile)
 
 
 class DictionaryAnchor(Anchor):

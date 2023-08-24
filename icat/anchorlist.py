@@ -1297,6 +1297,17 @@ class AnchorList(pn.viewable.Viewer):
 
         os.makedirs(f"{path}/anchors", exist_ok=True)
 
+        # save the pickled list of anchor types
+        with open(f"{path}/anchorlist_anchortypes.pkl", "wb") as outfile:
+            pickle.dump(self.possible_anchor_types, outfile)
+
+        # save the current settings
+        with open(f"{path}/anchorlist_settings.json", "w") as outfile:
+            settings = dict(
+                example_anchor_type_index=self.example_anchor_types_dropdown.v_model
+            )
+            json.dump(settings, outfile)
+
         # save each individual anchor and collect its information
         for anchor in self.anchors:
             name = anchor.anchor_name
@@ -1321,15 +1332,32 @@ class AnchorList(pn.viewable.Viewer):
             pickle.dump(self.cache, outfile)
 
         # save the anchor information
-        with open(f"{path}/anchorlist.json", "w") as outfile:
+        with open(f"{path}/anchorlist_anchors.json", "w") as outfile:
             json.dump(anchors_info, outfile, indent=4)
 
     def load(self, path: str):
         """Reload parameters for and re-add all anchors from specified location, as
         well as unpickle any previously saved cache.
         """
+
+        # load anchor types
+        with open(f"{path}/anchorlist_anchortypes.pkl", "rb") as infile:
+            anchor_types = pickle.load(infile)
+            self.add_anchor_types(anchor_types)
+
+        # load anchor settings
+        with open(f"{path}/anchorlist_settings.json") as infile:
+            settings = json.load(infile)
+            self.example_anchor_types_dropdown.v_model = settings[
+                "example_anchor_type_index"
+            ]
+            self.default_example_anchor_type_dict = self.possible_anchor_types[
+                settings["example_anchor_type_index"]
+            ]
+            self.fire_on_default_example_anchor_type_changed()
+
         # load the anchor information
-        with open(f"{path}/anchorlist.json") as infile:
+        with open(f"{path}/anchorlist_anchors.json") as infile:
             anchors_info = json.load(infile)
 
         # load the cache

@@ -421,7 +421,6 @@ class Model:
             "timestamp": datetime.strftime(datetime.now(), "%d/%m/%y %H:%M:%S"),
             "text_col": self.text_col,
             "sample_size": self.data.sample_size_txt.v_model,
-            "similarity_function_keys": list(self.similarity_functions.keys()),
         }
         with open(f"{path}/model_info.json", "w") as outfile:
             json.dump(model_information, outfile)
@@ -441,39 +440,52 @@ class Model:
         # save the classifier
         joblib.dump(self.classifier, f"{path}/classifier.joblib")
 
-    def load(self, path: str):
-        """Reload into this model all of the data and anchors from the specified location."""
-        # TODO: warn if the same similarity functions are not available as were saved
+    @staticmethod
+    def load(path: str) -> "Model":
+        """Reload the model with all of the data and anchors from the specified location.
+
+        Example:
+
+            .. code-block:: python
+                import icat
+
+                m1 = icat.Model(my_data, text_col="text")
+                m1.save("~/tmp/my_model")
+
+                m2 = icat.Model.load("~/tmp/my_model")
+        """
 
         # load relevant model metadata
         with open(f"{path}/model_info.json") as infile:
             model_information = json.load(infile)
-        self.text_col = model_information["text_col"]
-        self.data.text_col = self.text_col
-        if "sample_size" in model_information:
-            self.data.sample_size_txt.v_model = model_information["sample_size"]
 
-        # check to make sure we have the correct similarity functions
-        for key in model_information["similarity_function_keys"]:
-            if key not in self.similarity_functions.keys():
-                print(
-                    "WARNING - Similarity function '%s' not passed into model init, please load the function in with 'model.similarity_functions[\"%s\"] = %s'"
-                    % (key, key, key)
-                )
+        # version check
+        saved_major, saved_minor, saved_patch = (
+            int(i) for i in model_information["icat_version"].split(".")
+        )
+        major, minor, patch = (int(i) for i in icat.__version__)
+        if major != saved_major or saved_minor < 7:
+            print("ERROR - Model was saved with incompatible version of icat")
+            return None
+
+        data = pd.read_pickle(f"{path}/active_data.pkl")
+
+        # init with no anchor types because anchor_list loading will handle that
+        model = Model(
+            data=data, anchor_types=[], text_col=model_information["text_col"]
+        )
+        model.data.sample_size_txt.v_model = model_information["sample_size"]
 
         # load the classifier
-        self.classifier = joblib.load(f"{path}/classifier.joblib")
-
-        # load the active data into the data manager
-        self.data.set_data(pd.read_pickle(f"{path}/active_data.pkl"))
-
-        # load the sample set into the data manager
-        with open(f"{path}/active_data_sample.json") as infile:
-            self.data.sample_indices = json.load(infile)
+        model.classifier = joblib.load(f"{path}/classifier.joblib")
 
         # load the training data
         if os.path.exists(f"{path}/training_data.pkl"):
-            self.training_data = pd.read_pickle(f"{path}/training_data.pkl")
+            model.training_data = pd.read_pickle(f"{path}/training_data.pkl")
+
+        # load the sample set into the data manager
+        with open(f"{path}/active_data_sample.json") as infile:
+            model.data.sample_indices = json.load(infile)
 
         # load the anchorlist
-        self.anchor_list.load(path)
+        model.anchor_list.load(path)
