@@ -69,19 +69,15 @@ class Anchor(param.Parameterized):
         """
         return self.container.cache
 
-    @property
-    def cache(self) -> dict[str, any]:
-        """A cache (dictionary of key-value pairs) specific to this one anchor
-        instance."""
-        return self._cache
-
     def __init__(self, container=None, **params):
         self.container = container
         # self.processing = True
         # self.event_to_trigger = None
         super().__init__(**params)
 
-        self._cache: dict[str, any] = {}
+        self.cache: dict[str, any] = {}
+        """A dictionary of key-value pairs specific to this one anchor instance that
+        gets saved when ``save()`` is called (by default)."""
 
         self._anchor_name_input = v.TextField(
             dense=True, label="Anchor Name", v_model=self.anchor_name, single_line=True

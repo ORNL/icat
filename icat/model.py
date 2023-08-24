@@ -418,7 +418,7 @@ class Model:
         # save any relevant model metadata
         model_information = {
             "icat_version": icat.__version__,
-            "timestamp": datetime.strftime(datetime.now(), "%d/%m/%y %H:%M:%S"),
+            "timestamp": datetime.strftime(datetime.now(), "%m/%d/%y %H:%M:%S"),
             "text_col": self.text_col,
             "sample_size": self.data.sample_size_txt.v_model,
         }
@@ -463,7 +463,7 @@ class Model:
         saved_major, saved_minor, saved_patch = (
             int(i) for i in model_information["icat_version"].split(".")
         )
-        major, minor, patch = (int(i) for i in icat.__version__)
+        major, minor, patch = (int(i) for i in icat.__version__.split("."))
         if major != saved_major or saved_minor < 7:
             print("ERROR - Model was saved with incompatible version of icat")
             return None
@@ -489,3 +489,5 @@ class Model:
 
         # load the anchorlist
         model.anchor_list.load(path)
+
+        return model
