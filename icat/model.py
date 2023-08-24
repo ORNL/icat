@@ -43,7 +43,10 @@ class Model:
         if anchor_types is None:
             anchor_types = [
                 DictionaryAnchor,
-                {"ref": TFIDFAnchor, "color": "#FF00FF"},
+                {
+                    "ref": TFIDFAnchor,
+                    "color": icat.anchorlist.ANCHOR_COLOR_PALLETE[4][0],
+                },
             ]
 
         self.training_data: pd.DataFrame = None

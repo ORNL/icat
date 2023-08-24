@@ -21,6 +21,38 @@ from icat.utils import _kill_param_auto_docstring
 _kill_param_auto_docstring()
 
 
+ANCHOR_COLOR_PALLETE = [
+    [
+        "#2ABD7F",  # pleasant pale green
+        "#42803F",  # dark green
+    ],
+    [
+        "#8C27C1",  # dark purple
+        "#5B3D7B",  # darker purple
+    ],
+    [
+        "#2EA5A5",  # mid pale blue
+        "#424E80",  # dark washed blue
+    ],
+    [
+        "#BFA74C",  # gold
+        "#6E9613",  # olive green
+    ],
+    [
+        "#DA707C",  # salmon
+        "#A75B13",  # burnt orange
+    ],
+    [
+        "#CA3296",  # pink
+        "#881515",  # red
+    ],
+    [
+        "#8D6E63",  # brown
+        "#777777",  # grey
+    ],
+]
+
+
 class AnchorListTemplate(v.VuetifyTemplate):
     """The ipyvuetify contents of the anchorlist table. This handles all the special considerations
     like the slot for the expanded rows containing the anchor widgets, and the coverage v-html etc.
@@ -374,7 +406,7 @@ class AnchorList(pn.viewable.Viewer):
         if anchor_types is None:
             anchor_types = [
                 DictionaryAnchor,
-                {"ref": TFIDFAnchor, "color": "#FF00FF"},
+                {"ref": TFIDFAnchor, "color": ANCHOR_COLOR_PALLETE[4][0]},
             ]
 
         self.coverage_info = {}
@@ -787,7 +819,16 @@ class AnchorList(pn.viewable.Viewer):
         # for anchor_type in Anchor.anchor_types():
         for anchor_type_dict in self.possible_anchor_types:
             color_picker = v.ColorPicker(
-                hide_inputs=True, v_model=anchor_type_dict["color"]
+                hide_inputs=True,
+                v_model=anchor_type_dict["color"],
+                hide_canvas=True,
+                hideSliders=True,
+                hide_mode_switch=True,
+                hide_sliders=True,
+                disabled=True,
+                show_swatches=True,
+                swatches=ANCHOR_COLOR_PALLETE,
+                width=250,
             )
             color_picker.on_event(
                 "input",
@@ -960,7 +1001,9 @@ class AnchorList(pn.viewable.Viewer):
                 ref = anchor_type.pop("ref")
                 self.add_anchor_type(ref, **anchor_type)
 
-    def add_anchor_type(self, anchor_type: type, name: str = None, color: str = "#777"):
+    def add_anchor_type(
+        self, anchor_type: type, name: str = None, color: str = "#777777"
+    ):
         if name is not None:
             # if the user specified a specific name, use that.
             anchor_type_name = name
