@@ -551,7 +551,10 @@ class AnchorList(pn.viewable.Viewer):
     ):
         # must be assigned with partial and assigning type_ref and text_field_ref
         self.add_anchor_type(type_ref, name=text_field_ref.v_model)
-        self.refresh_anchor_types()
+
+    def _handle_ipv_rm_anchor_type_btn_click(self, widget, event, data, type_ref: type):
+        # must be assigned with partial assigning type_ref
+        self.remove_anchor_type(type_ref)
 
     def _handle_ipv_color_picker_input(self, widget, event, data, anchor_type: type):
         # NOTE: need to set this up with a partial that specifies the anchor_type
@@ -811,6 +814,36 @@ class AnchorList(pn.viewable.Viewer):
                 ),
             )
 
+            rm_btn = v.Btn(
+                small=True,
+                icon=True,
+                v_on="tooltip.on",
+                children=[v.Icon(children=["close"])],
+                style_="margin-top: 32px;",
+            )
+            rm_btn.on_event(
+                "click",
+                partial(
+                    self._handle_ipv_rm_anchor_type_btn_click,
+                    type_ref=anchor_type_dict["ref"],
+                ),
+            )
+            rm_btn_tooltip = v.Tooltip(
+                bottom=True,
+                open_delay=500,
+                max_width=400,
+                v_slots=[
+                    {
+                        "name": "activator",
+                        "variable": "tooltip",
+                        "children": rm_btn,
+                    }
+                ],
+                children=[
+                    "Remove this anchor type (will remove all current anchors of this type.)"
+                ],
+            )
+
             anchor_type_name = v.TextField(v_model=anchor_type_dict["name"], width=100)
             anchor_type_name.on_event(
                 "change",
@@ -835,7 +868,7 @@ class AnchorList(pn.viewable.Viewer):
                                 anchor_type_name,
                                 v.Html(
                                     tag="p",
-                                    style_="color: grey;",
+                                    style_="color: grey; margin-top: -18px; margin-bottom: 2px;",
                                     children=[
                                         v.Html(
                                             tag="small",
@@ -849,6 +882,7 @@ class AnchorList(pn.viewable.Viewer):
                                 ),
                             ]
                         ),
+                        rm_btn_tooltip,
                         v.Spacer(),
                         color_picker,
                     ]
@@ -889,7 +923,7 @@ class AnchorList(pn.viewable.Viewer):
                                     new_anchor_type_name_text,
                                     v.Html(
                                         tag="p",
-                                        style_="color: grey;",
+                                        style_="color: grey; margin-top: -18px; margin-bottom: 2px;",
                                         children=[
                                             v.Html(
                                                 tag="small",
@@ -993,6 +1027,33 @@ class AnchorList(pn.viewable.Viewer):
             and self.default_example_anchor_type_dict["ref"] == anchor_type
         ):
             self.default_example_anchor_type_dict[key] = val
+            self.fire_on_default_example_anchor_type_changed()
+
+        self.refresh_anchor_types()
+
+    def remove_anchor_type(self, anchor_type: type):
+        """Removes this anchor type from the current possible anchor types list, and
+        removes any corresponding anchors."""
+        for anchor in self.anchors:
+            # NOTE: yes use ==, need strict check, not including inheritance.
+            if type(anchor) == anchor_type:
+                self.remove_anchor(anchor)
+
+        remaining_anchor_types = []
+        for anchor_type_dict in self.possible_anchor_types:
+            if anchor_type_dict["ref"] != anchor_type:
+                remaining_anchor_types.append(anchor_type_dict)
+        self.possible_anchor_types = remaining_anchor_types
+        self.fire_on_anchor_types_changed()
+
+        # make sure to unset default exaxmple anchor type if it was this one.
+        # TODO: at some point it would be helpful if when this occurs, we automatically
+        # search through remaining anchor types and auto re-assign. Not MVP right now.
+        if (
+            "ref" in self.default_example_anchor_type_dict
+            and self.default_example_anchor_type_dict["ref"] == anchor_type
+        ):
+            self.default_example_anchor_type_dict = {}
             self.fire_on_default_example_anchor_type_changed()
 
         self.refresh_anchor_types()

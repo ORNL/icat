@@ -386,8 +386,14 @@ class DataManager(pn.viewable.Viewer):
     def _handle_default_example_anchor_type_changed(
         self, anchor_type_dict: dict[str, any]
     ):
-        self.table.example_btn_color = anchor_type_dict["color"]
-        self.table.example_type_name = anchor_type_dict["name"]
+        if "name" in anchor_type_dict:
+            self.table.example_btn_color = anchor_type_dict["color"]
+            self.table.example_type_name = anchor_type_dict["name"]
+        else:
+            # if we get here, a blank dictionary was likely passed, which means the example
+            # anchor type was removed.
+            self.table.example_btn_color = ""
+            self.table_example_type_name = "similarity"
 
     # ============================================================
     # EVENT SPAWNERS
