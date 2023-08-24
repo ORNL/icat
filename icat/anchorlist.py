@@ -15,13 +15,7 @@ import param
 import traitlets
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from icat.anchors import (
-    Anchor,
-    DictionaryAnchor,
-    SimilarityAnchorBase,
-    SimilarityFunctionAnchor,
-    TFIDFAnchor,
-)
+from icat.anchors import Anchor, DictionaryAnchor, SimilarityAnchorBase, TFIDFAnchor
 from icat.utils import _kill_param_auto_docstring
 
 _kill_param_auto_docstring()
@@ -520,20 +514,6 @@ class AnchorList(pn.viewable.Viewer):
         anchor = self.get_anchor_by_panel_id(name)
         self.remove_anchor(anchor)
 
-    def _handle_pnl_new_dictionary_btn_clicked(self, event):
-        # TODO: since the renaming logic will be basically the same, we should probably
-        # move that to the add_anchor logic instead.
-        name = self.get_unique_anchor_name()
-        self.add_anchor(DictionaryAnchor(anchor_name=name))
-
-    def _handle_pnl_new_tfidf_btn_clicked(self, event):
-        name = self.get_unique_anchor_name()
-        self.add_anchor(TFIDFAnchor(anchor_name=name))
-
-    def _handle_pnl_new_similarity_btn_clicked(self, event):
-        name = self.get_unique_anchor_name()
-        self.add_anchor(SimilarityFunctionAnchor(anchor_name=name))
-
     def _handle_ipv_expand_toggle_click(self, widget, event, data):
         # if any are expanded, set expanded to blank list
         if len(self.table.expanded) > 0:
@@ -906,9 +886,11 @@ class AnchorList(pn.viewable.Viewer):
                 "Anchor",
                 "SimilarityAnchorBase",
             ]:
-                new_anchor_type_name_text = v.TextField(
-                    v_model=anchor_type.__qualname__, width=100
-                )
+                if anchor_type.NAME != "":
+                    default_name = anchor_type.NAME
+                else:
+                    default_name = anchor_type.__qualname__
+                new_anchor_type_name_text = v.TextField(v_model=default_name, width=100)
                 add_btn = v.Btn(
                     children=["add"],
                     style_="margin-top: 20px; margin-right: 20px;",

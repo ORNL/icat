@@ -5,7 +5,6 @@ primary parent class for interacting with icat.
 
 import json
 import os
-from collections.abc import Callable
 from datetime import datetime
 
 import joblib
@@ -15,7 +14,7 @@ from sklearn.linear_model import LogisticRegression
 
 import icat
 from icat.anchorlist import AnchorList
-from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 from icat.data import DataManager
 from icat.utils import _kill_param_auto_docstring
 from icat.view import InteractiveView
@@ -30,11 +29,6 @@ class Model:
     Args:
         data (pd.DataFrame): The data to explore with.
         text_col (str): The name of the text column in the passed data.
-        similarity_functions (list[Callable]): A set of additional functions that can
-            be used for similarity-based features. Any function passed should take a
-            dataframe (representing all of the currently active data,) and an anchor
-            instance. It should return a pandas series with the output similarity values,
-            using the same index as that in the passed dataframe.
         default_sample_size (int): The initial number of points to sample for the
             visualizations.
     """
@@ -43,7 +37,6 @@ class Model:
         self,
         data: pd.DataFrame,
         text_col: str,
-        similarity_functions: list[Callable] = [],
         anchor_types: list[type | dict[str, any]] = [
             DictionaryAnchor,
             {"ref": TFIDFAnchor, "color": "#FF00FF"},
@@ -77,11 +70,6 @@ class Model:
         self._last_anchor_names: dict[str, str] = []
         """Keep track of anchor names so when the name of one updates we can
         remove the previous column name. The key is the panel id."""
-
-        # self.similarity_functions = similarity_functions
-        self.similarity_functions: dict[str, Callable] = {
-            str(func.__name__): func for func in similarity_functions
-        }
 
         self.anchor_list.build_tfidf_features()
 
@@ -165,15 +153,9 @@ class Model:
     def _on_anchor_add(self, anchor: Anchor):
         """Event handler for anchorlist."""
         # TODO: it's possible this should be handled inside the anchorlist?
-        if (
-            type(anchor) == DictionaryAnchor
-            or type(anchor) == TFIDFAnchor
-            or type(anchor) == SimilarityFunctionAnchor
-        ) and anchor.text_col == "":
+        if hasattr(anchor, "text_col") and anchor.text_col == "":
             anchor.text_col = self.text_col
             self.anchor_list.anchors[-1].text_col = self.text_col
-        if type(anchor) == SimilarityFunctionAnchor:
-            anchor._populate_items()
         self.fit()
         self.view.refresh_data()
 

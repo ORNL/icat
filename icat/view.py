@@ -11,7 +11,7 @@ import pandas as pd
 import panel as pn
 from ipyanchorviz import AnchorViz
 
-from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor
 from icat.histograms import Histograms
 from icat.utils import _kill_param_auto_docstring
 

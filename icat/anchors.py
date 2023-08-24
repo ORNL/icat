@@ -594,54 +594,54 @@ class TFIDFAnchor(SimilarityAnchorBase):
 
 
 # TODO: probably instead of this extending TF-IDFAnchor, we should have them extend from same root?
-class SimilarityFunctionAnchor(SimilarityAnchorBase):
-    similarity_function = param.String("")
+# class SimilarityFunctionAnchor(SimilarityAnchorBase):
+#     similarity_function = param.String("")
 
-    # TODO: need a dropdown for the possible similarity functions
-    def __init__(self, container=None, *args, **kwargs):
-        super().__init__(container, *args, **kwargs)
+#     # TODO: need a dropdown for the possible similarity functions
+#     def __init__(self, container=None, *args, **kwargs):
+#         super().__init__(container, *args, **kwargs)
 
-        self.sim_function_options = v.Select(label="Similarity function", items=[{}])
-        self.sim_function_options.on_event(
-            "change", self._handle_ipv_sim_function_change
-        )
+#         self.sim_function_options = v.Select(label="Similarity function", items=[{}])
+#         self.sim_function_options.on_event(
+#             "change", self._handle_ipv_sim_function_change
+#         )
 
-        self.widget.children = [
-            *self.widget.children,
-            v.Row(
-                dense=True,
-                children=[self.sim_function_options],
-            ),
-        ]
-        self._populate_items()
+#         self.widget.children = [
+#             *self.widget.children,
+#             v.Row(
+#                 dense=True,
+#                 children=[self.sim_function_options],
+#             ),
+#         ]
+#         self._populate_items()
 
-    # TODO: need dropdown event handlers to modify similarity_function
+#     # TODO: need dropdown event handlers to modify similarity_function
 
-    def _handle_ipv_sim_function_change(self, widget, event, data):
-        self.similarity_function = data
-        self.fire_on_anchor_changed("similarity_function", data)
+#     def _handle_ipv_sim_function_change(self, widget, event, data):
+#         self.similarity_function = data
+#         self.fire_on_anchor_changed("similarity_function", data)
 
-    def _populate_items(self):
-        items = []
-        if self.container is not None and self.container.model is not None:
-            items = list(self.container.model.similarity_functions.keys())
-        self.sim_function_options.items = items
+#     def _populate_items(self):
+#         items = []
+#         if self.container is not None and self.container.model is not None:
+#             items = list(self.container.model.similarity_functions.keys())
+#         self.sim_function_options.items = items
 
-    def featurize(self, data: pd.DataFrame) -> pd.Series:
-        if len(self.reference_texts) == 0:
-            return pd.Series(0, index=data.index)
+#     def featurize(self, data: pd.DataFrame) -> pd.Series:
+#         if len(self.reference_texts) == 0:
+#             return pd.Series(0, index=data.index)
 
-        if self.similarity_function == "":
-            return pd.Series(0, index=data.index)
+#         if self.similarity_function == "":
+#             return pd.Series(0, index=data.index)
 
-        model_fn = self.container.model.similarity_functions[self.similarity_function]
-        # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
-        results = model_fn(data, self)
-        return results
+#         model_fn = self.container.model.similarity_functions[self.similarity_function]
+#         # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
+#         results = model_fn(data, self)
+#         return results
 
-    def to_dict(self) -> dict[str, any]:
-        """Get a dictionary of all relevant parameters that define this anchor."""
-        params = super().to_dict()
-        self_params = dict(similarity_function=self.similarity_function)
-        params.update(self_params)
-        return params
+#     def to_dict(self) -> dict[str, any]:
+#         """Get a dictionary of all relevant parameters that define this anchor."""
+#         params = super().to_dict()
+#         self_params = dict(similarity_function=self.similarity_function)
+#         params.update(self_params)
+#         return params
