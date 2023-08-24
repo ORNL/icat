@@ -18,7 +18,7 @@ def test_add_dictionary_button():
         returns.append(anchor)
 
     al.on_anchor_added(catch_addition)
-    al._handle_pnl_new_dictionary_btn_clicked(None)
+    al._handle_ipv_new_anchor_generic_click(None, None, None, DictionaryAnchor)
     assert len(al.anchors) == 1
     assert len(al.table.items) == 1
     assert len(returns) == 1

@@ -47,7 +47,9 @@ def test_add_anchor_from_list_button_works(fun_df):
     """The anchorlist adding a dictionary anchor won't have a text_col by
     default, this should be added by model and shouldn't crash."""
     model = Model(fun_df, text_col="text")
-    model.anchor_list._handle_pnl_new_dictionary_btn_clicked(None)
+    model.anchor_list._handle_ipv_new_anchor_generic_click(
+        None, None, None, DictionaryAnchor
+    )
     assert len(model.anchor_list.anchors) == 1
     assert model.anchor_list.anchors[0].text_col == "text"
 

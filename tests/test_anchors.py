@@ -1,8 +1,7 @@
-import numpy as np
 import pandas as pd
 import pytest
 
-from icat.anchors import Anchor, DictionaryAnchor, SimilarityFunctionAnchor, TFIDFAnchor
+from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 from icat.model import Model
 
 
@@ -319,30 +318,6 @@ def test_similarity_anchor_gets_short_from_text_entry(fun_df):
     assert len(anchor._chips_container.children) == 1
 
 
-@pytest.mark.integration
-def test_changing_similarity_function_fires_change_event(fun_df):
-    """Changing the selected similarity function should fire an event."""
-    returns = []
-
-    def catch_change(name, key, value):
-        nonlocal returns
-        returns.append((name, key, value))
-
-    def simple_sim(data, anchor):
-        return pd.Series(np.ones(len(data)), index=data.index)
-
-    model = Model(fun_df, "text", similarity_functions=[simple_sim])
-    anchor = SimilarityFunctionAnchor()
-    anchor.on_anchor_changed(catch_change)
-    model.add_anchor(anchor)
-
-    assert anchor.sim_function_options.items == ["simple_sim"]
-    anchor.sim_function_options.v_model = "simple_sim"
-    anchor.sim_function_options.fire_event("change", "simple_sim")
-
-    assert returns[0][2] == "simple_sim"
-
-
 def test_save_load_dictionary_anchor(data_file_loc):
     """Saving an anchor and then loading should be populated with all of the
     correct parameters."""
@@ -366,28 +341,3 @@ def test_save_load_dictionary_anchor(data_file_loc):
     assert a2.text_col == "my_text"
     assert a2.keywords_str == "thing"
     assert a2.keywords == ["thing"]
-
-
-def test_save_load_similarity_anchor(data_file_loc):
-    """Saving an anchor and then loading should be populated with all of the
-    correct parameters."""
-
-    a1 = SimilarityFunctionAnchor()
-    a1.anchor_name = "I am an anchor"
-    a1.weight = 1.2
-    a1.in_view = False
-    a1.in_model = False
-    a1.text_col = "my_text"
-    a1.reference_texts = ["I am a powerful potato"]
-    a1.reference_short = ["I am a"]
-    a1.save(data_file_loc)
-
-    a2 = SimilarityFunctionAnchor()
-    a2.load(data_file_loc)
-    assert a2.anchor_name == "I am an anchor"
-    assert a2.weight == 1.2
-    assert not a2.in_view
-    assert not a2.in_model
-    assert a2.text_col == "my_text"
-    assert a2.reference_texts == ["I am a powerful potato"]
-    assert a2.reference_short == ["I am a"]

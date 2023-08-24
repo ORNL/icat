@@ -366,13 +366,16 @@ class AnchorList(pn.viewable.Viewer):
         model=None,
         table_width: int = 700,
         table_height: int = 150,
-        anchor_types: list[type | dict[str, any]] = [
-            DictionaryAnchor,
-            {"ref": TFIDFAnchor, "color": "#FF00FF"},
-        ],
+        anchor_types: list[type | dict[str, any]] = None,
         **params,
     ):
         super().__init__(**params)  # required for panel components
+
+        if anchor_types is None:
+            anchor_types = [
+                DictionaryAnchor,
+                {"ref": TFIDFAnchor, "color": "#FF00FF"},
+            ]
 
         self.coverage_info = {}
         """Dictionary associating panel id of anchor with dictionary of 'coverage', 'pct_positive',

@@ -37,12 +37,15 @@ class Model:
         self,
         data: pd.DataFrame,
         text_col: str,
-        anchor_types: list[type | dict[str, any]] = [
-            DictionaryAnchor,
-            {"ref": TFIDFAnchor, "color": "#FF00FF"},
-        ],
+        anchor_types: list[type | dict[str, any]] = None,
         default_sample_size: int = 100,
     ):
+        if anchor_types is None:
+            anchor_types = [
+                DictionaryAnchor,
+                {"ref": TFIDFAnchor, "color": "#FF00FF"},
+            ]
+
         self.training_data: pd.DataFrame = None
         """The rows (and only those rows) of the original data explicitly used for training."""
         self.text_col = text_col

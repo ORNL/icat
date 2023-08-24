@@ -290,8 +290,7 @@ def test_save_load_model(data_file_loc, fun_df, dummy_anchor):
     model.data.apply_label(0, 1)
     model.save(data_file_loc)
 
-    model2 = Model(None, text_col="")
-    model2.load(data_file_loc)
+    model2 = Model.load(data_file_loc)
     assert len(model2.data.active_data) == 12
     assert model2.text_col == "text"
     assert len(model2.anchor_list.anchors) == 1
