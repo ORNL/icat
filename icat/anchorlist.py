@@ -888,6 +888,13 @@ class AnchorList(pn.viewable.Viewer):
                     ]
                 )
             )
+
+        refresh_btn = v.Btn(
+            children=["Refresh unused anchor types"], style_="margin-left: 10px;"
+        )
+        refresh_btn.on_event("click", lambda w, e, d: self.refresh_anchor_types())
+        children.append(v.Row(children=[refresh_btn]))
+
         for anchor_type in Anchor.anchor_types():
             # check if we've already added it
             found = False
