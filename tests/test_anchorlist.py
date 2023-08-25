@@ -3,7 +3,7 @@
 import pytest
 
 from icat.anchorlist import AnchorList
-from icat.anchors import DictionaryAnchor
+from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 from icat.model import Model
 
 
@@ -205,3 +205,179 @@ def test_save_load_anchorlist(data_file_loc, fun_df):
             assert anchor["theta"] == 1.5
         else:
             raise Exception("what.")
+
+
+# --- below may all go in another test file other
+@pytest.mark.integration
+def test_add_example_anchor_type_populates_example_type_dropdown():
+    """Adding an anchor type that can be used for examples should add it to the
+    example anchor type dropdown, and also auto assign if it hasn't already."""
+    model = Model(None, "text", anchor_types=[])
+    assert len(model.anchor_list.example_anchor_types_dropdown.items) == 0
+
+    model.anchor_list.add_anchor_type(DictionaryAnchor)
+    assert len(model.anchor_list.example_anchor_types_dropdown.items) == 0
+    assert "ref" not in model.anchor_list.default_example_anchor_type_dict
+
+    model.anchor_list.add_anchor_type(TFIDFAnchor)
+    assert len(model.anchor_list.example_anchor_types_dropdown.items) == 1
+    assert "ref" in model.anchor_list.default_example_anchor_type_dict
+    assert model.data.table.example_type_name == "TF-IDF"
+    assert model.data.table.example_btn_color == "#777777"
+
+
+@pytest.mark.integration
+def test_change_example_anchor_color_changes_av_and_table(fun_df):
+    """Changing the color of the example anchor type should change both anchors in anchorviz
+    and the button color in the table."""
+    model = Model(fun_df, "text")
+    anchor = TFIDFAnchor(anchor_name="test", reference_texts=["0"])
+    model.add_anchor(anchor)
+
+    model.anchor_list.modify_anchor_type(TFIDFAnchor, "color", "#00FF00")
+    assert model.view.anchorviz.anchors[0]["color"] == "#00FF00"
+    assert model.data.table.example_btn_color == "#00FF00"
+
+
+def test_adding_anchor_type_adds_button():
+    """When an anchor type is added to the anchorlist, a corresponding button should be
+    added to main anchorlist section."""
+    al = AnchorList(None, anchor_types=[])
+    assert len(al.anchor_buttons.children) == 1
+
+    al.add_anchor_type(DictionaryAnchor)
+    assert len(al.anchor_buttons.children) == 3
+    assert (
+        al.anchor_buttons.children[2].v_slots[0]["children"].children[0] == "Dictionary"
+    )
+
+
+@pytest.mark.integration
+def test_anchor_type_button_click_adds_anchor_of_type(fun_df):
+    """The anchor buttons should add anchors of their appropriate types"""
+    model = Model(fun_df, "text", anchor_types=[])
+    assert len(model.anchor_list.anchor_buttons.children) == 1
+    model.anchor_list.add_anchor_type(DictionaryAnchor, color="#FF0000")
+    model.anchor_list.add_anchor_type(TFIDFAnchor, color="#0000FF")
+    assert len(model.anchor_list.anchor_buttons.children) == 4
+
+    assert (
+        model.anchor_list.anchor_buttons.children[2].v_slots[0]["children"].children[0]
+        == "Dictionary"
+    )
+    assert (
+        model.anchor_list.anchor_buttons.children[2].v_slots[0]["children"].color
+        == "#FF0000"
+    )
+    assert (
+        model.anchor_list.anchor_buttons.children[3].v_slots[0]["children"].children[0]
+        == "TF-IDF"
+    )
+    assert (
+        model.anchor_list.anchor_buttons.children[3].v_slots[0]["children"].color
+        == "#0000FF"
+    )
+
+    model.anchor_list.anchor_buttons.children[2].v_slots[0]["children"].fire_event(
+        "click", None
+    )
+    assert type(model.anchor_list.anchors[0]) == DictionaryAnchor
+    assert model.view.anchorviz.anchors[0]["color"] == "#FF0000"
+
+    model.anchor_list.anchor_buttons.children[3].v_slots[0]["children"].fire_event(
+        "click", None
+    )
+    assert type(model.anchor_list.anchors[1]) == TFIDFAnchor
+    assert model.view.anchorviz.anchors[1]["color"] == "#0000FF"
+
+
+def test_changing_anchor_type_color_changes_btn_color():
+    """Setting the anchor type color should set the color of the associated button as well"""
+    al = AnchorList(None, anchor_types=[{"ref": DictionaryAnchor, "color": "#FF00FF"}])
+    assert len(al.anchor_buttons.children) == 3
+    assert al.anchor_buttons.children[2].v_slots[0]["children"].color == "#FF00FF"
+
+    al.modify_anchor_type(DictionaryAnchor, "color", "#330044")
+    assert al.anchor_buttons.children[2].v_slots[0]["children"].color == "#330044"
+
+
+def test_changing_anchor_type_name_changes_btn_text():
+    """Setting the anchor type color should set the color of the associated button as well"""
+    al = AnchorList(None, anchor_types=[{"ref": DictionaryAnchor}])
+    assert len(al.anchor_buttons.children) == 3
+    assert (
+        al.anchor_buttons.children[2].v_slots[0]["children"].children[0] == "Dictionary"
+    )
+
+    al.modify_anchor_type(DictionaryAnchor, "name", "dict")
+    assert al.anchor_buttons.children[2].v_slots[0]["children"].children[0] == "dict"
+
+
+def test_defining_anchor_type_in_scope_adds_new_add_btn():
+    """Defining a new anchor type should add a section for it in the anchor types tab."""
+
+    class MyAnchor(Anchor):
+        pass
+
+    al = AnchorList()
+    assert (
+        al.anchor_types_layout.children[-1].children[0].children[0].v_model
+        == "test_defining_anchor_type_in_scope_adds_new_add_btn.<locals>.MyAnchor"
+    )
+
+
+def test_defining_anchor_type_and_changin_name_adds_appropriately_named_btn():
+    """When you add an anchor type it should use the name the user specified."""
+
+    class MyAnchor(Anchor):
+        pass
+
+    al = AnchorList()
+    al.anchor_types_layout.children[-1].children[0].children[0].v_model = "Something"
+    al.anchor_types_layout.children[-1].children[-1].fire_event("click", None)
+    assert (
+        al.anchor_buttons.children[4].v_slots[0]["children"].children[0] == "Something"
+    )
+
+
+@pytest.mark.integration
+def test_removing_default_example_anchor_type_resets(fun_df):
+    """Removing the anchor type that is the default anchor type should reset
+    the dropdown, the default_example_type property and the table."""
+    model = Model(fun_df, "text")
+    model.anchor_list.remove_anchor_type(TFIDFAnchor)
+    assert len(model.anchor_list.example_anchor_types_dropdown.items) == 0
+    assert model.anchor_list.default_example_anchor_type_dict == {}
+    assert model.data.table.example_type_name == "similarity"
+    assert model.data.table.example_btn_color == ""
+
+
+@pytest.mark.integration
+def test_removing_anchor_type_removes_those_anchors(fun_df):
+    """Removing an anchor type should remove all associated anchors of that
+    type, both in anchorviz and the list."""
+    model = Model(fun_df, "text")
+    a1 = DictionaryAnchor(keywords=["thing1"])
+    a2 = DictionaryAnchor(keywords=["thing2"])
+    model.add_anchor(a1)
+    model.add_anchor(a2)
+    assert len(model.anchor_list.anchors) == 2
+    assert len(model.view.anchorviz.anchors) == 2
+    model.anchor_list.remove_anchor_type(DictionaryAnchor)
+    assert len(model.anchor_list.anchors) == 0
+    assert len(model.view.anchorviz.anchors) == 0
+
+
+def test_removing_anchor_type_removes_btn():
+    """Removing an anchor type should remove the associated add button."""
+    al = AnchorList(None, anchor_types=[])
+    assert len(al.anchor_buttons.children) == 1
+
+    al.add_anchor_type(DictionaryAnchor)
+    assert len(al.anchor_buttons.children) == 3
+    assert (
+        al.anchor_buttons.children[2].v_slots[0]["children"].children[0] == "Dictionary"
+    )
+
+    al.remove_anchor_type(DictionaryAnchor)
+    assert len(al.anchor_buttons.children) == 2

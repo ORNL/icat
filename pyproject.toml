@@ -5,5 +5,5 @@ profile = "black"
 markers = [
     "integration",
     "vue",
-    "Panel"
+    "panel"
 ]

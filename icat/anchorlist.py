@@ -472,7 +472,7 @@ class AnchorList(pn.viewable.Viewer):
         self.anchor_types_layout = v.Col(style_=f"width: {table_width}px")
 
         self.example_anchor_types_dropdown = v.Select(
-            label="Default example anchor type", items=[{}]
+            label="Default example anchor type", items=[]
         )
         self.example_anchor_types_dropdown.on_event(
             "change", self._handle_ipv_default_example_anchor_type_changed
@@ -1069,7 +1069,8 @@ class AnchorList(pn.viewable.Viewer):
     def remove_anchor_type(self, anchor_type: type):
         """Removes this anchor type from the current possible anchor types list, and
         removes any corresponding anchors."""
-        for anchor in self.anchors:
+        anchors_to_remove = [a for a in self.anchors if type(a) == anchor_type]
+        for anchor in anchors_to_remove:
             # NOTE: yes use ==, need strict check, not including inheritance.
             if type(anchor) == anchor_type:
                 self.remove_anchor(anchor)

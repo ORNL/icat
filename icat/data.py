@@ -395,7 +395,7 @@ class DataManager(pn.viewable.Viewer):
             # if we get here, a blank dictionary was likely passed, which means the example
             # anchor type was removed.
             self.table.example_btn_color = ""
-            self.table_example_type_name = "similarity"
+            self.table.example_type_name = "similarity"
 
     # ============================================================
     # EVENT SPAWNERS
