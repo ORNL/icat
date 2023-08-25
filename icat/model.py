@@ -45,7 +45,7 @@ class Model:
                 DictionaryAnchor,
                 {
                     "ref": TFIDFAnchor,
-                    "color": icat.anchorlist.ANCHOR_COLOR_PALLETE[4][0],
+                    "color": icat.anchorlist.ANCHOR_COLOR_PALLETE[0][1],
                 },
             ]
 

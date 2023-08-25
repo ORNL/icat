@@ -231,14 +231,14 @@ class DataManager(pn.viewable.Viewer):
                 ),
             ],
             height=height,
-            width=width,
+            style_=f"width: {width}px",
         )
 
         self.tabs_component = v.Tabs(
             v_model=0,
             height=35,
             background_color="primary",
-            width=width,
+            style_=f"width: {width}px",
             children=[
                 v.Tab(children=["Data"]),
                 v.Tab(children=["Item"]),
@@ -247,7 +247,7 @@ class DataManager(pn.viewable.Viewer):
         )
         self.tabs_items_component = v.TabsItems(
             v_model=0,
-            width=width,
+            style_=f"width: {width}px",
             children=[
                 v.TabItem(children=[data_layout_stack]),
                 v.TabItem(children=[self.item_viewer.widget]),
@@ -260,13 +260,15 @@ class DataManager(pn.viewable.Viewer):
 
         layout_stack = v.Container(
             children=[self.tabs_component, self.tabs_items_component],
-            style_="padding: 0px;",
+            style_=f"padding: 0px; width: {width}px",
         )
         self.layout = pn.Column(
             layout_stack, height=height, width=width, styles={"padding": "0px"}
         )
         self.widget = v.Container(
-            children=[layout_stack], height=height, width=width, style_="padding: 0px;"
+            children=[layout_stack],
+            height=height,
+            style_=f"padding: 0px; width: {width}px",
         )
 
         self._data_label_callbacks: list[Callable] = []

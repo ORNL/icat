@@ -406,7 +406,7 @@ class AnchorList(pn.viewable.Viewer):
         if anchor_types is None:
             anchor_types = [
                 DictionaryAnchor,
-                {"ref": TFIDFAnchor, "color": ANCHOR_COLOR_PALLETE[4][0]},
+                {"ref": TFIDFAnchor, "color": ANCHOR_COLOR_PALLETE[0][1]},
             ]
 
         self.coverage_info = {}
