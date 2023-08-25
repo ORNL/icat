@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2023-08-25
+
+### Added
+* Anchor types tab to anchorlist, anchor classes in scope are automatically detected,
+    and can be dynamically added and removed.
+* Color delineation to anchors, each row in the anchorlist and anchor in anchorviz is
+    colored corresponding to anchor color (configurable in anchor types tab.)
+* Ability to change what anchor type is used when the "example" buttons are clicked.
+* Optional description and name class attributes to anchors for display in the interface.
+* Individual anchor-level `cache` dictionary that gets loaded and saved with the anchor
+* Access to anchor list cache through an anchor `global_cache` property.
+
+### Removed
+* Similarity functions from model constructor and the similarity function anchor
+    (subclass the `SimilarityAnchorBase` and provide it with a `featurize()`
+    function instead - see the `lm_similarity_example` notebook.)
+
+
+
+
 ## [0.6.0] - 2023-08-22
 
 ### Added
