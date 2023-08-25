@@ -187,7 +187,7 @@ def test_save_load_anchorlist(data_file_loc, fun_df):
 
     model.anchor_list.save(data_file_loc)
 
-    model2 = Model(fun_df, "text")
+    model2 = Model(fun_df, "text", anchor_types=[])
     model2.anchor_list.load(data_file_loc)
     assert model2.anchor_list.cache["test_cache"] == 13
 
@@ -205,6 +205,9 @@ def test_save_load_anchorlist(data_file_loc, fun_df):
             assert anchor["theta"] == 1.5
         else:
             raise Exception("what.")
+
+    assert len(model2.anchor_list.possible_anchor_types) == 2
+    assert model2.anchor_list.default_example_anchor_type_dict["ref"] == TFIDFAnchor
 
 
 # --- below may all go in another test file other
