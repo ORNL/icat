@@ -77,8 +77,6 @@ class AnchorListTemplate(v.VuetifyTemplate):
     expanded = traitlets.List([]).tag(sync=True)
     processing = traitlets.Bool(False).tag(sync=True)
 
-    # TODO: set_all_expanded, set_all_collapsed
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -237,126 +235,6 @@ class AnchorListTemplate(v.VuetifyTemplate):
             </style>
         """
 
-    # @traitlets.default("template")
-    # def _template_old(self):
-    #     return """
-    #     <v-data-table
-    #         :headers="headers"
-    #         :items="items"
-    #         hide-default-footer
-    #         show-expand
-    #         dense
-    #         :loading="processing"
-    #         :expanded.sync="expanded"
-    #         class="dense-table striped-table softhover-table"
-    #         item-key="name"
-    #     >
-    #         <template v-slot:item.anchor_name="{ item }">
-    #             <div><jupyter-widget :widget="item.anchor_name" /></div>
-    #         </template>
-
-    #         <template v-slot:item.in_viz="{ item }">
-    #             <div><jupyter-widget :widget="item.in_viz" /></div>
-    #         </template>
-
-    #         <template v-slot:item.in_model="{ item }">
-    #             <div><jupyter-widget :widget="item.in_model" /></div>
-    #         </template>
-
-    #         <template v-slot:item.pct_negative="{ item }">
-    #             <div class='blue--text darken-1'>{{ item.pct_negative }}</div>
-    #         </template>
-
-    #         <template v-slot:item.pct_positive="{ item }">
-    #             <div class='orange--text darken-1'>{{ item.pct_positive }}</div>
-    #         </template>
-
-    #         <template v-slot:item.delete="{ item }">
-    #             <v-btn
-    #                 icon
-    #                 x-small
-    #                 class='delete-button'
-    #                 @click="deleteAnchor(item.name)"
-    #                 :loading="item.processing"
-    #             >
-    #                 <v-icon>mdi-close-circle-outline</v-icon>
-    #             </v-btn>
-    #         </template>
-
-    #         <template v-slot:expanded-item="{ headers, item }">
-    #             <td :colspan="headers.length">
-    #                 <jupyter-widget :widget="item.widget" />
-    #             </td>
-    #         </template>
-    #     </v-data-table>
-    #     <style id='table-styles'>
-    #         .softhover-table table tbody tr:hover {
-    #             background-color: #333333 !important;
-    #         }
-    #         .delete-button {
-    #             margin: 0px;
-    #             margin-left: 6px;
-    #             color: var(--md-grey-500) !important;
-    #         }
-    #         .delete-button:hover {
-    #             color: var(--md-red-500) !important;
-    #         }
-    #         .striped-table tbody tr:nth-child(even) {
-    #             background-color: rgba(0, 0, 0, 0.35);
-    #         }
-    #         .striped-table .v-data-table__expanded__content td {
-    #             background-color: #263238;
-    #         }
-    #         .dense-table .row {
-    #             flex-wrap: nowrap;
-    #         }
-    #         .dense-table td {
-    #             padding: 0 4px !important;
-    #             height: 30px !important;
-    #             max-height: 30px !important;
-    #             vertical-align: middle;
-    #         }
-    #         .dense-table th {
-    #             padding: 0 4px !important;
-    #         }
-    #         .dense-table td .v-input {
-    #             margin: 0;
-    #             /* margin-top: 5px; */
-    #         }
-    #         .dense-table td .v-input__slot {
-    #             margin-bottom: 0;
-    #         }
-    #         .dense-table td .v-input--selection-controls__input {
-    #             margin-top: -5px;
-    #         }
-    #         .dense-table td .v-input--selection-controls__ripple {
-    #             margin: 7px;
-    #             height: 25px !important;
-    #             width: 25px !important;
-    #         }
-    #         .dense-table td .v-icon.v-icon::after {
-    #             transform: scale(1.2) !important;
-    #         }
-    #         .dense-table td .v-input .v-messages {
-    #             display: none;
-    #             height: 0;
-    #         }
-    #         .dense-table td .v-text-field__details {
-    #             height: 2px !important;
-    #             min-height: 2px !important;
-    #         }
-    #         div .v-progress-linear {
-    #             left: -1px !important;
-    #         }
-
-    #         /* this should probably go somewhere else, these are
-    #          vars for anchorviz. */
-    #         :host {
-    #             --selectedAnchorColor: #FFF;
-    #         }
-    #     </style>
-    #     """
-
 
 class AnchorList(pn.viewable.Viewer):
     """A model's list tracking and managing a collection of anchors.
@@ -369,6 +247,12 @@ class AnchorList(pn.viewable.Viewer):
         model: The parent model.
         table_width (int): Static width of the visual component table.
         table_height (int): Static height of the visual component table.
+            (Currently unused)
+        anchor_types (list[type | dict[str, any]]): The anchor types to start the
+            interface with. This list can contain a combination of types and
+            dictionaries with keys ``ref`` (containing the type), ``name`` (display
+            name) and ``color`` (the color to render anchors of this type with.)
+            If left None (the default), will add ``DictionaryAnchor`` and ``TFIDFAnchor``.
     """
 
     anchors = param.List([])
@@ -385,9 +269,14 @@ class AnchorList(pn.viewable.Viewer):
     # TODO: I don't love that this dictionary is exactly replicating the info of one item
     # in possible_anchor_types, could potentially lead to desyncing issues if not handled carefully
     default_example_anchor_type_dict = param.Dict({})
+    """The dictionary of the anchor type information for the current default example anchor type.
+    This should contain keys ``ref`` (type), ``name``, and ``color``."""
 
     possible_anchor_types = param.List([])
-    # will need to be dictionaries, with each containing string name, class type ref, and color
+    """The list of registered anchor types within the interface, each entry is a dictionary
+    containing ``ref``, ``name``, and ``color``. Note that this list should not be manually
+    altered, as sub parameter changes won't be picked up by the interface. Use ``add_anchor_type``,
+    ``modify_anchor_type``, and ``remove_anchor_type``."""
 
     # TODO: coupling: model is used to retrieve model.data.active_data
     # NOTE: one way around this would be to have a "reference_data" property,
@@ -444,17 +333,6 @@ class AnchorList(pn.viewable.Viewer):
         self.table = AnchorListTemplate()
         self.table.on_anchor_removal(self._handle_table_anchor_deleted)
 
-        # self.anchors_layout = pn.Column(
-        #     pn.Row(
-        #         self.expand_toggle_tooltip,
-        #         self.dictionary_button,
-        #         self.tfidf_button,
-        #         self.similarity_button,
-        #     ),
-        #     self.table,
-        #     height=table_height,
-        #     width=table_width,
-        # )
         self.anchor_buttons = v.Row(
             children=[
                 self.expand_toggle_tooltip,
@@ -469,19 +347,21 @@ class AnchorList(pn.viewable.Viewer):
         )
         """The full component layout for panel to display."""
 
+        # --- should move out to anchortypes.py ---
         self.anchor_types_layout = v.Col(style_=f"width: {table_width}px")
 
+        # --- should move out to anchorsettings.py
         self.example_anchor_types_dropdown = v.Select(
             label="Default example anchor type", items=[]
         )
         self.example_anchor_types_dropdown.on_event(
             "change", self._handle_ipv_default_example_anchor_type_changed
         )
-
         self.anchor_settings_layout = v.Col(
             children=[self.example_anchor_types_dropdown],
             style_=f"width: {table_width}px",
         )
+        # ---/---
 
         self.tabs_component = v.Tabs(
             v_model=0,
@@ -525,6 +405,7 @@ class AnchorList(pn.viewable.Viewer):
         """This cache gets pickled on save, useful for anchors to store results of
         processing-intensive tasks to reduce featurizing time."""
 
+        # TODO: can remove (should go through cache)
         self.tfidf_vectorizer = None
         self.tfidf_features = None
 
@@ -816,7 +697,6 @@ class AnchorList(pn.viewable.Viewer):
 
     def _populate_anchor_types_col(self):
         children = []
-        # for anchor_type in Anchor.anchor_types():
         for anchor_type_dict in self.possible_anchor_types:
             color_picker = v.ColorPicker(
                 hide_inputs=True,
@@ -994,6 +874,23 @@ class AnchorList(pn.viewable.Viewer):
         self._populate_example_anchor_types_dropdown()
 
     def add_anchor_types(self, anchor_types: list[type | dict[str, any]]):
+        """Add multiple anchor types to the UI.
+
+        Args:
+            anchor_types (list[type|dict[str, any]]): the list of anchor types
+                to add, this can consist of a combination of straight class types
+                and dictionaries containing ``ref`` (the class type), ``name``,
+                and ``color``.
+
+        Example:
+            .. code-block:: python
+
+                al = AnchorList(anchor_types=[])
+                al.add_anchor_types([
+                    icat.anchors.DictionaryAnchor,
+                    {"ref": icat.anchors.TFIDFAnchor, "color": "#778899"}
+                ])
+        """
         for anchor_type in anchor_types:
             if isinstance(anchor_type, type):
                 self.add_anchor_type(anchor_type)
@@ -1004,6 +901,15 @@ class AnchorList(pn.viewable.Viewer):
     def add_anchor_type(
         self, anchor_type: type, name: str = None, color: str = "#777777"
     ):
+        """Register the passed anchor type (must be a subclass of ``Anchor``) in
+        the UI. This adds a corresponding "add new" button for this type.
+
+        Args:
+            anchor_type (type): The class type (of subclass ``Anchor``) to register.
+            name (str): The name to associate with the type in the UI.
+            color (str): The hex color to use in the CSS for rows in the anchorlist
+                and anchors in anchorviz for this anchor type.
+        """
         if name is not None:
             # if the user specified a specific name, use that.
             anchor_type_name = name
@@ -1036,6 +942,15 @@ class AnchorList(pn.viewable.Viewer):
                 self.fire_on_default_example_anchor_type_changed()
 
     def modify_anchor_type(self, anchor_type: type, key: str, val: str):
+        """Change an associated property of the specified anchor type.
+
+        This assumes the passed type has already been registered with ``add_anchor_type``.
+
+        Args:
+            anchor_type (type): The anchor type to modify the UI property of.
+            key (str): The name of the property to update, use ``color`` or ``name``.
+            val (str): The new value to assign to the property.
+        """
         prev_anchors = []
         updated_anchor = None
         next_anchors = []
@@ -1095,6 +1010,12 @@ class AnchorList(pn.viewable.Viewer):
         self.refresh_anchor_types()
 
     def get_anchor_type_config(self, anchor_type: type):
+        """Get the dictionary of UI properties for the specified registered anchor type.
+
+        Returns:
+            A dictionary with ``ref``, ``name``, and ``color``, or None if the specified
+            type isn't found.
+        """
         for anchor_type_dict in self.possible_anchor_types:
             if anchor_type_dict["ref"] == anchor_type:
                 return anchor_type_dict
