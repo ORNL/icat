@@ -25,8 +25,9 @@ import icat.utils
 icat.utils._kill_param_auto_docstring()
 
 
-# TODO: coupling: we don't need access to container, just have a "fire_anchor_changed"
-# and "on_anchor_changed" that the container listens to.
+# TODO: coupling: accesses parent anchorlist through container, unclear that it's
+# feasible to remove since it's valuable to have a global cache all anchors have access
+# to to avoid duplicate computation.
 class Anchor(param.Parameterized):
     """The main parent anchor class, this should be subclassed, not directly used.
 
@@ -42,7 +43,11 @@ class Anchor(param.Parameterized):
     """
 
     DESCRIPTION: str = ""
+    """Subclasses of ``Anchor`` can define this DESCRIPTION to show up in the UI
+    explaining the given anchor type."""
     NAME: str = ""
+    """Subclasses of ``Anchor`` can define this NAME to show up in the UI
+    as the default name for this anchor type."""
 
     anchor_name = param.String(default="New Anchor")
     """Not to be confused with just ``name``, which is the panel component id."""
@@ -185,7 +190,8 @@ class Anchor(param.Parameterized):
 
     @staticmethod
     def anchor_types():
-        """Get a list of references to all defined Anchor subclasses (directly and indirectly.)"""
+        """Get a list of references to all defined Anchor subclasses in scope
+        (directly and indirectly.)"""
         # https://stackoverflow.com/questions/5881873/python-find-all-classes-which-inherit-from-this-one
         subclasses = []
         to_process = [Anchor]
@@ -243,7 +249,7 @@ class DictionaryAnchor(Anchor):
             my_model.add_anchor(my_keywords_anchor)
     """
 
-    DESCRIPTION = "Bag of Words (feature is count of specified keyword occurrences.)"
+    DESCRIPTION = "Bag of words (feature is count of specified keyword occurrences.)"
     NAME = "Dictionary"
 
     keywords_str = param.String(label="Keywords")
@@ -363,6 +369,10 @@ class DictionaryAnchor(Anchor):
 
 
 class SimilarityAnchorBase(Anchor):
+    """A base class to inherit from for anchors that featurize based on
+    some metric of similarity to a set of one or more target reference texts.
+    """
+
     # TODO: have to have the texts _and_ the indices from the original data
     # that this is based on? (because the indices are what we'll want to base
     # the widget off of, but the texts should be what we actually care about/store)
@@ -372,8 +382,10 @@ class SimilarityAnchorBase(Anchor):
     # anchors is to be relatively pure
 
     text_col = param.String(precedence=-1)
+    """The text column from the data to use when measuring similarity."""
 
     reference_texts = param.List([])
+    """The target texts to calculate the similarity to."""
 
     reference_short = param.List([])
     """A shortform version of the texts, either the row IDs if available, or
@@ -533,6 +545,9 @@ class SimilarityAnchorBase(Anchor):
 
 
 class TFIDFAnchor(SimilarityAnchorBase):
+    """A similarity anchor that uses cosine similarity between the TF-IDF vectors
+    of the text data and the target texts."""
+
     DESCRIPTION = "Uses cosine similarity between TF-IDF vectors of data and target text as the feature value."
     NAME = "TF-IDF"
 
@@ -553,6 +568,7 @@ class TFIDFAnchor(SimilarityAnchorBase):
 
         # check to see if the containing anchorlist has a reference TfidfVectorizer/
         # tfidf_features set
+        # TODO: move the features and vectorizer to cache
         tfidf_vectorizer = None
         tfidf_features = None
         reference_features: np.ndarray = None
@@ -591,57 +607,3 @@ class TFIDFAnchor(SimilarityAnchorBase):
         #     self.container.tfidf_features = tfidf_features
 
         return pd.Series(similarities[0], index=data.index)
-
-
-# TODO: probably instead of this extending TF-IDFAnchor, we should have them extend from same root?
-# class SimilarityFunctionAnchor(SimilarityAnchorBase):
-#     similarity_function = param.String("")
-
-#     # TODO: need a dropdown for the possible similarity functions
-#     def __init__(self, container=None, *args, **kwargs):
-#         super().__init__(container, *args, **kwargs)
-
-#         self.sim_function_options = v.Select(label="Similarity function", items=[{}])
-#         self.sim_function_options.on_event(
-#             "change", self._handle_ipv_sim_function_change
-#         )
-
-#         self.widget.children = [
-#             *self.widget.children,
-#             v.Row(
-#                 dense=True,
-#                 children=[self.sim_function_options],
-#             ),
-#         ]
-#         self._populate_items()
-
-#     # TODO: need dropdown event handlers to modify similarity_function
-
-#     def _handle_ipv_sim_function_change(self, widget, event, data):
-#         self.similarity_function = data
-#         self.fire_on_anchor_changed("similarity_function", data)
-
-#     def _populate_items(self):
-#         items = []
-#         if self.container is not None and self.container.model is not None:
-#             items = list(self.container.model.similarity_functions.keys())
-#         self.sim_function_options.items = items
-
-#     def featurize(self, data: pd.DataFrame) -> pd.Series:
-#         if len(self.reference_texts) == 0:
-#             return pd.Series(0, index=data.index)
-
-#         if self.similarity_function == "":
-#             return pd.Series(0, index=data.index)
-
-#         model_fn = self.container.model.similarity_functions[self.similarity_function]
-#         # results = model_fn(data, self.container, self.reference_texts[0], self.text_col)
-#         results = model_fn(data, self)
-#         return results
-
-#     def to_dict(self) -> dict[str, any]:
-#         """Get a dictionary of all relevant parameters that define this anchor."""
-#         params = super().to_dict()
-#         self_params = dict(similarity_function=self.similarity_function)
-#         params.update(self_params)
-#         return params
