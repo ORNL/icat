@@ -1297,6 +1297,10 @@ class AnchorList(pn.viewable.Viewer):
         well as unpickle any previously saved cache.
         """
 
+        # clear any existing anchor types first
+        for anchor_type_dict in self.possible_anchor_types:
+            self.remove_anchor_type(anchor_type_dict["ref"])
+
         # load anchor types
         with open(f"{path}/anchorlist_anchortypes.pkl", "rb") as infile:
             anchor_types = pickle.load(infile)

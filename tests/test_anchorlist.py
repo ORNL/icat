@@ -384,3 +384,15 @@ def test_removing_anchor_type_removes_btn():
 
     al.remove_anchor_type(DictionaryAnchor)
     assert len(al.anchor_buttons.children) == 2
+
+
+def test_loading_anchorlist_doesnot_add_duplicate_anchor_types(fun_df, data_file_loc):
+    """Saving an anchorlist and loading it in a new anchorlist that had default types
+    should not end up with duplicate types and buttons."""
+    al1 = AnchorList(None)
+    al1.save(data_file_loc)
+
+    al2 = AnchorList(None)
+    al2.load(data_file_loc)
+    assert len(al2.possible_anchor_types) == 2
+    assert len(al2.anchor_buttons.children) == 4  # 4 because toggle button and p "new"
