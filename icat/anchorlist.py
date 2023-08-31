@@ -126,6 +126,7 @@ class AnchorListTemplate(v.VuetifyTemplate):
             :expanded.sync="expanded"
             class="dense-table striped-table"
             item-key="name"
+            items-per-page="-1"
         >
             <template v-slot:item="{ item, expand, isExpanded }">
                 <!--<tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/40%) 0 0)' }">-->
