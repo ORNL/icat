@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Issue where calling load on `AnchorList` with default anchor types would potentially
-    add duplicate anchor types
+    add duplicate anchor types.
+* AnchorList limiting to 10 items per page.
 
 
 
