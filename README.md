@@ -17,7 +17,7 @@
 
 The Interactive Corpus Analysis Tool (ICAT) is an interactive machine learning (IML) dashboard for unlabeled text datasets that allows a user to iteratively and visually define features, explore and label instances of their dataset, and train a logistic regression model on the fly as they do so to assist in filtering, searching, and labeling tasks.
 
-<!-- put a screenshot here -->
+![ICAT Screenshot](sphinx/source/_static/screenshot1.png)
 
 ICAT is implemented using holoviz's [panel](https://panel.holoviz.org/) library, so it can either directly be rendered like a widget in a jupyter lab/notebook instance, or incorporated as part of a standalone panel website.
 
