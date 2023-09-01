@@ -51,9 +51,14 @@ indicates that it was labeled by the user. Green indicates it is selected -
 points can be lasso selected by clicking and dragging on the inside of the ring
 and making a loop around a collection of points.
 
+This part of the interface can be rendered separately with
+``model.view.anchorviz``.
+
 
 Anchor list
 ===========
+
+This part of the interface can be rendered separately with ``model.anchor_list``.
 
 Anchors
 -------
@@ -137,6 +142,8 @@ against.
 
 Data manager
 ============
+
+This part of the interface can be rendered separately with ``model.data``.
 
 Data
 ----
