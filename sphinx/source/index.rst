@@ -9,10 +9,11 @@ Welcome to ICAT's documentation!
 Testing 1 2 3
 
 
-..
-    .. toctree::
-        :maxdepth: 2
-        :caption: User Guide
+.. toctree::
+    :maxdepth: 2
+    :caption: User Guide
+
+    user_guide.rst
 
 
 

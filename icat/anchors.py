@@ -245,6 +245,7 @@ class DictionaryAnchor(Anchor):
     Example:
 
         .. code-block:: python
+
             my_keywords_anchor = DictionaryAnchor(anchor_name="ML", keywords=["machine learning", "artificial intelligence"])
             my_model.add_anchor(my_keywords_anchor)
     """

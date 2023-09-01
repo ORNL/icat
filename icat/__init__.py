@@ -18,7 +18,7 @@ from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 # make the important things directly accessible off top level module
 from icat.model import Model
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"
 
 
 def initialize(offline: bool = False):

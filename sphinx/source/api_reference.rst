@@ -11,7 +11,9 @@ API Reference
    icat.anchors
    icat.data
    icat.histogram
-   icat.instance
+   icat.histograms
+   icat.item
    icat.model
    icat.table
+   icat.utils
    icat.view

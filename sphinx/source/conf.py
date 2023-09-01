@@ -31,7 +31,15 @@ napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 
 autodoc_typehints = "description"
-autodoc_default_options = {"inherited-members": False, "undoc-members": True}
+autodoc_default_options = {
+    "inherited-members": False,
+    "undoc-members": True,
+    "exclude-members": "__init__",
+}
+
+autoclass_content = (
+    "class"  # only use the class docstring, don't use both init and class
+)
 
 templates_path = ["_templates"]
 

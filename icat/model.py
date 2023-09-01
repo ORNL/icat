@@ -435,6 +435,7 @@ class Model:
         Example:
 
             .. code-block:: python
+
                 import icat
 
                 m1 = icat.Model(my_data, text_col="text")
