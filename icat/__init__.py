@@ -1,3 +1,30 @@
+"""
+Interactive Corpus Analysis Tool
+================================
+
+ICAT is an interactive machine learning (IML) dashboard for unlabeled text datasets
+that allows a user to iteratively and visually define features, explore and label
+instances of their dataset, and train a logistic regression model on the fly as they
+do so to assist in filtering, searching, anc labelling tasks.
+
+For the full documentation, vist https://ornl.github.io/curifactory/latest/index.html
+
+Usage in a nutshell
+-------------------
+
+Inside a jupyter notebook/lab, run:
+
+>>> import icat
+>>> icat.initialize()
+>>> df = ... # load in some data that has a column with text you want to explore
+>>> model = icat.Model(df, text_col="name_of_df_column_with_text")
+>>> model.view
+
+The ``model.view`` returns a panel component that will render inside Jupyter and
+display the IML interface.
+
+"""
+
 # flake8: noqa
 import panel as pn
 
@@ -13,9 +40,9 @@ from icat import (
     table,
     view,
 )
-from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 
 # make the important things directly accessible off top level module
+from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 from icat.model import Model
 
 __version__ = "0.7.1"
@@ -25,7 +52,7 @@ def initialize(offline: bool = False):
     """Set up panel and ICAT-specific stylesheets.
 
     Call this function before running any ICAT model ``.view`` cells.
-    If you want to handle initialization yourself, panel needs the "vega" extension:
+    If you want to handle initialization yourself, icat needs the panel "vega" extension:
 
     .. code-block:: python
 

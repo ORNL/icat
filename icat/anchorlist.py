@@ -351,7 +351,7 @@ class AnchorList(pn.viewable.Viewer):
         # --- should move out to anchortypes.py ---
         self.anchor_types_layout = v.Col(style_=f"width: {table_width}px")
 
-        # --- should move out to anchorsettings.py
+        # --- should move out to anchorsettings.py ---
         self.example_anchor_types_dropdown = v.Select(
             label="Default example anchor type", items=[]
         )
@@ -697,6 +697,11 @@ class AnchorList(pn.viewable.Viewer):
         return feature_vals
 
     def _populate_anchor_types_col(self):
+        """This refreshes the "Anchor Types" tab of the anchorlist,
+        refreshing the section of currently available anchor types, and
+        re-searching for ones that are within scope but haven't been added
+        yet.
+        """
         children = []
         for anchor_type_dict in self.possible_anchor_types:
             color_picker = v.ColorPicker(
@@ -859,6 +864,9 @@ class AnchorList(pn.viewable.Viewer):
         self.anchor_types_layout.children = children
 
     def _populate_example_anchor_types_dropdown(self):
+        """Update the possible anchor types that can be set as the
+        default example anchor type used. (Dropdown in the settings
+        tab.)"""
         items = []
         for i, anchor_type_dict in enumerate(self.possible_anchor_types):
             if isinstance(anchor_type_dict["ref"](), SimilarityAnchorBase):
@@ -984,7 +992,12 @@ class AnchorList(pn.viewable.Viewer):
 
     def remove_anchor_type(self, anchor_type: type):
         """Removes this anchor type from the current possible anchor types list, and
-        removes any corresponding anchors."""
+        removes any corresponding anchors.
+
+        Args:
+            anchor_type (type): The class type of the anchor to exclude from the \
+                interface.
+        """
         anchors_to_remove = [a for a in self.anchors if type(a) == anchor_type]
         for anchor in anchors_to_remove:
             # NOTE: yes use ==, need strict check, not including inheritance.
@@ -1167,7 +1180,12 @@ class AnchorList(pn.viewable.Viewer):
         self.refresh_anchors_table()
 
     def get_anchor_by_panel_id(self, panel_id: str) -> Anchor:
-        """Get the anchor instance with the associated panel name/id."""
+        """Get the anchor instance with the associated panel name/id.
+
+        Args:
+            panel_id (str): The panel ID string of the anchor, the format \
+                should be DictinaryAnchor00XX or similar.
+        """
         for anchor in self.anchors:
             if anchor.name == panel_id:
                 return anchor

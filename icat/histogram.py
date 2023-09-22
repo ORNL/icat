@@ -15,6 +15,16 @@ _kill_param_auto_docstring()
 
 
 class Histogram(pn.viewable.Viewer):
+    """Histogram to show the distribution of prediction outputs from the model
+    on some set of the data. Anything above .5 is appropriate colored to orange for
+    interesting.
+
+    This is done via a Vega pane.
+
+    Args:
+        width (int): How wide to render the histogram.
+    """
+
     def __init__(self, width: int = 400, **params):
         self.data = pd.DataFrame()
         self.width = width
@@ -49,11 +59,18 @@ class Histogram(pn.viewable.Viewer):
         # self.data = hist_df.to_dict(orient='records')
 
     def set_data(self, df: pd.DataFrame, prediction_col: str):
-        """This is what will trigger the update"""
+        """Re-generate the histogram given the passed data (which should
+        already include the prediction values.)
+
+        Args:
+            df (pd.DataFrame): The dataset with a column of prediction outputs in it.
+            prediction_col (str): The name of the column with prediction outputs.
+        """
         self._compute_bins(df, prediction_col)
         self.layout.object = self.get_vega_graph()
 
-    def get_vega_graph(self):
+    def get_vega_graph(self) -> alt.Chart:
+        """Use altair to create the bar chart for the current data."""
         data = self.data
         chart = (
             alt.Chart(data)

@@ -173,6 +173,8 @@ class Anchor(param.Parameterized):
         self._anchor_changed_callbacks.append(callback)
 
     def fire_on_anchor_changed(self, key: str, value):
+        """Trigger the event to notify that some property on this anchor
+        changed."""
         for callback in self._anchor_changed_callbacks:
             callback(self.name, key, value)
 
@@ -327,6 +329,8 @@ class DictionaryAnchor(Anchor):
         return total * self.weight
 
     def featurize(self, data: pd.DataFrame) -> pd.Series:
+        """Get a count of keywords in this anchor for every text in the data.
+        Note that this uses the text_col set on this anchor."""
         return data[self.text_col].apply(self._keyword_count)
 
     def _sanitize_regex_symbols(self, string: str) -> str:
@@ -564,6 +568,8 @@ class TFIDFAnchor(SimilarityAnchorBase):
     # TODO: I really need more integration tests for this, there's a lot
     # of conditions going on here.
     def featurize(self, data: pd.DataFrame) -> pd.Series:
+        """Return a column of cosine-similarity values from each entry in the
+        passed dataframe to the targets set on this anchor."""
         if len(self.reference_texts) == 0:
             return pd.Series(0, index=data.index)
 

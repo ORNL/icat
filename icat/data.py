@@ -26,14 +26,33 @@ _kill_param_auto_docstring()
 
 
 class DataManager(pn.viewable.Viewer):
+    """A model's container and viewer component for labelling individual data points.
+
+    This manages the current set of sample points and holds the currently explored
+    dataset. It provides the Panel component for interacting with this dataset, in terms
+    of filtering/searching through it, providing multiple different "view" sets, and
+
+    Args:
+        data (pd.DataFrame): The initial dataset to use.
+        text_col (str): The column of the data containing the text to explore.
+        model (Model): The parent model instance.
+        width (int): The width of the data manager viewer table.
+        height (int): The height of the data manager viewer table.
+        default_sample_size (int): The number of points to randomly sample.
+    """
+
     sample_indices = param.List([])
+    """The row indices from the active_data in the current sample set."""
+
     selected_indices = param.List([])
+    """The row indices from the active_data lasso-selected by the user."""
 
     update_trigger = param.Event()
 
     current_data_tab = param.String("Sample")
     search_value = param.String("")
 
+    # the min/max prediction values from the histogram range slider
     pred_min = param.Number(0.0)
     pred_max = param.Number(1.0)
 
@@ -55,7 +74,9 @@ class DataManager(pn.viewable.Viewer):
         **params,
     ):
         self.active_data = None
+        """The current active dataset the user is exploring with the model."""
         self.filtered_df = None
+        """The data currently displayed after the relevant filters are applied."""
         self.model = model
 
         self.width = width

@@ -14,7 +14,11 @@ _kill_param_auto_docstring()
 
 class Histograms(pn.viewable.Viewer):
     """Component class to show histogram distributions both of the
-    current sample, as well as the across the entire active dataset."""
+    current sample, as well as the across the entire active dataset.
+
+    Args:
+        width (int): Width to render the collection of histograms at.
+    """
 
     def __init__(self, width: int = 700, **params):
         self.width = width
@@ -100,6 +104,13 @@ class Histograms(pn.viewable.Viewer):
     # ============================================================
 
     def refresh_data(self, data: DataManager):
+        """Update both local and global histograms for the currently
+        active dataset in the datamanager.
+
+        Args:
+            data (DataManager): The data manager to pull the data from.
+        """
+
         if data.active_data is None:
             return
         if data.prediction_col in data.active_data.columns:
