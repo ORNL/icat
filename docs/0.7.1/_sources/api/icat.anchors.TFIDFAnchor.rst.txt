@@ -1,0 +1,68 @@
+icat.anchors.TFIDFAnchor
+========================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: TFIDFAnchor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~TFIDFAnchor.__init__
+      ~TFIDFAnchor.anchor_types
+      ~TFIDFAnchor.debug
+      ~TFIDFAnchor.defaults
+      ~TFIDFAnchor.featurize
+      ~TFIDFAnchor.fire_on_anchor_changed
+      ~TFIDFAnchor.force_new_dynamic_value
+      ~TFIDFAnchor.get_param_values
+      ~TFIDFAnchor.get_value_generator
+      ~TFIDFAnchor.inspect_value
+      ~TFIDFAnchor.load
+      ~TFIDFAnchor.message
+      ~TFIDFAnchor.on_anchor_changed
+      ~TFIDFAnchor.params
+      ~TFIDFAnchor.pprint
+      ~TFIDFAnchor.print_param_defaults
+      ~TFIDFAnchor.print_param_values
+      ~TFIDFAnchor.remove_by_short
+      ~TFIDFAnchor.row_view
+      ~TFIDFAnchor.save
+      ~TFIDFAnchor.script_repr
+      ~TFIDFAnchor.set_default
+      ~TFIDFAnchor.set_dynamic_time_fn
+      ~TFIDFAnchor.set_param
+      ~TFIDFAnchor.state_pop
+      ~TFIDFAnchor.state_push
+      ~TFIDFAnchor.to_dict
+      ~TFIDFAnchor.verbose
+      ~TFIDFAnchor.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~TFIDFAnchor.DESCRIPTION
+      ~TFIDFAnchor.NAME
+      ~TFIDFAnchor.anchor_name
+      ~TFIDFAnchor.global_cache
+      ~TFIDFAnchor.in_model
+      ~TFIDFAnchor.in_view
+      ~TFIDFAnchor.name
+      ~TFIDFAnchor.param
+      ~TFIDFAnchor.reference_short
+      ~TFIDFAnchor.reference_texts
+      ~TFIDFAnchor.text_col
+      ~TFIDFAnchor.weight
+      ~TFIDFAnchor.cache

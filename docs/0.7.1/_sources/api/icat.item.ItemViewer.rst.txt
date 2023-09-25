@@ -1,0 +1,53 @@
+icat.item.ItemViewer
+====================
+
+.. currentmodule:: icat.item
+
+.. autoclass:: ItemViewer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~ItemViewer.__init__
+      ~ItemViewer.debug
+      ~ItemViewer.defaults
+      ~ItemViewer.fire_on_label_changed
+      ~ItemViewer.force_new_dynamic_value
+      ~ItemViewer.get_param_values
+      ~ItemViewer.get_value_generator
+      ~ItemViewer.inspect_value
+      ~ItemViewer.message
+      ~ItemViewer.on_label_changed
+      ~ItemViewer.params
+      ~ItemViewer.populate
+      ~ItemViewer.pprint
+      ~ItemViewer.print_param_defaults
+      ~ItemViewer.print_param_values
+      ~ItemViewer.script_repr
+      ~ItemViewer.servable
+      ~ItemViewer.set_default
+      ~ItemViewer.set_dynamic_time_fn
+      ~ItemViewer.set_param
+      ~ItemViewer.show
+      ~ItemViewer.state_pop
+      ~ItemViewer.state_push
+      ~ItemViewer.verbose
+      ~ItemViewer.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~ItemViewer.name
+      ~ItemViewer.param

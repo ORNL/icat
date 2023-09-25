@@ -1,0 +1,68 @@
+icat.data.DataManager
+=====================
+
+.. currentmodule:: icat.data
+
+.. autoclass:: DataManager
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~DataManager.__init__
+      ~DataManager.apply_label
+      ~DataManager.debug
+      ~DataManager.defaults
+      ~DataManager.fire_on_data_labeled
+      ~DataManager.fire_on_row_selected
+      ~DataManager.fire_on_sample_changed
+      ~DataManager.force_new_dynamic_value
+      ~DataManager.get_param_values
+      ~DataManager.get_value_generator
+      ~DataManager.inspect_value
+      ~DataManager.message
+      ~DataManager.on_data_labeled
+      ~DataManager.on_row_selected
+      ~DataManager.on_sample_changed
+      ~DataManager.params
+      ~DataManager.pprint
+      ~DataManager.print_param_defaults
+      ~DataManager.print_param_values
+      ~DataManager.script_repr
+      ~DataManager.servable
+      ~DataManager.set_data
+      ~DataManager.set_default
+      ~DataManager.set_dynamic_time_fn
+      ~DataManager.set_param
+      ~DataManager.set_random_sample
+      ~DataManager.show
+      ~DataManager.state_pop
+      ~DataManager.state_push
+      ~DataManager.verbose
+      ~DataManager.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~DataManager.current_data_tab
+      ~DataManager.name
+      ~DataManager.param
+      ~DataManager.pred_max
+      ~DataManager.pred_min
+      ~DataManager.sample_indices
+      ~DataManager.search_value
+      ~DataManager.selected_indices
+      ~DataManager.update_trigger
+      ~DataManager.active_data
+      ~DataManager.filtered_df

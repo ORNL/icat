@@ -1,0 +1,53 @@
+icat.histograms.Histograms
+==========================
+
+.. currentmodule:: icat.histograms
+
+.. autoclass:: Histograms
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Histograms.__init__
+      ~Histograms.debug
+      ~Histograms.defaults
+      ~Histograms.fire_on_range_changed
+      ~Histograms.force_new_dynamic_value
+      ~Histograms.get_param_values
+      ~Histograms.get_value_generator
+      ~Histograms.inspect_value
+      ~Histograms.message
+      ~Histograms.on_range_changed
+      ~Histograms.params
+      ~Histograms.pprint
+      ~Histograms.print_param_defaults
+      ~Histograms.print_param_values
+      ~Histograms.refresh_data
+      ~Histograms.script_repr
+      ~Histograms.servable
+      ~Histograms.set_default
+      ~Histograms.set_dynamic_time_fn
+      ~Histograms.set_param
+      ~Histograms.show
+      ~Histograms.state_pop
+      ~Histograms.state_push
+      ~Histograms.verbose
+      ~Histograms.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Histograms.name
+      ~Histograms.param

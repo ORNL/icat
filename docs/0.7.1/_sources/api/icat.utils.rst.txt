@@ -1,0 +1,18 @@
+﻿icat.utils
+==========
+
+.. automodule:: icat.utils
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      add_highlights
+      populate_anchor_from_dictionary

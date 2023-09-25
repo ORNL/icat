@@ -1,0 +1,6 @@
+icat.utils.populate\_anchor\_from\_dictionary
+=============================================
+
+.. currentmodule:: icat.utils
+
+.. autofunction:: populate_anchor_from_dictionary

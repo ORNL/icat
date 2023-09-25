@@ -1,0 +1,25 @@
+﻿icat.anchors
+============
+
+.. automodule:: icat.anchors
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      Anchor
+      DictionaryAnchor
+      SimilarityAnchorBase
+      TFIDFAnchor

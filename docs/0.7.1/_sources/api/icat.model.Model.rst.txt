@@ -1,0 +1,43 @@
+icat.model.Model
+================
+
+.. currentmodule:: icat.model
+
+.. autoclass:: Model
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Model.__init__
+      ~Model.add_anchor
+      ~Model.compute_coverage
+      ~Model.feature_names
+      ~Model.featurize
+      ~Model.fit
+      ~Model.is_seeded
+      ~Model.is_trained
+      ~Model.load
+      ~Model.predict
+      ~Model.save
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Model.training_data
+      ~Model.text_col
+      ~Model.classifier
+      ~Model.anchor_list
+      ~Model.data
+      ~Model.view

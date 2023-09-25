@@ -1,16 +1,28 @@
 # https://madewithml.com/courses/mlops/makefile
 SHELL = /bin/bash
+VERSION := $(shell python -c "import icat; print(icat.__version__)")
 
 .PHONY: help
 help:
 	@echo "Commands:"
-	@echo "style   : executes style formatting."
-	@echo "clean   : cleans all unnecessary files."
-	@echo "test    : runs unit tests."
+	@echo "pre-commit 	: run all pre-commit checks."
+	@echo "apply-docs 	: copy current sphinx documentation into version-specific docs/ folder"
+	@echo "style 		: executes style formatting."
+	@echo "clean 		: cleans all unnecessary files."
+	@echo "test 		: runs unit tests."
 
 .PHONY: pre-commit
 pre-commit:
 	@pre-commit run --all-files
+
+.PHONY: apply-docs
+apply-docs:
+	-@unlink docs/stable
+	@echo "Copying documentation to docs/$(VERSION)"
+	-@rm -rf docs/$(VERSION)
+	@cp -r sphinx/build/html docs/$(VERSION)
+	@echo "Linking to docs/stable"
+	@ln -s $(VERSION) docs/stable
 
 
 .PHONY: publish

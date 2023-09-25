@@ -1,0 +1,64 @@
+icat.anchors.Anchor
+===================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: Anchor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Anchor.__init__
+      ~Anchor.anchor_types
+      ~Anchor.debug
+      ~Anchor.defaults
+      ~Anchor.featurize
+      ~Anchor.fire_on_anchor_changed
+      ~Anchor.force_new_dynamic_value
+      ~Anchor.get_param_values
+      ~Anchor.get_value_generator
+      ~Anchor.inspect_value
+      ~Anchor.load
+      ~Anchor.message
+      ~Anchor.on_anchor_changed
+      ~Anchor.params
+      ~Anchor.pprint
+      ~Anchor.print_param_defaults
+      ~Anchor.print_param_values
+      ~Anchor.row_view
+      ~Anchor.save
+      ~Anchor.script_repr
+      ~Anchor.set_default
+      ~Anchor.set_dynamic_time_fn
+      ~Anchor.set_param
+      ~Anchor.state_pop
+      ~Anchor.state_push
+      ~Anchor.to_dict
+      ~Anchor.verbose
+      ~Anchor.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Anchor.DESCRIPTION
+      ~Anchor.NAME
+      ~Anchor.anchor_name
+      ~Anchor.global_cache
+      ~Anchor.in_model
+      ~Anchor.in_view
+      ~Anchor.name
+      ~Anchor.param
+      ~Anchor.weight
+      ~Anchor.cache

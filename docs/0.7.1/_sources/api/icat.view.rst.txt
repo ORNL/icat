@@ -1,0 +1,22 @@
+﻿icat.view
+=========
+
+.. automodule:: icat.view
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      InteractiveView

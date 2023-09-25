@@ -6,10 +6,12 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from icat import __version__
+
 project = "ICAT"
 copyright = "2023, UT Battelle, LLC"
 author = "Nathan Martindale, Scott L. Stewart"
-release = "0.2.0"
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -76,6 +78,13 @@ html_theme_options = {
     "external_links": [
         {"name": "Changelog", "url": "https://github.com/ORNL/icat/releases"},
     ],
+    "switcher": {
+        "json_url": "https://ornl.github.io/icat/stable/_static/switcher.json",
+        "version_match": release,
+    },
+    "check_switcher": False,
+    "navbar_end": ["theme-switcher", "navbar-icon-links", "version-switcher"],
+    "show_version_warning_banner": True,
 }
 
 html_context = {"default_mode": "dark"}

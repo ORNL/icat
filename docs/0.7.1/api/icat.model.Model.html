@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <link rel="icon" href="../_static/icat_favicon.svg" type="image/svg+xml">
+    <title>icat.model.Model &#8212; ICAT 0.7.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/icat.model.Model';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://ornl.github.io/icat/stable/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="icat.table" href="icat.table.html" />
+    <link rel="prev" title="icat.model" href="icat.model.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+  <div class="navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+
+
+
+
+
+
+    <img src="../_static/icat_medium_full_dark.svg" class="logo__image only-dark" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/icat_medium_full_light.svg" class="logo__image only-light" alt="Logo image"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api_reference.html">
+                        API Reference
+                      </a>
+                    </li>
+
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/ORNL/icat/releases">
+                    Changelog
+                  </a>
+                </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+
+
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://github.com/ORNL/icat" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://pypi.org/project/icat-iml/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      0.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+
+
+
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+
+</div>
+
+    </nav>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+      <div class="bd-sidebar-primary bd-sidebar">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api_reference.html">
+                        API Reference
+                      </a>
+                    </li>
+
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/ORNL/icat/releases">
+                    Changelog
+                  </a>
+                </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://github.com/ORNL/icat" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://pypi.org/project/icat-iml/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      0.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.anchorlist.html">icat.anchorlist</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchorlist.AnchorList.html">icat.anchorlist.AnchorList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchorlist.AnchorListTemplate.html">icat.anchorlist.AnchorListTemplate</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.anchors.html">icat.anchors</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.Anchor.html">icat.anchors.Anchor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.DictionaryAnchor.html">icat.anchors.DictionaryAnchor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.SimilarityAnchorBase.html">icat.anchors.SimilarityAnchorBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.TFIDFAnchor.html">icat.anchors.TFIDFAnchor</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.data.html">icat.data</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.data.DataManager.html">icat.data.DataManager</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.histogram.html">icat.histogram</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.histogram.Histogram.html">icat.histogram.Histogram</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.histograms.html">icat.histograms</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.histograms.Histograms.html">icat.histograms.Histograms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.item.html">icat.item</a><input checked class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.item.HtmlContents.html">icat.item.HtmlContents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.item.ItemViewer.html">icat.item.ItemViewer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="icat.model.html">icat.model</a><input checked class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">icat.model.Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.table.html">icat.table</a><input checked class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.table.TableContentsTemplate.html">icat.table.TableContentsTemplate</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.utils.html">icat.utils</a><input checked class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.utils.add_highlights.html">icat.utils.add_highlights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.utils.populate_anchor_from_dictionary.html">icat.utils.populate_anchor_from_dictionary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.view.html">icat.view</a><input checked class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.view.InteractiveView.html">icat.view.InteractiveView</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="../api_reference.html" class="nav-link">API Reference</a></li>
+
+
+    <li class="breadcrumb-item"><a href="icat.model.html" class="nav-link">icat.model</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">icat.model.Model</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+
+  <section id="icat-model-model">
+<h1>icat.model.Model<a class="headerlink" href="#icat-model-model" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="icat.model.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">icat.model.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The interactive machine learning model - a basic binary classifier with tools
+for viewing and interacting with the data and features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – The data to explore with.</p></li>
+<li><p><strong>text_col</strong> (<em>str</em>) – The name of the text column in the passed data.</p></li>
+<li><p><strong>anchor_types</strong> (<em>list</em><em>[</em><em>type</em><em> | </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>any</em><em>]</em><em>]</em>) – The list of class types of             anchors to initially include in the interface. (This can be modified             after initialization through the <code class="docutils literal notranslate"><span class="pre">anchor_list</span></code>.)</p></li>
+<li><p><strong>default_sample_size</strong> (<em>int</em>) – The initial number of points to sample for the             visualizations.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(data, text_col[, anchor_types, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.add_anchor" title="icat.model.Model.add_anchor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_anchor</span></code></a>(anchor)</p></td>
+<td><p>Add the passed anchor to this model's anchor list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.compute_coverage" title="icat.model.Model.compute_coverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_coverage</span></code></a>()</p></td>
+<td><p>Calculate the coverage of the current anchors on the current active data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.feature_names" title="icat.model.Model.feature_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_names</span></code></a>([in_model_only])</p></td>
+<td><p>Provides a list of the feature column names in use in the data manager.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.featurize" title="icat.model.Model.featurize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">featurize</span></code></a>([data, normalize, normalize_reference])</p></td>
+<td><p>Run the anchors - calculates the output features for each anchor and adds the corresponding &quot;weights&quot; column to the dataframe.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.fit" title="icat.model.Model.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>()</p></td>
+<td><p>Featurize the current data and fit the model to it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.is_seeded" title="icat.model.Model.is_seeded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seeded</span></code></a>()</p></td>
+<td><p>Determine if there are enough labels in the training data to train the model with.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.is_trained" title="icat.model.Model.is_trained"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trained</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.load" title="icat.model.Model.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
+<td><p>Reload the model with all of the data and anchors from the specified location.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.predict" title="icat.model.Model.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>([data, inplace])</p></td>
+<td><p>Run model's classifier predictions on either the passed data or training data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.save" title="icat.model.Model.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
+<td><p>Save the model and all associated data at the specified location.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.training_data" title="icat.model.Model.training_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_data</span></code></a></p></td>
+<td><p>The rows (and only those rows) of the original data explicitly used for training.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.text_col" title="icat.model.Model.text_col"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_col</span></code></a></p></td>
+<td><p>The column in the dataframe with the text to explore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.classifier" title="icat.model.Model.classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">classifier</span></code></a></p></td>
+<td><p>The underlying machine learning algorithm that learns based on the training data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.anchor_list" title="icat.model.Model.anchor_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchor_list</span></code></a></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">AnchorList</span></code> instance that manages all features/featuring necessary for the classifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.model.Model.data" title="icat.model.Model.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> instance that handles all labeling tasks and data filtering/sampling.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.model.Model.view" title="icat.model.Model.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">InteractiveView</span></code> or dashboard widget that glues together the various visual components.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.add_anchor">
+<span class="sig-name descname"><span class="pre">add_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.add_anchor" title="Permalink to this definition">#</a></dt>
+<dd><p>Add the passed anchor to this model’s anchor list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>anchor</strong> (<a class="reference internal" href="icat.anchors.Anchor.html#icat.anchors.Anchor" title="icat.anchors.Anchor"><em>Anchor</em></a>) – The Anchor to add to the list.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">AnchorList.add_anchor</span></code> for more details.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.model.Model.anchor_list">
+<span class="sig-name descname"><span class="pre">anchor_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="icat.anchorlist.AnchorList.html#icat.anchorlist.AnchorList" title="icat.anchorlist.AnchorList"><span class="pre">AnchorList</span></a></em><a class="headerlink" href="#icat.model.Model.anchor_list" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">AnchorList</span></code> instance that manages all features/featuring necessary for
+the classifier.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.model.Model.classifier">
+<span class="sig-name descname"><span class="pre">classifier</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LogisticRegression</span></em><a class="headerlink" href="#icat.model.Model.classifier" title="Permalink to this definition">#</a></dt>
+<dd><p>The underlying machine learning algorithm that learns based on the training data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.compute_coverage">
+<span class="sig-name descname"><span class="pre">compute_coverage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.compute_coverage" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the coverage of the current anchors on the current active data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary where each key is the panel id of the anchor, and the value
+is a dictionary with the statistics: <code class="docutils literal notranslate"><span class="pre">'total'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pos'</span></code>, <code class="docutils literal notranslate"><span class="pre">'neg'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'total_pct'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pos_pct'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'neg_pct'</span></code></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, dict[str, float | int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.model.Model.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="icat.data.DataManager.html#icat.data.DataManager" title="icat.data.DataManager"><span class="pre">DataManager</span></a></em><a class="headerlink" href="#icat.model.Model.data" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">DataManager</span></code> instance that handles all labeling tasks and data filtering/sampling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.feature_names">
+<span class="sig-name descname"><span class="pre">feature_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_model_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.feature_names" title="Permalink to this definition">#</a></dt>
+<dd><p>Provides a list of the feature column names in use in the data manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>in_model_only</strong> (<em>bool</em>) – Only include anchors whose <code class="docutils literal notranslate"><span class="pre">in_model</span></code> value is                 <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.featurize">
+<span class="sig-name descname"><span class="pre">featurize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.featurize" title="Permalink to this definition">#</a></dt>
+<dd><p>Run the anchors - calculates the output features for each anchor and adds the corresponding “weights” column
+to the dataframe. These are the values that the classifier uses to make its predictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – The data to apply the anchors to. Uses the exploration data if not specified.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – Whether to apply l1 normalization to the output values.</p></li>
+<li><p><strong>normalize_reference</strong> (<em>Optional</em><em>[</em><em>pd.DataFrame</em><em>]</em>) – A different dataframe whose features to sum for the L1 norm, this                 is used with the model’s separate training data versus full dataset, since the normed values of just the                 training data would be vastly different than within the full set.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The passed data with the feature columns on it.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>DataFrame</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Featurize the current data and fit the model to it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.is_seeded">
+<span class="sig-name descname"><span class="pre">is_seeded</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.is_seeded" title="Permalink to this definition">#</a></dt>
+<dd><p>Determine if there are enough labels in the training data to train the model with.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False if the label column doesn’t exist, there’s fewer than 10 labeled points,
+or there’s only one class of label.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.is_trained">
+<span class="sig-name descname"><span class="pre">is_trained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.is_trained" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.load">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Reload the model with all of the data and anchors from the specified location.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">icat</span>
+
+<span class="n">m1</span> <span class="o">=</span> <span class="n">icat</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">my_data</span><span class="p">,</span> <span class="n">text_col</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+<span class="n">m1</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;~/tmp/my_model&quot;</span><span class="p">)</span>
+
+<span class="n">m2</span> <span class="o">=</span> <span class="n">icat</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;~/tmp/my_model&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#icat.model.Model" title="icat.model.Model"><em>Model</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Run model’s classifier predictions on either the passed data or training data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function, like sklearn, assumes the model has already been fit.
+(We have no strict check for this, as this is for IML and the classifier is assumed
+to be re-fit multiple times.)</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>Optional</em><em>[</em><em>pd.DataFrame</em><em>]</em>) – If not specified, use the previously set training data,                 otherwise predict on this data.</p></li>
+<li><p><strong>inplace</strong> (<em>bool</em>) – Whether to operate directly on the passed data or create a copy of it.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The predictions for either the active or passed data if provided.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.model.Model.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.model.Model.save" title="Permalink to this definition">#</a></dt>
+<dd><p>Save the model and all associated data at the specified location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.model.Model.text_col">
+<span class="sig-name descname"><span class="pre">text_col</span></span><a class="headerlink" href="#icat.model.Model.text_col" title="Permalink to this definition">#</a></dt>
+<dd><p>The column in the dataframe with the text to explore.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.model.Model.training_data">
+<span class="sig-name descname"><span class="pre">training_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#icat.model.Model.training_data" title="Permalink to this definition">#</a></dt>
+<dd><p>The rows (and only those rows) of the original data explicitly used for training.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.model.Model.view">
+<span class="sig-name descname"><span class="pre">view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="icat.view.InteractiveView.html#icat.view.InteractiveView" title="icat.view.InteractiveView"><span class="pre">InteractiveView</span></a></em><a class="headerlink" href="#icat.model.Model.view" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">InteractiveView</span></code> or dashboard widget that glues together the various visual components.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+
+
+
+                <footer class="bd-footer-article">
+
+<div class="footer-article-items footer-article__inner">
+
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="icat.model.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">icat.model</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="icat.table.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">icat.table</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+
+</div>
+
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.add_anchor"><code class="docutils literal notranslate"><span class="pre">Model.add_anchor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.anchor_list"><code class="docutils literal notranslate"><span class="pre">Model.anchor_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.classifier"><code class="docutils literal notranslate"><span class="pre">Model.classifier</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.compute_coverage"><code class="docutils literal notranslate"><span class="pre">Model.compute_coverage()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.data"><code class="docutils literal notranslate"><span class="pre">Model.data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.feature_names"><code class="docutils literal notranslate"><span class="pre">Model.feature_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.featurize"><code class="docutils literal notranslate"><span class="pre">Model.featurize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.fit"><code class="docutils literal notranslate"><span class="pre">Model.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.is_seeded"><code class="docutils literal notranslate"><span class="pre">Model.is_seeded()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.is_trained"><code class="docutils literal notranslate"><span class="pre">Model.is_trained()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.load"><code class="docutils literal notranslate"><span class="pre">Model.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.predict"><code class="docutils literal notranslate"><span class="pre">Model.predict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.save"><code class="docutils literal notranslate"><span class="pre">Model.save()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.text_col"><code class="docutils literal notranslate"><span class="pre">Model.text_col</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.training_data"><code class="docutils literal notranslate"><span class="pre">Model.training_data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.model.Model.view"><code class="docutils literal notranslate"><span class="pre">Model.view</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/icat.model.Model.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+  <p class="copyright">
+
+      © Copyright 2023, UT Battelle, LLC.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>

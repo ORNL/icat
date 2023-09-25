@@ -1,0 +1,68 @@
+icat.anchors.DictionaryAnchor
+=============================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: DictionaryAnchor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~DictionaryAnchor.__init__
+      ~DictionaryAnchor.anchor_types
+      ~DictionaryAnchor.debug
+      ~DictionaryAnchor.defaults
+      ~DictionaryAnchor.featurize
+      ~DictionaryAnchor.fire_on_anchor_changed
+      ~DictionaryAnchor.force_new_dynamic_value
+      ~DictionaryAnchor.get_param_values
+      ~DictionaryAnchor.get_value_generator
+      ~DictionaryAnchor.inspect_value
+      ~DictionaryAnchor.load
+      ~DictionaryAnchor.message
+      ~DictionaryAnchor.on_anchor_changed
+      ~DictionaryAnchor.params
+      ~DictionaryAnchor.pprint
+      ~DictionaryAnchor.print_param_defaults
+      ~DictionaryAnchor.print_param_values
+      ~DictionaryAnchor.regex
+      ~DictionaryAnchor.row_view
+      ~DictionaryAnchor.save
+      ~DictionaryAnchor.script_repr
+      ~DictionaryAnchor.set_default
+      ~DictionaryAnchor.set_dynamic_time_fn
+      ~DictionaryAnchor.set_param
+      ~DictionaryAnchor.state_pop
+      ~DictionaryAnchor.state_push
+      ~DictionaryAnchor.to_dict
+      ~DictionaryAnchor.verbose
+      ~DictionaryAnchor.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~DictionaryAnchor.DESCRIPTION
+      ~DictionaryAnchor.NAME
+      ~DictionaryAnchor.anchor_name
+      ~DictionaryAnchor.global_cache
+      ~DictionaryAnchor.in_model
+      ~DictionaryAnchor.in_view
+      ~DictionaryAnchor.keywords
+      ~DictionaryAnchor.keywords_str
+      ~DictionaryAnchor.name
+      ~DictionaryAnchor.param
+      ~DictionaryAnchor.text_col
+      ~DictionaryAnchor.weight
+      ~DictionaryAnchor.cache

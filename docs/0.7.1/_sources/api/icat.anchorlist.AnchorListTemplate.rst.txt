@@ -1,0 +1,92 @@
+icat.anchorlist.AnchorListTemplate
+==================================
+
+.. currentmodule:: icat.anchorlist
+
+.. autoclass:: AnchorListTemplate
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~AnchorListTemplate.__init__
+      ~AnchorListTemplate.add_class
+      ~AnchorListTemplate.add_traits
+      ~AnchorListTemplate.blur
+      ~AnchorListTemplate.class_own_trait_events
+      ~AnchorListTemplate.class_own_traits
+      ~AnchorListTemplate.class_trait_names
+      ~AnchorListTemplate.class_traits
+      ~AnchorListTemplate.close
+      ~AnchorListTemplate.close_all
+      ~AnchorListTemplate.focus
+      ~AnchorListTemplate.get_manager_state
+      ~AnchorListTemplate.get_state
+      ~AnchorListTemplate.get_view_spec
+      ~AnchorListTemplate.handle_comm_opened
+      ~AnchorListTemplate.handle_control_comm_opened
+      ~AnchorListTemplate.has_trait
+      ~AnchorListTemplate.hold_sync
+      ~AnchorListTemplate.hold_trait_notifications
+      ~AnchorListTemplate.notify_change
+      ~AnchorListTemplate.observe
+      ~AnchorListTemplate.on_anchor_removal
+      ~AnchorListTemplate.on_msg
+      ~AnchorListTemplate.on_trait_change
+      ~AnchorListTemplate.on_widget_constructed
+      ~AnchorListTemplate.open
+      ~AnchorListTemplate.remove_class
+      ~AnchorListTemplate.send
+      ~AnchorListTemplate.send_state
+      ~AnchorListTemplate.set_state
+      ~AnchorListTemplate.set_trait
+      ~AnchorListTemplate.setup_instance
+      ~AnchorListTemplate.trait_defaults
+      ~AnchorListTemplate.trait_events
+      ~AnchorListTemplate.trait_has_value
+      ~AnchorListTemplate.trait_metadata
+      ~AnchorListTemplate.trait_names
+      ~AnchorListTemplate.trait_values
+      ~AnchorListTemplate.traits
+      ~AnchorListTemplate.unobserve
+      ~AnchorListTemplate.unobserve_all
+      ~AnchorListTemplate.vue_deleteAnchor
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~AnchorListTemplate.class_component_serialization
+      ~AnchorListTemplate.comm
+      ~AnchorListTemplate.components
+      ~AnchorListTemplate.cross_validation_lock
+      ~AnchorListTemplate.css
+      ~AnchorListTemplate.data
+      ~AnchorListTemplate.events
+      ~AnchorListTemplate.expanded
+      ~AnchorListTemplate.headers
+      ~AnchorListTemplate.height
+      ~AnchorListTemplate.items
+      ~AnchorListTemplate.keys
+      ~AnchorListTemplate.layout
+      ~AnchorListTemplate.log
+      ~AnchorListTemplate.methods
+      ~AnchorListTemplate.model_id
+      ~AnchorListTemplate.processing
+      ~AnchorListTemplate.tabbable
+      ~AnchorListTemplate.template
+      ~AnchorListTemplate.template_file
+      ~AnchorListTemplate.tooltip
+      ~AnchorListTemplate.widget_types
+      ~AnchorListTemplate.widgets
+      ~AnchorListTemplate.width

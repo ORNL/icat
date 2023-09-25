@@ -1,0 +1,22 @@
+﻿icat.histograms
+===============
+
+.. automodule:: icat.histograms
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      Histograms

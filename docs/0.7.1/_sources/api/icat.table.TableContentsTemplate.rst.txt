@@ -1,0 +1,107 @@
+icat.table.TableContentsTemplate
+================================
+
+.. currentmodule:: icat.table
+
+.. autoclass:: TableContentsTemplate
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~TableContentsTemplate.__init__
+      ~TableContentsTemplate.add_class
+      ~TableContentsTemplate.add_traits
+      ~TableContentsTemplate.blur
+      ~TableContentsTemplate.class_own_trait_events
+      ~TableContentsTemplate.class_own_traits
+      ~TableContentsTemplate.class_trait_names
+      ~TableContentsTemplate.class_traits
+      ~TableContentsTemplate.close
+      ~TableContentsTemplate.close_all
+      ~TableContentsTemplate.focus
+      ~TableContentsTemplate.get_manager_state
+      ~TableContentsTemplate.get_state
+      ~TableContentsTemplate.get_view_spec
+      ~TableContentsTemplate.handle_comm_opened
+      ~TableContentsTemplate.handle_control_comm_opened
+      ~TableContentsTemplate.has_trait
+      ~TableContentsTemplate.hold_sync
+      ~TableContentsTemplate.hold_trait_notifications
+      ~TableContentsTemplate.notify_change
+      ~TableContentsTemplate.observe
+      ~TableContentsTemplate.on_add_example
+      ~TableContentsTemplate.on_add_to_sample
+      ~TableContentsTemplate.on_apply_label
+      ~TableContentsTemplate.on_msg
+      ~TableContentsTemplate.on_point_hover
+      ~TableContentsTemplate.on_select_point
+      ~TableContentsTemplate.on_trait_change
+      ~TableContentsTemplate.on_update_options
+      ~TableContentsTemplate.on_widget_constructed
+      ~TableContentsTemplate.open
+      ~TableContentsTemplate.remove_class
+      ~TableContentsTemplate.send
+      ~TableContentsTemplate.send_state
+      ~TableContentsTemplate.set_state
+      ~TableContentsTemplate.set_trait
+      ~TableContentsTemplate.setup_instance
+      ~TableContentsTemplate.trait_defaults
+      ~TableContentsTemplate.trait_events
+      ~TableContentsTemplate.trait_has_value
+      ~TableContentsTemplate.trait_metadata
+      ~TableContentsTemplate.trait_names
+      ~TableContentsTemplate.trait_values
+      ~TableContentsTemplate.traits
+      ~TableContentsTemplate.unobserve
+      ~TableContentsTemplate.unobserve_all
+      ~TableContentsTemplate.vue_addSelectedText
+      ~TableContentsTemplate.vue_addToExampleAnchor
+      ~TableContentsTemplate.vue_addToSample
+      ~TableContentsTemplate.vue_applyAbsoluteLabelInteresting
+      ~TableContentsTemplate.vue_applyAbsoluteLabelUninteresting
+      ~TableContentsTemplate.vue_applyAbsoluteLabelUnlabeled
+      ~TableContentsTemplate.vue_hoverPoint
+      ~TableContentsTemplate.vue_selectPoint
+      ~TableContentsTemplate.vue_updateOptions
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~TableContentsTemplate.class_component_serialization
+      ~TableContentsTemplate.comm
+      ~TableContentsTemplate.components
+      ~TableContentsTemplate.cross_validation_lock
+      ~TableContentsTemplate.css
+      ~TableContentsTemplate.data
+      ~TableContentsTemplate.events
+      ~TableContentsTemplate.example_btn_color
+      ~TableContentsTemplate.example_type_name
+      ~TableContentsTemplate.headers
+      ~TableContentsTemplate.height
+      ~TableContentsTemplate.items
+      ~TableContentsTemplate.keys
+      ~TableContentsTemplate.layout
+      ~TableContentsTemplate.log
+      ~TableContentsTemplate.methods
+      ~TableContentsTemplate.model_id
+      ~TableContentsTemplate.options
+      ~TableContentsTemplate.tabbable
+      ~TableContentsTemplate.template
+      ~TableContentsTemplate.template_file
+      ~TableContentsTemplate.tooltip
+      ~TableContentsTemplate.total_length
+      ~TableContentsTemplate.widget_types
+      ~TableContentsTemplate.widgets
+      ~TableContentsTemplate.width

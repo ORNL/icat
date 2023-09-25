@@ -1,0 +1,68 @@
+icat.anchors.SimilarityAnchorBase
+=================================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: SimilarityAnchorBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~SimilarityAnchorBase.__init__
+      ~SimilarityAnchorBase.anchor_types
+      ~SimilarityAnchorBase.debug
+      ~SimilarityAnchorBase.defaults
+      ~SimilarityAnchorBase.featurize
+      ~SimilarityAnchorBase.fire_on_anchor_changed
+      ~SimilarityAnchorBase.force_new_dynamic_value
+      ~SimilarityAnchorBase.get_param_values
+      ~SimilarityAnchorBase.get_value_generator
+      ~SimilarityAnchorBase.inspect_value
+      ~SimilarityAnchorBase.load
+      ~SimilarityAnchorBase.message
+      ~SimilarityAnchorBase.on_anchor_changed
+      ~SimilarityAnchorBase.params
+      ~SimilarityAnchorBase.pprint
+      ~SimilarityAnchorBase.print_param_defaults
+      ~SimilarityAnchorBase.print_param_values
+      ~SimilarityAnchorBase.remove_by_short
+      ~SimilarityAnchorBase.row_view
+      ~SimilarityAnchorBase.save
+      ~SimilarityAnchorBase.script_repr
+      ~SimilarityAnchorBase.set_default
+      ~SimilarityAnchorBase.set_dynamic_time_fn
+      ~SimilarityAnchorBase.set_param
+      ~SimilarityAnchorBase.state_pop
+      ~SimilarityAnchorBase.state_push
+      ~SimilarityAnchorBase.to_dict
+      ~SimilarityAnchorBase.verbose
+      ~SimilarityAnchorBase.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~SimilarityAnchorBase.DESCRIPTION
+      ~SimilarityAnchorBase.NAME
+      ~SimilarityAnchorBase.anchor_name
+      ~SimilarityAnchorBase.global_cache
+      ~SimilarityAnchorBase.in_model
+      ~SimilarityAnchorBase.in_view
+      ~SimilarityAnchorBase.name
+      ~SimilarityAnchorBase.param
+      ~SimilarityAnchorBase.reference_short
+      ~SimilarityAnchorBase.reference_texts
+      ~SimilarityAnchorBase.text_col
+      ~SimilarityAnchorBase.weight
+      ~SimilarityAnchorBase.cache

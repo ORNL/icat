@@ -1,0 +1,6 @@
+icat.utils.add\_highlights
+==========================
+
+.. currentmodule:: icat.utils
+
+.. autofunction:: add_highlights

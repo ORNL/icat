@@ -1,0 +1,52 @@
+icat.view.InteractiveView
+=========================
+
+.. currentmodule:: icat.view
+
+.. autoclass:: InteractiveView
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~InteractiveView.__init__
+      ~InteractiveView.debug
+      ~InteractiveView.defaults
+      ~InteractiveView.force_new_dynamic_value
+      ~InteractiveView.get_param_values
+      ~InteractiveView.get_value_generator
+      ~InteractiveView.inspect_value
+      ~InteractiveView.message
+      ~InteractiveView.on_selected_points_change
+      ~InteractiveView.params
+      ~InteractiveView.pprint
+      ~InteractiveView.print_param_defaults
+      ~InteractiveView.print_param_values
+      ~InteractiveView.refresh_data
+      ~InteractiveView.script_repr
+      ~InteractiveView.servable
+      ~InteractiveView.set_default
+      ~InteractiveView.set_dynamic_time_fn
+      ~InteractiveView.set_param
+      ~InteractiveView.show
+      ~InteractiveView.state_pop
+      ~InteractiveView.state_push
+      ~InteractiveView.verbose
+      ~InteractiveView.warning
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~InteractiveView.name
+      ~InteractiveView.param

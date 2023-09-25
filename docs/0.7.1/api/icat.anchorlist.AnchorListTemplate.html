@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <link rel="icon" href="../_static/icat_favicon.svg" type="image/svg+xml">
+    <title>icat.anchorlist.AnchorListTemplate &#8212; ICAT 0.7.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/icat.anchorlist.AnchorListTemplate';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://ornl.github.io/icat/stable/_static/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
+        </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="icat.anchors" href="icat.anchors.html" />
+    <link rel="prev" title="icat.anchorlist.AnchorList" href="icat.anchorlist.AnchorList.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+  <div class="navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+
+
+
+
+
+
+    <img src="../_static/icat_medium_full_dark.svg" class="logo__image only-dark" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/icat_medium_full_light.svg" class="logo__image only-light" alt="Logo image"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api_reference.html">
+                        API Reference
+                      </a>
+                    </li>
+
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/ORNL/icat/releases">
+                    Changelog
+                  </a>
+                </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+
+
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://github.com/ORNL/icat" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://pypi.org/project/icat-iml/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      0.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+
+
+
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+
+</div>
+
+    </nav>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+      <div class="bd-sidebar-primary bd-sidebar">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide.html">
+                        User Guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api_reference.html">
+                        API Reference
+                      </a>
+                    </li>
+
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/ORNL/icat/releases">
+                    Changelog
+                  </a>
+                </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://github.com/ORNL/icat" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+
+
+
+
+
+
+
+
+          <a href="https://pypi.org/project/icat-iml/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      0.7.1  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="icat.anchorlist.html">icat.anchorlist</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="icat.anchorlist.AnchorList.html">icat.anchorlist.AnchorList</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">icat.anchorlist.AnchorListTemplate</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.anchors.html">icat.anchors</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.Anchor.html">icat.anchors.Anchor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.DictionaryAnchor.html">icat.anchors.DictionaryAnchor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.SimilarityAnchorBase.html">icat.anchors.SimilarityAnchorBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.anchors.TFIDFAnchor.html">icat.anchors.TFIDFAnchor</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.data.html">icat.data</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.data.DataManager.html">icat.data.DataManager</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.histogram.html">icat.histogram</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.histogram.Histogram.html">icat.histogram.Histogram</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.histograms.html">icat.histograms</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.histograms.Histograms.html">icat.histograms.Histograms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.item.html">icat.item</a><input checked class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.item.HtmlContents.html">icat.item.HtmlContents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.item.ItemViewer.html">icat.item.ItemViewer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.model.html">icat.model</a><input checked class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.model.Model.html">icat.model.Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.table.html">icat.table</a><input checked class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.table.TableContentsTemplate.html">icat.table.TableContentsTemplate</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.utils.html">icat.utils</a><input checked class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.utils.add_highlights.html">icat.utils.add_highlights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icat.utils.populate_anchor_from_dictionary.html">icat.utils.populate_anchor_from_dictionary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="icat.view.html">icat.view</a><input checked class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="icat.view.InteractiveView.html">icat.view.InteractiveView</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="../api_reference.html" class="nav-link">API Reference</a></li>
+
+
+    <li class="breadcrumb-item"><a href="icat.anchorlist.html" class="nav-link">icat.anchorlist</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">icat.anchorlist.AnchorListTemplate</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+
+  <section id="icat-anchorlist-anchorlisttemplate">
+<h1>icat.anchorlist.AnchorListTemplate<a class="headerlink" href="#icat-anchorlist-anchorlisttemplate" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">icat.anchorlist.</span></span><span class="sig-name descname"><span class="pre">AnchorListTemplate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">VuetifyTemplate</span></code></p>
+<p>The ipyvuetify contents of the anchorlist table. This handles all the special considerations
+like the slot for the expanded rows containing the anchor widgets, and the coverage v-html etc.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p>Public constructor</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_class</span></code>(className)</p></td>
+<td><p>Adds a class to the top level element of the widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_traits</span></code>(**traits)</p></td>
+<td><p>Dynamically add trait attributes to the Widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">blur</span></code>()</p></td>
+<td><p>Blur the widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_trait_events</span></code>(name)</p></td>
+<td><p>Get a dict of all event handlers defined on this class, not a parent.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_traits</span></code>(**metadata)</p></td>
+<td><p>Get a dict of all the traitlets defined on this class, not a parent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_trait_names</span></code>(**metadata)</p></td>
+<td><p>Get a list of all the names of this class' traits.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code>(**metadata)</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
+<td><p>Close method.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_all</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus</span></code>()</p></td>
+<td><p>Focus on the widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_manager_state</span></code>([drop_defaults, widgets])</p></td>
+<td><p>Returns the full state for a widget manager for embedding</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code>([key, drop_defaults])</p></td>
+<td><p>Gets the widget state, or a piece of it.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_view_spec</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_comm_opened</span></code>(comm, msg)</p></td>
+<td><p>Static method, called when a widget is constructed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_control_comm_opened</span></code>(comm, msg)</p></td>
+<td><p>Class method, called when the comm-open message on the &quot;jupyter.widget.control&quot; comm channel is received</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code>(name)</p></td>
+<td><p>Returns True if the object has a trait with the specified name.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_sync</span></code>()</p></td>
+<td><p>Hold syncing any state until the outermost context manager exits</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code>()</p></td>
+<td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code>(change)</p></td>
+<td><p>Called when a property has changed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code>(handler[, names, type])</p></td>
+<td><p>Setup a handler to be called when a trait changes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.on_anchor_removal" title="icat.anchorlist.AnchorListTemplate.on_anchor_removal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_anchor_removal</span></code></a>(callback)</p></td>
+<td><p>Register a callback for when the delete button for a row is clicked.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_msg</span></code>(callback[, remove])</p></td>
+<td><p>(Un)Register a custom msg receive callback.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code>([handler, name, remove])</p></td>
+<td><p>DEPRECATED: Setup a handler to be called when a trait changes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_widget_constructed</span></code>(callback)</p></td>
+<td><p>Registers a callback to be called when a widget is constructed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code>()</p></td>
+<td><p>Open a comm to the frontend if one isn't already open.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_class</span></code>(className)</p></td>
+<td><p>Removes a class from the top level element of the widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code>(content[, buffers])</p></td>
+<td><p>Sends a custom msg to the widget model in the front-end.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_state</span></code>([key])</p></td>
+<td><p>Sends the widget state, or a piece of it, to the front-end, if it exists.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code>(sync_data)</p></td>
+<td><p>Called when a state is received from the front-end.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code>(name, value)</p></td>
+<td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code>(**kwargs)</p></td>
+<td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_defaults</span></code>(*names, **metadata)</p></td>
+<td><p>Return a trait's default value or a dictionary of them</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code>([name])</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_has_value</span></code>(name)</p></td>
+<td><p>Returns True if the specified trait has a value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code>(traitname, key[, default])</p></td>
+<td><p>Get metadata values for trait by key.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code>(**metadata)</p></td>
+<td><p>Get a list of all the names of this class' traits.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_values</span></code>(**metadata)</p></td>
+<td><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> of trait names and their values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code>(**metadata)</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code>(handler[, names, type])</p></td>
+<td><p>Remove a trait change handler.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code>([name])</p></td>
+<td><p>Remove trait change handlers of any type for the specified name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.vue_deleteAnchor" title="icat.anchorlist.AnchorListTemplate.vue_deleteAnchor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vue_deleteAnchor</span></code></a>(name)</p></td>
+<td><p>Ipyvuetify event handler for the x-button click.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_component_serialization</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">comm</span></code></p></td>
+<td><p>A trait which allows any value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">components</span></code></p></td>
+<td><p>An instance of a Python dict.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></p></td>
+<td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">css</span></code></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">events</span></code></p></td>
+<td><p>An instance of a Python list.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.expanded" title="icat.anchorlist.AnchorListTemplate.expanded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expanded</span></code></a></p></td>
+<td><p>An instance of a Python list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.headers" title="icat.anchorlist.AnchorListTemplate.headers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">headers</span></code></a></p></td>
+<td><p>An instance of a Python list.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.height" title="icat.anchorlist.AnchorListTemplate.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.items" title="icat.anchorlist.AnchorListTemplate.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a></p></td>
+<td><p>An instance of a Python list.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></p></td>
+<td><p>The traits which are synced.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></p></td>
+<td><p>An instance trait which coerces a dict to an instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">methods</span></code></p></td>
+<td><p>A trait for unicode strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_id</span></code></p></td>
+<td><p>Gets the model id of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.processing" title="icat.anchorlist.AnchorListTemplate.processing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processing</span></code></a></p></td>
+<td><p>A boolean (True, False) trait.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tabbable</span></code></p></td>
+<td><p>Is widget tabbable?</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">template</span></code></p></td>
+<td><p>A trait type representing a Union type.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">template_file</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tooltip</span></code></p></td>
+<td><p>A tooltip caption.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">widget_types</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">widgets</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#icat.anchorlist.AnchorListTemplate.width" title="icat.anchorlist.AnchorListTemplate.width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></a></p></td>
+<td><p>An int trait.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.expanded">
+<span class="sig-name descname"><span class="pre">expanded</span></span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.expanded" title="Permalink to this definition">#</a></dt>
+<dd><p>An instance of a Python list.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.headers">
+<span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.headers" title="Permalink to this definition">#</a></dt>
+<dd><p>An instance of a Python list.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.height">
+<span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.height" title="Permalink to this definition">#</a></dt>
+<dd><p>An int trait.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.items">
+<span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.items" title="Permalink to this definition">#</a></dt>
+<dd><p>An instance of a Python list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.on_anchor_removal">
+<span class="sig-name descname"><span class="pre">on_anchor_removal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.on_anchor_removal" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the delete button for a row is clicked.</p>
+<p>Callbacks should take a single parameter that is the panel name of the anchor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> (<em>Callable</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.processing">
+<span class="sig-name descname"><span class="pre">processing</span></span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.processing" title="Permalink to this definition">#</a></dt>
+<dd><p>A boolean (True, False) trait.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.vue_deleteAnchor">
+<span class="sig-name descname"><span class="pre">vue_deleteAnchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.vue_deleteAnchor" title="Permalink to this definition">#</a></dt>
+<dd><p>Ipyvuetify event handler for the x-button click.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="icat.anchorlist.AnchorListTemplate.width">
+<span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#icat.anchorlist.AnchorListTemplate.width" title="Permalink to this definition">#</a></dt>
+<dd><p>An int trait.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+
+
+
+                <footer class="bd-footer-article">
+
+<div class="footer-article-items footer-article__inner">
+
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="icat.anchorlist.AnchorList.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">icat.anchorlist.AnchorList</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="icat.anchors.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">icat.anchors</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+
+</div>
+
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.expanded"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.expanded</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.headers"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.headers</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.height"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.height</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.items"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.items</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.on_anchor_removal"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.on_anchor_removal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.processing"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.processing</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.vue_deleteAnchor"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.vue_deleteAnchor()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#icat.anchorlist.AnchorListTemplate.width"><code class="docutils literal notranslate"><span class="pre">AnchorListTemplate.width</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/icat.anchorlist.AnchorListTemplate.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+  <p class="copyright">
+
+      © Copyright 2023, UT Battelle, LLC.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>
