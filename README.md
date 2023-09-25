@@ -31,6 +31,10 @@ pip install icat-iml
 
 <!-- usage/examples -->
 
+## Documentation
+
+The user guide and API documentation can be found at [https://ornl.github.io/icat](https://ornl.github.io/icat).
+
 ## Visualization
 
 The primary ring visualization is called AnchorViz, a technique from IML literature. (See Chen, Nan-Chen, et al. "[AnchorViz: Facilitating classifier error discovery through interactive semantic data exploration](https://dl.acm.org/doi/abs/10.1145/3172944.3172950)")

@@ -83,7 +83,7 @@ html_theme_options = {
         "version_match": release,
     },
     "check_switcher": False,
-    "navbar_end": ["theme-switcher", "navbar-icon-links", "version-switcher"],
+    "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "show_version_warning_banner": True,
 }
 
