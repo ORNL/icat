@@ -41,7 +41,7 @@ def add_highlights(text: str, regex: str, color: str = "yellow") -> str:
 
     Args:
         text (str): The text to add highlights to.
-        regex (str): The regular expression to search for and sub in the text. Note that
+        regex (str): The regular expression to search for and sub in the text. Note that \
             this needs to have one capture group, so the regex should be wrapped in '()'.
         color (str): The background color to highlight the text with.
 

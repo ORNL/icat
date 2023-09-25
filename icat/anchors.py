@@ -32,11 +32,11 @@ class Anchor(param.Parameterized):
     """The main parent anchor class, this should be subclassed, not directly used.
 
     Args:
-        container (AnchorList): The anchor list that this anchor is a part of. If
-            you are creating the anchor manually, leave this None, it will get
+        container (AnchorList): The anchor list that this anchor is a part of. If \
+            you are creating the anchor manually, leave this None, it will get \
             populated automatically.
         anchor_name (str): The label to show for this anchor.
-        weight (float): Scalar multiple to apply to the output feature, this modifies
+        weight (float): Scalar multiple to apply to the output feature, this modifies \
             how strongly a particular feature is likely to influence the model.
         in_view (bool): Whether to show this anchor in anchorviz.
         in_model (bool): Whether to include this feature in the training process.
@@ -239,9 +239,9 @@ class DictionaryAnchor(Anchor):
     number of occurrences of each word in the given keywords.
 
     Args:
-        container (AnchorList): The containing anchor list parent instance.
-            This can usually be left ``None`` if defining an anchor manually,
-            any time ``add_anchor`` is called, the anchor list will take care
+        container (AnchorList): The containing anchor list parent instance. \
+            This can usually be left ``None`` if defining an anchor manually, \
+            any time ``add_anchor`` is called, the anchor list will take care \
             of setting this on all children anchors.
 
     Example:

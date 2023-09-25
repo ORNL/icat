@@ -29,7 +29,10 @@ class Model:
     Args:
         data (pd.DataFrame): The data to explore with.
         text_col (str): The name of the text column in the passed data.
-        default_sample_size (int): The initial number of points to sample for the
+        anchor_types (list[type | dict[str, any]]): The list of class types of \
+            anchors to initially include in the interface. (This can be modified \
+            after initialization through the ``anchor_list``.)
+        default_sample_size (int): The initial number of points to sample for the \
             visualizations.
     """
 
@@ -52,19 +55,25 @@ class Model:
         self.training_data: pd.DataFrame = None
         """The rows (and only those rows) of the original data explicitly used for training."""
         self.text_col = text_col
+        """The column in the dataframe with the text to explore."""
 
         self.classifier: LogisticRegression = LogisticRegression(
             class_weight="balanced"
         )
+        """The underlying machine learning algorithm that learns based on the training data."""
 
         self.anchor_list: AnchorList = AnchorList(model=self, anchor_types=anchor_types)
+        """The ``AnchorList`` instance that manages all features/featuring necessary for
+        the classifier."""
         self.data: DataManager = DataManager(
             data=data,
             text_col=text_col,
             model=self,
             default_sample_size=default_sample_size,
         )
+        """The ``DataManager`` instance that handles all labeling tasks and data filtering/sampling."""
         self.view: InteractiveView = InteractiveView(model=self)
+        """The ``InteractiveView`` or dashboard widget that glues together the various visual components."""
 
         # set up necessary behind-the-scenes glue for anchors and data
         self.anchor_list.on_anchor_added(self._on_anchor_add)
@@ -204,8 +213,8 @@ class Model:
 
         Returns:
             A dictionary where each key is the panel id of the anchor, and the value
-            is a dictionary with the statistics: 'total', 'pos', 'neg', 'total_pct',
-            'pos_pct', and 'neg_pct'
+            is a dictionary with the statistics: ``'total'``, ``'pos'``, ``'neg'``,
+            ``'total_pct'``, ``'pos_pct'``, and ``'neg_pct'``
         """
         features = self.data.active_data.loc[:, self.feature_names()].values
         predictions = (
@@ -252,7 +261,7 @@ class Model:
 
         Returns:
             False if the label column doesn't exist, there's fewer than 10 labeled points,
-                or there's only one class of label.
+            or there's only one class of label.
         """
         if self.training_data is None or self.data.label_col not in self.training_data:
             # no labels!
@@ -276,13 +285,13 @@ class Model:
         normalize_reference: pd.DataFrame | None = None,
     ) -> pd.DataFrame:
         """Run the anchors - calculates the output features for each anchor and adds the corresponding "weights" column
-        to the dataframe. These are the values that the classifier uses.
+        to the dataframe. These are the values that the classifier uses to make its predictions.
 
         Args:
             data (pd.DataFrame): The data to apply the anchors to. Uses the exploration data if not specified.
             normalize (bool): Whether to apply l1 normalization to the output values.
-            normalize_reference (Optional[pd.DataFrame]): A different dataframe whose features to sum for the L1 norm, this
-                is used with the model's separate training data versus full dataset, since the normed values of just the
+            normalize_reference (Optional[pd.DataFrame]): A different dataframe whose features to sum for the L1 norm, this \
+                is used with the model's separate training data versus full dataset, since the normed values of just the \
                 training data would be vastly different than within the full set.
 
         Returns:
@@ -334,7 +343,7 @@ class Model:
         """Provides a list of the feature column names in use in the data manager.
 
         Args:
-            in_model_only (bool): Only include anchors whose ``in_model`` value is
+            in_model_only (bool): Only include anchors whose ``in_model`` value is \
                 ``True``.
         """
         # TODO: conditional for if it's enabled in model?
@@ -360,7 +369,7 @@ class Model:
             to be re-fit multiple times.)
 
         Args:
-            data (Optional[pd.DataFrame]): If not specified, use the previously set training data,
+            data (Optional[pd.DataFrame]): If not specified, use the previously set training data, \
                 otherwise predict on this data.
             inplace (bool): Whether to operate directly on the passed data or create a copy of it.
 
@@ -453,7 +462,7 @@ class Model:
             int(i) for i in model_information["icat_version"].split(".")
         )
         major, minor, patch = (int(i) for i in icat.__version__.split("."))
-        if major != saved_major or saved_minor < 7:
+        if major != saved_major or (saved_minor < 7 and saved_major < 1):
             print("ERROR - Model was saved with incompatible version of icat")
             return None
 

@@ -247,12 +247,12 @@ class AnchorList(pn.viewable.Viewer):
     Args:
         model: The parent model.
         table_width (int): Static width of the visual component table.
-        table_height (int): Static height of the visual component table.
+        table_height (int): Static height of the visual component table. \
             (Currently unused)
-        anchor_types (list[type | dict[str, any]]): The anchor types to start the
-            interface with. This list can contain a combination of types and
-            dictionaries with keys ``ref`` (containing the type), ``name`` (display
-            name) and ``color`` (the color to render anchors of this type with.)
+        anchor_types (list[type | dict[str, any]]): The anchor types to start the \
+            interface with. This list can contain a combination of types and \
+            dictionaries with keys ``ref`` (containing the type), ``name`` (display \
+            name) and ``color`` (the color to render anchors of this type with.) \
             If left None (the default), will add ``DictionaryAnchor`` and ``TFIDFAnchor``.
     """
 
@@ -585,8 +585,8 @@ class AnchorList(pn.viewable.Viewer):
         from the anchor's individual on_anchor_changed events
 
         Args:
-            name (str): the *internal name* that panel is using, which we're using as
-            the anchor id.
+            name (str): the *internal name* that panel is using, which we're using as \
+                the anchor id.
             key (str): the name of the property being changed.
             value (any): The value the property was changed to.
         """
@@ -886,9 +886,9 @@ class AnchorList(pn.viewable.Viewer):
         """Add multiple anchor types to the UI.
 
         Args:
-            anchor_types (list[type|dict[str, any]]): the list of anchor types
-                to add, this can consist of a combination of straight class types
-                and dictionaries containing ``ref`` (the class type), ``name``,
+            anchor_types (list[type|dict[str, any]]): the list of anchor types \
+                to add, this can consist of a combination of straight class types \
+                and dictionaries containing ``ref`` (the class type), ``name``, \
                 and ``color``.
 
         Example:
@@ -916,7 +916,7 @@ class AnchorList(pn.viewable.Viewer):
         Args:
             anchor_type (type): The class type (of subclass ``Anchor``) to register.
             name (str): The name to associate with the type in the UI.
-            color (str): The hex color to use in the CSS for rows in the anchorlist
+            color (str): The hex color to use in the CSS for rows in the anchorlist \
                 and anchors in anchorviz for this anchor type.
         """
         if name is not None:
@@ -1146,9 +1146,9 @@ class AnchorList(pn.viewable.Viewer):
         """Set the anchor coverage data, to be updated and displayed in the table.
 
         Args:
-            coverage_info (dict[str, dict[str, Union[int, float]]]): Dictionary (keys
-                being the anchor panel ids) and the value being a dictionary with the
-                "row" of data to display in the table.  Keys expected: "total", "pos",
+            coverage_info (dict[str, dict[str, Union[int, float]]]): Dictionary (keys \
+                being the anchor panel ids) and the value being a dictionary with the \
+                "row" of data to display in the table.  Keys expected: "total", "pos", \
                 "neg", "total_pct", "pos_pct", "neg_pct"
         """
         self.coverage_info = coverage_info

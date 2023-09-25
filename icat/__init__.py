@@ -64,7 +64,7 @@ def initialize(offline: bool = False):
     for the stylesheets to correctly apply to some of the ipyvuetify datatables.
 
     Args:
-        offline (bool): If set to true, will configure panel to draw js/css resources from
+        offline (bool): If set to true, will configure panel to draw js/css resources from \
             local packages rather than hitting a CDN for them.
     """
     pn.extension("vega", inline=offline)

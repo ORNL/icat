@@ -108,10 +108,6 @@ class InteractiveView(pn.viewable.Viewer):
             anchor.theta if hasattr(anchor, "theta") else random.uniform(0, 2 * 3.14)
         )
         anchor_dict = dict(id=anchor.name, name=anchor.anchor_name, theta=theta)
-        # if type(anchor) == TFIDFAnchor:
-        #     anchor_dict["color"] = "#8e24aa"
-        # elif type(anchor) == SimilarityFunctionAnchor:
-        #     anchor_dict["color"] = "#248eaa"
         anchor_dict["color"] = self.model.anchor_list.get_anchor_type_config(
             type(anchor)
         )["color"]
@@ -281,6 +277,7 @@ class InteractiveView(pn.viewable.Viewer):
         self._selected_points_change_callbacks.append(callback)
 
     def refresh_data(self):
+        """Refresh all components with the latest active_data from parent model's ``DataManager``."""
         self.anchorviz.set_points(self._serialize_data_to_dicts())
         self.model.data.item_viewer.populate(self.model.data.item_viewer.index)
         self.histograms.refresh_data(self.model.data)

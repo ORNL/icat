@@ -22,6 +22,16 @@ indicates what is "interesting" verus "uninteresting". In practice, models can
 be combined to achieve multi class predictions, or models can be used in sequence
 to allow creating a chain of filters.
 
+An ICAT model can be initialized by passing the dataset as a pandas dataframe
+and the name of the column with the text to feature on:
+
+.. code-block:: python
+
+    import icat
+    icat.initialize()
+
+    model = icat.Model(my_data_df, "text_col")
+
 Anchors
 =======
 
@@ -44,6 +54,18 @@ configure it, which show up in the :ref:`Anchor list`
 ICAT comes with several pre-defined anchors, (the ``DictionaryAnchor`` and
 ``TFIDFAnchor`` as defined above)
 
+Anchors can be added in the interface by clicking on the associated anchor
+type button in the anchorlist, or by programmatic definition:
+
+.. code-block:: python
+
+    import icat
+    icat.initialize()
+    model = icat.Model(my_data_df, "text_col")
+
+    some_anchor = icat.DictionaryAnchor(anchor_name="news", keywords=["news"])
+    model.add_anchor(some_anchor)
+
 Labelling
 =========
 
@@ -60,3 +82,15 @@ reflect this - orange indicates "interesting" and blue indicates "uninteresting"
 
 Once a model has been seeded, all labelling and anchor modifications the user
 makes retrain the model from scratch and updates the corresponding predictions.
+
+Labelling can be done either with the available buttons in the data manager/item
+viewer, or programmatically:
+
+.. code-block:: python
+
+    import icat
+    icat.initialize()
+    model = icat.Model(my_data_df, "text_col")
+
+    model.data.apply_label(42, 1)  # label index 42 as "interesting"
+    model.data.apply_label(13, 0)  # label index 13 as "uninteresting"

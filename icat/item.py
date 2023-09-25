@@ -27,7 +27,14 @@ class HtmlContents(v.VuetifyTemplate):
 
 class ItemViewer(pn.viewable.Viewer):
     """Interface for viewing and labeling a single item, useful for looking
-    at more than just a snippet of the full text."""
+    at more than just a snippet of the full text.
+
+    Args:
+        index (int): The row index of the entry in the dataframe to view.
+        width (int): The width of the rendered card.
+        height (int): The height of the rendered card.
+        data (DataManager): The parent data manager to pull the item from.
+    """
 
     def __init__(
         self,
@@ -153,7 +160,12 @@ class ItemViewer(pn.viewable.Viewer):
     def populate(self, index: int):
         """Fill or update all of the fields for the given index. This
         should be called anytime the model updates, or when the user
-        clicks/requests to view a new instance."""
+        clicks/requests to view a new instance.
+
+        Args:
+            index (int): The row index of the item to display from parent \
+                DataManager's active_data.
+        """
         if self.data.active_data is None:
             return
 

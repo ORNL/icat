@@ -11,6 +11,10 @@ _kill_param_auto_docstring()
 
 
 class TableContentsTemplate(v.VuetifyTemplate):
+    """The primary table used in the ``DataManager`` class. This is a heavily modified vuetify
+    DataTable, largely necessary for us to be able to put a more comprehensive set of action
+    buttons in each row."""
+
     items = traitlets.List(traitlets.Dict()).tag(sync=True)
     headers = traitlets.List(traitlets.Dict()).tag(
         sync=True
@@ -35,13 +39,6 @@ class TableContentsTemplate(v.VuetifyTemplate):
         self._add_example_callbacks: list[Callable] = []
 
         super().__init__(*args, **kwargs)
-
-        # self.on_msg(lambda widget, content, buffers: print(content))
-
-    #     self._add_selected_text_callbacks: list[Callable]
-    #     self._select_point_callbacks: list[Callable]
-    #     self._apply_label_callbacks: list[Callable]
-    #     self._update_options_callbacks: list[Callable]
 
     def on_apply_label(self, callback: callable):
         """Expect a point id and a label value (0 or 1)"""
