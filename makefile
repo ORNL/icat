@@ -22,7 +22,7 @@ apply-docs:
 	-@rm -rf docs/$(VERSION)
 	@cp -r sphinx/build/html docs/$(VERSION)
 	@echo "Linking to docs/stable"
-	@ln -s $(VERSION) docs/stable
+	@ln -s $(VERSION)/ docs/stable
 
 
 .PHONY: publish
