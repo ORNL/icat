@@ -11,7 +11,7 @@ def test_thingy(page: Page):
     expect(page).to_have_title(re.compile("Playwright"))
 
 
-def test_jupyter(jupyter_server, page):  # noqa: F401
+def test_jupyter(jupyter_server, page):
     page.goto("http://localhost:9997/lab?reset")
     expect(page).to_have_title(re.compile("JupyterLab"))
 
