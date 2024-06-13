@@ -41,7 +41,7 @@ clean: ## remove auto generated cruft files
 
 .PHONY: test
 test: ## run unit tests
-	pytest
+	pytest -s
 
 .PHONY: test_debug
 test_debug: ## run unit tests with playwright debugging enabled

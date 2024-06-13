@@ -1,7 +1,6 @@
 import os
 import shutil
 import subprocess
-import time
 
 import pandas as pd
 import pytest
@@ -81,9 +80,15 @@ def jupyter_server():
     process = subprocess.Popen(
         "jupyter lab ./notebooks --port 9997 --NotebookApp.token='' --NotebookApp.disable_check_xsrf='True' --no-browser",
         shell=True,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1,
     )
+    for line in process.stderr:
+        if "http://127.0.0.1:9997/lab" in line:
+            break
+
     # process = subprocess.Popen("jupyter lab --port 9997 --NotebookApp.token=''", shell=True)
-    time.sleep(2)
     yield
     process.kill()
     os.system("jupyter lab stop 9997")

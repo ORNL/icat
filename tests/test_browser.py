@@ -1,5 +1,4 @@
 import re
-import time
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -14,7 +13,6 @@ def test_thingy(page: Page):
 
 @pytest.mark.playwright
 def test_jupyter(jupyter_server, page):
-    time.sleep(5)
     page.goto("http://127.0.0.1:9997/lab?reset")
     expect(page).to_have_title(re.compile("JupyterLab"))
 
