@@ -10,6 +10,7 @@ help:
 	@echo "style 		: executes style formatting."
 	@echo "clean 		: cleans all unnecessary files."
 	@echo "test 		: runs unit tests."
+	@echo "test 		: runs unit tests with playwright debugging."
 
 .PHONY: pre-commit
 pre-commit:
@@ -47,3 +48,7 @@ clean:
 .PHONY: test
 test:
 	pytest
+
+.PHONY: test_debug
+test_debug:
+	PWDEBUG=1 pytest -s

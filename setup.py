@@ -42,6 +42,7 @@ setup(
     packages=["icat"],
     install_requires=[
         "panel",
+        "pyviz_comms<3",
         "numpy",
         "pandas",
         "scikit-learn",
@@ -49,5 +50,7 @@ setup(
         "ipywidgets",
         "ipyanchorviz",
         "altair",
+        "jupyter_bokeh",
+        "ipywidgets-bokeh",
     ],
 )

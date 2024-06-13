@@ -1,5 +1,7 @@
 import os
 import shutil
+import subprocess
+import time
 
 import pandas as pd
 import pytest
@@ -71,3 +73,29 @@ def data_file_loc():
     os.makedirs("test/exampledata", exist_ok=True)
     yield "test/exampledata/thing"
     shutil.rmtree("test/exampledata", ignore_errors=True)
+
+
+@pytest.fixture
+def jupyter_server():
+    # os.system("jupyter lab --port 9997 --NotebookApp.token='' --NotebookApp.disable_check_xsrf='True'")
+    process = subprocess.Popen(
+        "jupyter lab ./notebooks --port 9997 --NotebookApp.token='' --NotebookApp.disable_check_xsrf='True' --no-browser",
+        shell=True,
+    )
+    # process = subprocess.Popen("jupyter lab --port 9997 --NotebookApp.token=''", shell=True)
+    time.sleep(2)
+    yield
+    process.kill()
+    os.system("jupyter lab stop 9997")
+    # app = jupyterlab_server.app.LabServerApp(settings={
+    #     "ServerApp": {
+    #         "token": "",
+    #         "port": 9988,
+    #     },
+    # })
+    # app.ma
+    # yield
+    # app.stop()
+
+    # ServerApp.root_dir =
+    # ServerApp.token = ""
