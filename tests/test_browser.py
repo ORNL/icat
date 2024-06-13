@@ -11,8 +11,9 @@ def test_thingy(page: Page):
     expect(page).to_have_title(re.compile("Playwright"))
 
 
+@pytest.mark.playwright
 def test_jupyter(jupyter_server, page):
-    page.goto("http://localhost:9997/lab?reset")
+    page.goto("http://127.0.0.1:9997/lab?reset")
     expect(page).to_have_title(re.compile("JupyterLab"))
 
     page.get_by_text("simple_example.ipynb").dblclick()
