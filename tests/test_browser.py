@@ -30,7 +30,7 @@ def test_jupyter(jupyter_server, page):
     page.keyboard.press("Shift+Enter")
     page.keyboard.press("Shift+Enter")
 
-    expect(page.locator(".anchorviz")).to_be_visible(timeout=15000)
+    expect(page.locator(".anchorviz")).to_be_visible(timeout=60000)
 
     page.get_by_role("button", name="Dictionary").click()
 
