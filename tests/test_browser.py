@@ -31,3 +31,11 @@ def test_jupyter(jupyter_server, page):
     page.keyboard.press("Shift+Enter")
 
     expect(page.locator(".anchorviz")).to_be_visible(timeout=15000)
+
+    page.get_by_role("button", name="Dictionary").click()
+
+    expect(page.locator("div.v-data-table.softhover-table").all()[1]).to_be_visible()
+    # inner_tables = page.locator(".softhover-table").all()
+    # assert len(inner_tables) > 0
+    # for table in inner_tables:
+    #     expect(table).to_be_visible()

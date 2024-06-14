@@ -1,6 +1,7 @@
 # https://madewithml.com/courses/mlops/makefile
 SHELL = /bin/bash
 VERSION := $(shell python -c "import icat; print(icat.__version__)")
+MM_INIT = eval "$$(micromamba shell hook --shell bash)"
 
 .PHONY: help
 help: ## display all the make commands
@@ -46,3 +47,10 @@ test: ## run unit tests
 .PHONY: test_debug
 test_debug: ## run unit tests with playwright debugging enabled
 	PWDEBUG=1 pytest -s
+
+
+.PHONY: scratch
+scratch: ## build an environment completely from scratch and run tests
+	-micromamba env remove -n icat-scratch -y
+	micromamba create -n icat-scratch python -y
+	$(MM_INIT) && micromamba activate icat-scratch && pip install -e . && pip install -r requirements.txt && playwright install && pytest -s
