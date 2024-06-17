@@ -48,11 +48,11 @@ setup(
     #     "scikit-learn",
     #     "ipyanchorviz",
     #     "altair",
-    #     #"jupyter_bokeh",
-    #     #"ipywidgets-bokeh",
+    #     "jupyter_bokeh",
+    #     "ipywidgets-bokeh",
     #     "ipyvuetify",
-    #     "ipywidgets==8.1.2",
-    #     "jupyterlab-widgets==3.0.10",
+    #     "ipywidgets<8.1.3",
+    #     "jupyterlab-widgets<3.0.11",
     # ],
     install_requires=[
         "panel<1.2",
@@ -71,5 +71,7 @@ setup(
         "jupyterlab==4.1.2",
         "jupyterlab_server==2.23.0",
         "jupyterlab-widgets==3.0.7",
+        "ipywidgets-bokeh",
+        "jupyter_bokeh",
     ],
 )
