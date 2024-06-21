@@ -12,6 +12,7 @@
 [![PyPI version](https://badge.fury.io/py/icat-iml.svg)](https://badge.fury.io/py/icat-iml)
 [![tests](https://github.com/ORNL/icat/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/ORNL/icat/actions/workflows/tests.yml)
 [![License](https://img.shields.io/pypi/l/curifactory)](https://github.com/ORNL/curifactory/blob/main/LICENSE)
+[![status](https://joss.theoj.org/papers/0528d60ff4f251069d15456fdb83bd0f/status.svg)](https://joss.theoj.org/papers/0528d60ff4f251069d15456fdb83bd0f)
 
 
 
