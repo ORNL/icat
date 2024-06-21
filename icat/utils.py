@@ -1,5 +1,6 @@
 """Utility functions that are needed in multiple places."""
 
+import importlib.resources
 import re
 
 
@@ -59,3 +60,20 @@ def add_highlights(text: str, regex: str, color: str = "yellow") -> str:
         text,
         flags=re.IGNORECASE,
     )
+
+
+def vue_template_path(filename: str) -> str:
+    """Get the path to the package "data resource" that is the requested vue template file.
+
+    Args:
+        filename (str): The name of the template file in the vue folder, e.g ``rawwidget.vue``
+
+    Returns:
+        The full package resource file path for the specified vue file.
+    """
+    path = None
+    with importlib.resources.as_file(
+        importlib.resources.files("icat") / "vue" / filename
+    ) as template_file_path:
+        path = str(template_file_path)
+    return path

@@ -1,14 +1,7 @@
 import re
 
 import pytest
-from playwright.sync_api import Page, expect
-
-
-@pytest.mark.playwright
-@pytest.mark.skip
-def test_thingy(page: Page):
-    page.goto("https://playwright.dev/")
-    expect(page).to_have_title(re.compile("Playwright"))
+from playwright.sync_api import expect
 
 
 @pytest.mark.playwright
@@ -30,7 +23,8 @@ def test_jupyter(jupyter_server, page):
     page.keyboard.press("Shift+Enter")
     page.keyboard.press("Shift+Enter")
 
-    expect(page.locator(".anchorviz")).to_be_visible(timeout=120000)
+    page.mouse.wheel(0, 1000)
+    expect(page.locator(".anchorviz")).to_be_visible(timeout=60000)
 
     page.get_by_role("button", name="Dictionary").click()
 
