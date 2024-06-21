@@ -21,10 +21,10 @@ def test_jupyter(jupyter_server, page):
     page.keyboard.press("Shift+Enter", delay=1000)
     page.keyboard.press("Shift+Enter", delay=1000)
     page.keyboard.press("Shift+Enter", delay=1000)
-    page.keyboard.press("Shift+Enter", delay=1000)
+    page.keyboard.press("Shift+Enter", delay=5000)
 
     page.mouse.wheel(0, 1000)
-    expect(page.locator(".anchorviz")).to_be_visible(timeout=240000)
+    expect(page.locator(".anchorviz")).to_be_visible(timeout=120000)
 
     page.get_by_role("button", name="Dictionary").click()
 

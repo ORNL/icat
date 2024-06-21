@@ -22,7 +22,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          #pip install -r requirements.txt
+          pip install -e .
+          pip install pytest-playwright jupyterlab
           playwright install
       - name: Test with pytest
         run: pytest -vv -s --tracing retain-on-failure
