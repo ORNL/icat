@@ -25,4 +25,10 @@ jobs:
           pip install -r requirements.txt
           playwright install
       - name: Test with pytest
-        run: pytest -vv -s
+        run: pytest -vv -s --tracing retain-on-failure
+      - name: Archive failed playwright traces
+        uses: actions/upload-artifact@v4
+        with:
+          name: traces
+          path: |
+            test-results
