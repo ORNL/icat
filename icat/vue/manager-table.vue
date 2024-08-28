@@ -72,7 +72,7 @@
 
 <style id='manager-table-styles'>
 .softhover-table table tbody tr:hover {
-  background-color: #333333 !important;
+  background-color: #AAAAAA22 !important;
 }
 .softhover-table table thead tr th {
   padding-left: 5px !important;
