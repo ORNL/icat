@@ -13,7 +13,9 @@ def test_jupyter(jupyter_server, page):
     expect(page.locator("#Simple-Example")).to_be_visible()
 
     # page.locator("div#jp-main-dock-panel > div.lm-Widget.jp-Editor.jp-InputArea-editor").first.click()
-    page.get_by_label("Code Cell Content", exact=True).first.click()
+    # page.get_by_label("Code Cell Content", exact=True).first.click()
+    page.locator("#Simple-Example").click()
+    page.keyboard.press("Shift+Enter", delay=1000)
     page.keyboard.press("Shift+Enter", delay=1000)
     page.keyboard.press("Shift+Enter", delay=1000)
     page.keyboard.press("Shift+Enter", delay=1000)

@@ -1,11 +1,21 @@
-# https://madewithml.com/courses/mlops/makefile
-SHELL = /bin/bash
-VERSION := $(shell python -c "import icat; print(icat.__version__)")
-MM_INIT = eval "$$(micromamba shell hook --shell bash)"
+SHELL=/usr/bin/env bash
+VERSION=$(shell python -c "import icat; print(icat.__version__)")
+MM_INIT=eval "$$(micromamba shell hook --shell bash)"
+MAMBA=micromamba
+ENV_NAME=icat
 
 .PHONY: help
 help: ## display all the make commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: setup
+setup: ## make a dev environment for this project from scratch (vars: MAMBA, ENV_NAME)
+	-$(MAMBA) env remove -n $(ENV_NAME) -y
+	$(MAMBA) env create -n $(ENV_NAME) -f environment.yml -y
+	$(MAMBA) run -n $(ENV_NAME) pip install -r requirements.txt
+	$(MAMBA) run -n $(ENV_NAME) playwright install
+	$(MAMBA) run -n $(ENV_NAME) pre-commit install
+	@echo -e "Environment created, activate with:\n\n$(MAMBA) activate $(ENV_NAME)"
 
 .PHONY: pre-commit
 pre-commit: ## run all pre-commit checks
