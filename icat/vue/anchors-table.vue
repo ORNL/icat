@@ -15,7 +15,8 @@
     <template v-slot:item="{ item, expand, isExpanded }">
       <!--<tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/40%) 0 0)' }">-->
       <!--<tr>-->
-      <tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(50 50 50/95%) 0 0)' }">
+      <!--<tr :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(50 50 50/95%) 0 0)' }">-->
+      <tr :style="{ backgroundColor: item.color }">
         <td>
           <v-btn icon x-small @click="expand(!isExpanded)" :style="{ backgroundColor: item.color }">
             <v-icon v-if="isExpanded" style="margin-left: -1px; margin-top: 1px;">mdi-chevron-down</v-icon>
@@ -45,7 +46,8 @@
     </template>
 
     <template v-slot:expanded-item="{ headers, item }">
-      <tr class="v-data-table__expanded__content" :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/80%) 0 0)' }">
+      <!--<tr class="v-data-table__expanded__content" :style="{ backgroundColor: item.color, backgroundImage: 'linear-gradient(rgb(0 0 0/80%) 0 0)' }">-->
+      <tr class="v-data-table__expanded__content" :style="{ backgroundColor: item.color }">
         <td :colspan="headers.length+1">
           <jupyter-widget :widget="item.widget" />
         </td>
@@ -56,24 +58,37 @@
 
 <style id='anchor-table-styles'>
 .softhover-table table tbody tr:hover {
-  background-color: #333333 !important;
+  background-color: #AAAAAA22 !important;
 }
 
 .delete-button {
   margin: 0px;
   margin-left: 6px;
-  color: var(--md-grey-500) !important;
+  color: var(--md-grey-200) !important;
 }
 .delete-button:hover {
   color: var(--md-red-500) !important;
 }
 
-.striped-table tbody tr:nth-child(even) {
+.striped-table.theme--light tbody tr {
+  background-image: linear-gradient(rgb(255 255 255/50%) 0 0) !important;
+}
+.striped-table.theme--light tbody tr.v-data-table__expanded__content {
+  background-image: linear-gradient(rgb(200 200 200/25%) 0 0) !important;
+}
+.striped-table.theme--dark tbody tr {
+  background-image: linear-gradient(rgb(50 50 50/60%) 0 0) !important;
+}
+.striped-table.theme--dark tbody tr.v-data-table__expanded__content {
+  background-image: linear-gradient(rgb(0 0 0/50%) 0 0) !important;
+}
+
+/*.striped-table tbody tr:nth-child(even) {
   background-color: rgba(0, 0, 0, 0.35);
-}
-.striped-table .v-data-table__expanded__content td {
+}*/
+/*.striped-table .v-data-table__expanded__content td {*/
   /*background-color: #263238; */
-}
+/*}*/
 
 .dense-table .row {
   flex-wrap: nowrap;
