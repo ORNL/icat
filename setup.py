@@ -47,7 +47,7 @@ setup(
         "numpy",
         "pandas",
         "scikit-learn",
-        "ipyanchorviz",
+        "ipyanchorviz~=0.3.0",
         "altair",
         "jupyter_bokeh",
         "ipywidgets-bokeh",

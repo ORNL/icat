@@ -138,4 +138,9 @@ div .v-progress-linear {
 :host {
   --selectedAnchorColor: #FFF;
 }
+
+body[data-jp-theme-light="true"] {
+  --ringFill: #AAA;
+  --textColor: black;
+}
 </style>
