@@ -139,7 +139,7 @@ div .v-progress-linear {
   --selectedAnchorColor: #FFF;
 }
 
-body[data-jp-theme-light="true"] {
+body[data-jp-theme-light="true"], body.notebook_app {
   --ringFill: #AAA;
   --textColor: black;
 }
