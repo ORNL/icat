@@ -20,7 +20,7 @@ The Interactive Corpus Analysis Tool (ICAT) is an interactive machine learning (
 
 ![ICAT Screenshot](https://raw.githubusercontent.com/ORNL/icat/main/sphinx/source/_static/screenshot1.png)
 
-ICAT is implemented using holoviz's [panel](https://panel.holoviz.org/) library, so it can either directly be rendered like a widget in a jupyter lab/notebook instance, or incorporated as part of a standalone panel website.
+ICAT is implemented using holoviz's [panel](https://panel.holoviz.org/) library, so it can either directly be rendered like a widget in a jupyter lab instance, or incorporated as part of a standalone panel website.
 
 ## Installation
 
