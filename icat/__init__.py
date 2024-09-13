@@ -45,7 +45,7 @@ from icat import (
 from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 from icat.model import Model
 
-__version__ = "0.7.3"
+__version__ = "0.7.4"
 
 
 def initialize(offline: bool = False):
