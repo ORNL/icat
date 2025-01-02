@@ -295,6 +295,7 @@ class DataManager(pn.viewable.Viewer):
         self._data_label_callbacks: list[Callable] = []
         self._row_selected_callbacks: list[Callable] = []
         self._sample_changed_callbacks: list[Callable] = []
+        self._data_changed_callbacks: list[Callable] = []
 
         super().__init__(**params)  # required for panel components
         # Note that no widgets can be declared _after_ the above, or their values won't be
@@ -452,6 +453,14 @@ class DataManager(pn.viewable.Viewer):
         """
         self._row_selected_callbacks.append(callback)
 
+    def on_data_changed(self, callback: Callable):
+        """Register a callback function for the "data changed" event, when the
+        active_data dataframe is switched out.
+
+        Callbacks for this event should take no parameters.
+        """
+        self._data_changed_callbacks.append(callback)
+
     @param.depends("sample_indices", watch=True)
     def fire_on_sample_changed(self):
         for callback in self._sample_changed_callbacks:
@@ -464,6 +473,10 @@ class DataManager(pn.viewable.Viewer):
     def fire_on_row_selected(self, index: int):
         for callback in self._row_selected_callbacks:
             callback(index)
+
+    def fire_on_data_changed(self):
+        for callback in self._data_changed_callbacks:
+            callback()
 
     # ============================================================
     # INTERNAL FUNCTIONS
@@ -697,6 +710,8 @@ class DataManager(pn.viewable.Viewer):
         # add any missing columns
         if self.label_col not in self.active_data:
             self.active_data[self.label_col] = -1
+
+        self.fire_on_data_changed()
 
         self.set_random_sample()
         # TODO: seems weird to handle this here

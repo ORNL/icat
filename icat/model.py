@@ -80,6 +80,7 @@ class Model:
         self.anchor_list.on_anchor_removed(self._on_anchor_remove)
         self.anchor_list.on_anchor_changed(self._on_anchor_change)
         self.data.on_data_labeled(self._on_data_label)
+        self.data.on_data_changed(self._on_data_changed)
         self.view.on_selected_points_change(self._on_selected_points_change)
 
         self._last_anchor_names: dict[str, str] = []
@@ -87,6 +88,11 @@ class Model:
         remove the previous column name. The key is the panel id."""
 
         self.anchor_list.build_tfidf_features()
+
+    def _on_data_changed(self):
+        """Event handler for when set_data in datamanager is called."""
+        # self.data.active_data = self.featurize(self.data.active_data, normalize=False)
+        self.fit()
 
     def _on_data_label(self, index: int | list[int], new_label: int | list[int]):
         """Event handler for datamanager.
