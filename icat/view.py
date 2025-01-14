@@ -6,6 +6,7 @@ import random
 from collections.abc import Callable
 from typing import Any
 
+import ipyvuetify as v
 import ipywidgets as ipw
 import pandas as pd
 import panel as pn
@@ -43,13 +44,17 @@ class InteractiveView(pn.viewable.Viewer):
 
         self.histograms = Histograms()
 
+        self.status_label = v.Label(children=["Status: hi!"])
+
         self.debug = ipw.Output()
 
         self._selected_points_change_callbacks: list[Callable] = []
 
         self.layout = pn.Row(
             pn.Column(self.anchorviz, self.model.anchor_list, self.debug),
-            pn.Column(self.model.data.widget, self.histograms, width=700),
+            pn.Column(
+                self.model.data.widget, self.status_label, self.histograms, width=700
+            ),
             height=1150,
         )
 
@@ -73,8 +78,46 @@ class InteractiveView(pn.viewable.Viewer):
         self.model.data.table.on_point_hover(self._set_anchorviz_selected_point)
         self.model.data.on_sample_changed(self._handle_data_sample_changed)
         self.histograms.on_range_changed(self._histograms_range_changed)
+
+        self.model.anchor_list.on_status_event(self._handle_status_event)
+        self.model.on_status_event(self._handle_status_event)
+
         super().__init__(**params)
         self.refresh_data()
+        self._handle_status_event(None, None)  # reset status label
+
+    def _handle_status_event(self, status_text: str, source: str):
+        """Whenever any component wants to say something in the status line, handle
+        updating that text element here."""
+        # NOTE: status_text of None means "done"/ready
+        if status_text is not None:
+            self.status_label.children = f"Status: {status_text}"
+        else:
+            if self.model.is_seeded():
+                self.status_label.children = "Status: Ready!"
+            else:
+                # TODO: replicating logic from model.is_seeded, better way to handle?
+                labeled_df = None
+                if (
+                    self.model.training_data is None
+                    or self.model.data.label_col not in self.model.training_data.columns
+                ):
+                    remaining_labels = 10
+                else:
+                    labeled_df = self.model.training_data[
+                        self.model.training_data[self.model.data.label_col] != -1
+                    ]
+
+                if labeled_df is not None:
+                    remaining_labels = 10 - len(labeled_df)
+                label_str = f"Status: Model isn't seeded yet, label at least {remaining_labels} more points."
+
+                if labeled_df is not None:
+                    if len(labeled_df[labeled_df[self.model.data.label_col] == 0]) == 0:
+                        label_str += " Label at least one more point uninteresting."
+                    if len(labeled_df[labeled_df[self.model.data.label_col] == 1]) == 0:
+                        label_str += " Label at least one more point interesting."
+                self.status_label.children = label_str
 
     def _handle_data_sample_changed(self, new_sample_indices: list[int]):
         """When the model's data manager sample_indices changes, it fires the

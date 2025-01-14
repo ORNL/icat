@@ -298,6 +298,7 @@ class AnchorList(pn.viewable.Viewer):
         self._anchor_removed_callbacks: list[Callable] = []
         self._anchor_types_changed_callbacks: list[Callable] = []
         self._default_example_anchor_type_changed_callbacks: list[Callable] = []
+        self._status_event_callbacks: list[Callable] = []
 
         self.add_anchor_types(anchor_types)
 
@@ -430,7 +431,7 @@ class AnchorList(pn.viewable.Viewer):
         self._anchor_types_changed_callbacks.append(callback)
 
     def on_default_example_anchor_type_changed(self, callback: Callable):
-        """Register a callback function for the "default example anchor changed
+        """Register a callback function for the "default example anchor changed"
         event.
 
         Callbacks for this event should take the anchor type config dictionary, which
@@ -438,6 +439,20 @@ class AnchorList(pn.viewable.Viewer):
         """
         self._default_example_anchor_type_changed_callbacks.append(callback)
         pass
+
+    def on_status_event(self, callback: Callable):
+        """Register a callback function for whenever something that should update a status
+        label occurs.
+
+        Callbacks for this event should take the text event description string, and a string
+        with the source of the event.
+        If None is passed, this means any prior event from this source is complete.
+        """
+        self._status_event_callbacks.append(callback)
+
+    def fire_on_status_event(self, event: str):
+        for callback in self._status_event_callbacks:
+            callback(event, "anchorlist")
 
     def fire_on_anchor_added(self, anchor: Anchor):
         """Trigger the event to notify that a new anchor was added.
@@ -1089,9 +1104,11 @@ class AnchorList(pn.viewable.Viewer):
         self.table.processing = True
         features = []
         for anchor in self.anchors:
+            self.fire_on_status_event(f"Computing features for {anchor.anchor_name}...")
             self.table._set_anchor_processing(anchor.name, True)
             data[f"_{anchor.anchor_name}"] = anchor.featurize(data) * anchor.weight
             features.append(f"_{anchor.anchor_name}")
+            self.fire_on_status_event(None)
             self.table._set_anchor_processing(anchor.name, False)
         if normalize:
             if reference_data is not None:

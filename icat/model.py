@@ -5,6 +5,7 @@ primary parent class for interacting with icat.
 
 import json
 import os
+from collections.abc import Callable
 from datetime import datetime
 
 import joblib
@@ -52,6 +53,8 @@ class Model:
                 },
             ]
 
+        self._status_event_callbacks: list[Callable] = []
+
         self.training_data: pd.DataFrame = None
         """The rows (and only those rows) of the original data explicitly used for training."""
         self.text_col = text_col
@@ -88,6 +91,20 @@ class Model:
         remove the previous column name. The key is the panel id."""
 
         self.anchor_list.build_tfidf_features()
+
+    def on_status_event(self, callback: Callable):
+        """Register a callback function for whenever something that should update a status
+        label occurs.
+
+        Callbacks for this event should take the text event description string, and a string
+        with the source of the event.
+        If None is passed, this means any prior event from this source is complete.
+        """
+        self._status_event_callbacks.append(callback)
+
+    def fire_on_status_event(self, event: str):
+        for callback in self._status_event_callbacks:
+            callback(event, "model")
 
     def _on_data_changed(self):
         """Event handler for when set_data in datamanager is called."""
@@ -188,6 +205,7 @@ class Model:
     def _train_model(self):
         """Fits the data to the current training dataset, note that this function
         assumes the data has already been featurized."""
+        self.fire_on_status_event(None)  # clear/refresh status label
 
         if not self.is_seeded():
             # we short circuit training the model here, but we do still want to show
@@ -206,11 +224,15 @@ class Model:
 
         if len(self.feature_names(in_model_only=True)) < 1:
             return False
+
+        self.fire_on_status_event("Training model...")
         self.classifier.fit(
             self.training_data[self.feature_names(in_model_only=True)],
             self.training_data[self.data.label_col],
         )
+        self.fire_on_status_event("Predicting on remaining data...")
         self.data.active_data[self.data.prediction_col] = self.predict()
+        self.fire_on_status_event(None)
         coverage_info = self.compute_coverage()
         self.anchor_list.set_coverage(coverage_info)
 
