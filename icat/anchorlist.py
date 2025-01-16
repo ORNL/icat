@@ -1104,11 +1104,11 @@ class AnchorList(pn.viewable.Viewer):
         self.table.processing = True
         features = []
         for anchor in self.anchors:
-            self.fire_on_status_event(f"Computing features for {anchor.anchor_name}...")
+            # self.fire_on_status_event(f"Computing features for {anchor.anchor_name}...")
             self.table._set_anchor_processing(anchor.name, True)
             data[f"_{anchor.anchor_name}"] = anchor.featurize(data) * anchor.weight
             features.append(f"_{anchor.anchor_name}")
-            self.fire_on_status_event(None)
+            # self.fire_on_status_event(None)
             self.table._set_anchor_processing(anchor.name, False)
         if normalize:
             if reference_data is not None:

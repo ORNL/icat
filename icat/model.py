@@ -205,7 +205,7 @@ class Model:
     def _train_model(self):
         """Fits the data to the current training dataset, note that this function
         assumes the data has already been featurized."""
-        self.fire_on_status_event(None)  # clear/refresh status label
+        self.fire_on_status_event(None)  # reset/clear status
 
         if not self.is_seeded():
             # we short circuit training the model here, but we do still want to show
@@ -352,6 +352,7 @@ class Model:
         # self.norm_reference = self.featurize(self.data.active_data, normalize=False)[
         #     features
         # ].copy()
+        self.fire_on_status_event("Computing features...")
         self.data.active_data = self.featurize(self.data.active_data, normalize=False)
         if self.training_data is not None:
             self.training_data = self.featurize(
@@ -364,6 +365,7 @@ class Model:
         # self.data.active_data.loc[:, features] = self.data.active_data[features].apply(
         #     AnchorList._l1_col_normalize, axis=0
         # )
+        self.fire_on_status_event(None)
 
         self._train_model()
 

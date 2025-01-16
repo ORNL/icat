@@ -94,7 +94,7 @@ class InteractiveView(pn.viewable.Viewer):
             self.status_label.children = f"Status: {status_text}"
         else:
             if self.model.is_seeded():
-                self.status_label.children = "Status: Ready!"
+                self.status_label.children = "Status: Model ready"
             else:
                 # TODO: replicating logic from model.is_seeded, better way to handle?
                 labeled_df = None
@@ -114,9 +114,9 @@ class InteractiveView(pn.viewable.Viewer):
 
                 if labeled_df is not None:
                     if len(labeled_df[labeled_df[self.model.data.label_col] == 0]) == 0:
-                        label_str += " Label at least one more point uninteresting."
+                        label_str += " Need at least one point labeled 'uninteresting'."
                     if len(labeled_df[labeled_df[self.model.data.label_col] == 1]) == 0:
-                        label_str += " Label at least one more point interesting."
+                        label_str += " Need at least one point labeled 'interesting'."
                 self.status_label.children = label_str
 
     def _handle_data_sample_changed(self, new_sample_indices: list[int]):
