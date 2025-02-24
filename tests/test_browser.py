@@ -9,7 +9,8 @@ def test_jupyter(jupyter_server, page):
     page.goto("http://127.0.0.1:9997/lab?reset")
     expect(page).to_have_title(re.compile("JupyterLab"))
 
-    page.get_by_text("simple_example.ipynb").dblclick()
+    # page.get_by_text("simple_example.ipynb").dblclick(delay=1000)
+    page.get_by_role("listitem", name="Name: simple_example.ipynb").dblclick(delay=500)
     expect(page.locator("#Simple-Example")).to_be_visible()
 
     # page.locator("div#jp-main-dock-panel > div.lm-Widget.jp-Editor.jp-InputArea-editor").first.click()

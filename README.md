@@ -44,6 +44,18 @@ We implemented an ipywidget version of AnchorViz and use it in this project, it 
 
 <!-- documentation section -->
 
+## Contributing
+
+Contributions for improving ICAT are welcome! If you run into any problems, find
+bugs, or think of useful improvements and enhancements, feel free to open an
+[issue](https://github.com/ORNL/icat/issues).
+
+If you add a feature or fix a bug yourself and want it considered for
+integration, feel free to open a pull request with the changes. Please provide
+a detailed description of what the pull request is doing and briefly list any
+significant changes made. If it's in regards to a specific issue, please include
+or link the issue number.
+
 ## Citation
 
 To cite usage of ICAT, please use the following bibtex:
