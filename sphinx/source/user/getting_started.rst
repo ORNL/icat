@@ -55,3 +55,34 @@ create a functioning interface:
     train_df = pd.DataFrame({"text": train["data"]})
     model = icat.Model(train_df, "text")
     model.view
+
+
+Basic Usage
+===========
+
+At its simplest, ICAT can be used as a visual and interactive
+method for pulling out text instances by keywords. We can do this by creating dictionary
+anchors (described further in :ref:`Anchors`) for the sets of keywords we wish to use: for example, to
+separate out usenet posts in the "sci.space" category from any of the "comp."
+categories, we could begin by creating two concept anchors, one with
+"rocket,space,nasa" and another with "unix,computer". This can be done
+either with the following code:
+
+.. code-block:: python
+
+    model.add_anchor(icat.DictionaryAnchor(anchor_name="Space", keywords=["rocket", "space", "nasa"]))
+    model.add_anchor(icat.DictionaryAnchor(anchor_name="Comp", keywords=["unix", "computer"]))
+
+Or by clicking on the "Dictionary" button twice and adding the comma-separated
+keywords to the text fields below.
+
+.. figure:: ../_static/basic_usage.png
+   :align: center
+
+The result is shown above: the clusters of inner points (the texts) by each point along the
+circumference (the anchors) represent the texts containing any of the anchor's
+respective sets of keywords. The two points floating in between the two anchors
+highlight instances that have keywords from both concept anchors.
+
+A more comprehensive overview of using the interface can be found in the `usage
+walkthrough notebook <https://github.com/ORNL/icat/blob/main/notebooks/usage_walkthrough.ipynb>`_.

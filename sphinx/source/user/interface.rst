@@ -60,8 +60,8 @@ Anchor list
 
 This part of the interface can be rendered separately with ``model.anchor_list``.
 
-Anchors
--------
+Individual Anchors
+------------------
 
 .. figure:: ../_static/anchors.png
     :align: center
