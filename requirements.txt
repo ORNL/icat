@@ -2,10 +2,10 @@ panel
 numpy
 pandas
 scikit-learn
-ipyvuetify~=1.9
-ipywidgets<8.1.3
-jupyterlab-widgets<3.0.11
-ipyanchorviz~=0.3.0
+ipyvuetify
+ipywidgets
+jupyterlab-widgets
+ipyanchorviz
 altair
 pytest
 pytest-mock
