@@ -1,0 +1,6 @@
+icat.utils.jupyter\_notebook\_detected
+======================================
+
+.. currentmodule:: icat.utils
+
+.. autofunction:: jupyter_notebook_detected

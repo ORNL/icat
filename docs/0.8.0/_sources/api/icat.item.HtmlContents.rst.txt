@@ -1,0 +1,85 @@
+icat.item.HtmlContents
+======================
+
+.. currentmodule:: icat.item
+
+.. autoclass:: HtmlContents
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~HtmlContents.__init__
+      ~HtmlContents.add_class
+      ~HtmlContents.add_traits
+      ~HtmlContents.blur
+      ~HtmlContents.class_own_trait_events
+      ~HtmlContents.class_own_traits
+      ~HtmlContents.class_trait_names
+      ~HtmlContents.class_traits
+      ~HtmlContents.close
+      ~HtmlContents.close_all
+      ~HtmlContents.focus
+      ~HtmlContents.get_manager_state
+      ~HtmlContents.get_state
+      ~HtmlContents.get_view_spec
+      ~HtmlContents.handle_comm_opened
+      ~HtmlContents.handle_control_comm_opened
+      ~HtmlContents.has_trait
+      ~HtmlContents.hold_sync
+      ~HtmlContents.hold_trait_notifications
+      ~HtmlContents.notify_change
+      ~HtmlContents.observe
+      ~HtmlContents.on_msg
+      ~HtmlContents.on_trait_change
+      ~HtmlContents.on_widget_constructed
+      ~HtmlContents.open
+      ~HtmlContents.remove_class
+      ~HtmlContents.send
+      ~HtmlContents.send_state
+      ~HtmlContents.set_state
+      ~HtmlContents.set_trait
+      ~HtmlContents.setup_instance
+      ~HtmlContents.trait_defaults
+      ~HtmlContents.trait_events
+      ~HtmlContents.trait_has_value
+      ~HtmlContents.trait_metadata
+      ~HtmlContents.trait_names
+      ~HtmlContents.trait_values
+      ~HtmlContents.traits
+      ~HtmlContents.unobserve
+      ~HtmlContents.unobserve_all
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~HtmlContents.class_component_serialization
+      ~HtmlContents.comm
+      ~HtmlContents.components
+      ~HtmlContents.content
+      ~HtmlContents.cross_validation_lock
+      ~HtmlContents.css
+      ~HtmlContents.data
+      ~HtmlContents.events
+      ~HtmlContents.keys
+      ~HtmlContents.layout
+      ~HtmlContents.log
+      ~HtmlContents.methods
+      ~HtmlContents.model_id
+      ~HtmlContents.tabbable
+      ~HtmlContents.template
+      ~HtmlContents.template_file
+      ~HtmlContents.tooltip
+      ~HtmlContents.widget_types
+      ~HtmlContents.widgets

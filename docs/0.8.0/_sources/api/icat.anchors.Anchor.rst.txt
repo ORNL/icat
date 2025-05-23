@@ -1,0 +1,45 @@
+icat.anchors.Anchor
+===================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: Anchor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Anchor.__init__
+      ~Anchor.anchor_types
+      ~Anchor.featurize
+      ~Anchor.fire_on_anchor_changed
+      ~Anchor.load
+      ~Anchor.on_anchor_changed
+      ~Anchor.row_view
+      ~Anchor.save
+      ~Anchor.to_dict
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Anchor.DESCRIPTION
+      ~Anchor.NAME
+      ~Anchor.anchor_name
+      ~Anchor.global_cache
+      ~Anchor.in_model
+      ~Anchor.in_view
+      ~Anchor.name
+      ~Anchor.param
+      ~Anchor.weight
+      ~Anchor.cache

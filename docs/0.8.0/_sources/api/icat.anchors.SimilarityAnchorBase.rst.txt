@@ -1,0 +1,49 @@
+icat.anchors.SimilarityAnchorBase
+=================================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: SimilarityAnchorBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~SimilarityAnchorBase.__init__
+      ~SimilarityAnchorBase.anchor_types
+      ~SimilarityAnchorBase.featurize
+      ~SimilarityAnchorBase.fire_on_anchor_changed
+      ~SimilarityAnchorBase.load
+      ~SimilarityAnchorBase.on_anchor_changed
+      ~SimilarityAnchorBase.remove_by_short
+      ~SimilarityAnchorBase.row_view
+      ~SimilarityAnchorBase.save
+      ~SimilarityAnchorBase.to_dict
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~SimilarityAnchorBase.DESCRIPTION
+      ~SimilarityAnchorBase.NAME
+      ~SimilarityAnchorBase.anchor_name
+      ~SimilarityAnchorBase.global_cache
+      ~SimilarityAnchorBase.in_model
+      ~SimilarityAnchorBase.in_view
+      ~SimilarityAnchorBase.name
+      ~SimilarityAnchorBase.param
+      ~SimilarityAnchorBase.reference_short
+      ~SimilarityAnchorBase.reference_texts
+      ~SimilarityAnchorBase.text_col
+      ~SimilarityAnchorBase.weight
+      ~SimilarityAnchorBase.cache

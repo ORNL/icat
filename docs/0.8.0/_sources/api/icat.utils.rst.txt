@@ -1,0 +1,21 @@
+﻿icat.utils
+==========
+
+.. automodule:: icat.utils
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      add_highlights
+      jupyter_lab_detected
+      jupyter_notebook_detected
+      populate_anchor_from_dictionary
+      vue_template_path

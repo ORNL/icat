@@ -1,0 +1,51 @@
+icat.data.DataManager
+=====================
+
+.. currentmodule:: icat.data
+
+.. autoclass:: DataManager
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~DataManager.__init__
+      ~DataManager.apply_label
+      ~DataManager.fire_on_data_changed
+      ~DataManager.fire_on_data_labeled
+      ~DataManager.fire_on_row_selected
+      ~DataManager.fire_on_sample_changed
+      ~DataManager.on_data_changed
+      ~DataManager.on_data_labeled
+      ~DataManager.on_row_selected
+      ~DataManager.on_sample_changed
+      ~DataManager.servable
+      ~DataManager.set_data
+      ~DataManager.set_random_sample
+      ~DataManager.show
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~DataManager.current_data_tab
+      ~DataManager.name
+      ~DataManager.param
+      ~DataManager.pred_max
+      ~DataManager.pred_min
+      ~DataManager.sample_indices
+      ~DataManager.search_value
+      ~DataManager.selected_indices
+      ~DataManager.update_trigger
+      ~DataManager.active_data
+      ~DataManager.filtered_df

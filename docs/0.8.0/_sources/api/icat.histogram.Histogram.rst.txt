@@ -1,0 +1,33 @@
+icat.histogram.Histogram
+========================
+
+.. currentmodule:: icat.histogram
+
+.. autoclass:: Histogram
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Histogram.__init__
+      ~Histogram.get_vega_graph
+      ~Histogram.servable
+      ~Histogram.set_data
+      ~Histogram.show
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Histogram.name
+      ~Histogram.param

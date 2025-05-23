@@ -1,0 +1,33 @@
+icat.view.InteractiveView
+=========================
+
+.. currentmodule:: icat.view
+
+.. autoclass:: InteractiveView
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~InteractiveView.__init__
+      ~InteractiveView.on_selected_points_change
+      ~InteractiveView.refresh_data
+      ~InteractiveView.servable
+      ~InteractiveView.show
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~InteractiveView.name
+      ~InteractiveView.param

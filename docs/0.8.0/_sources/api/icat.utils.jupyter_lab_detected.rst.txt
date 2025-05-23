@@ -1,0 +1,6 @@
+icat.utils.jupyter\_lab\_detected
+=================================
+
+.. currentmodule:: icat.utils
+
+.. autofunction:: jupyter_lab_detected

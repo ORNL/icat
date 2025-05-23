@@ -1,0 +1,34 @@
+icat.item.ItemViewer
+====================
+
+.. currentmodule:: icat.item
+
+.. autoclass:: ItemViewer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~ItemViewer.__init__
+      ~ItemViewer.fire_on_label_changed
+      ~ItemViewer.on_label_changed
+      ~ItemViewer.populate
+      ~ItemViewer.servable
+      ~ItemViewer.show
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~ItemViewer.name
+      ~ItemViewer.param

@@ -1,0 +1,6 @@
+icat.utils.vue\_template\_path
+==============================
+
+.. currentmodule:: icat.utils
+
+.. autofunction:: vue_template_path

@@ -1,0 +1,34 @@
+icat.histograms.Histograms
+==========================
+
+.. currentmodule:: icat.histograms
+
+.. autoclass:: Histograms
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Histograms.__init__
+      ~Histograms.fire_on_range_changed
+      ~Histograms.on_range_changed
+      ~Histograms.refresh_data
+      ~Histograms.servable
+      ~Histograms.show
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Histograms.name
+      ~Histograms.param

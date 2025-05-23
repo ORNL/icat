@@ -1,0 +1,23 @@
+﻿icat.item
+=========
+
+.. automodule:: icat.item
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      HtmlContents
+      ItemViewer

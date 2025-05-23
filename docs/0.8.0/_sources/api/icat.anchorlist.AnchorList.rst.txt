@@ -1,0 +1,67 @@
+icat.anchorlist.AnchorList
+==========================
+
+.. currentmodule:: icat.anchorlist
+
+.. autoclass:: AnchorList
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~AnchorList.__init__
+      ~AnchorList.add_anchor
+      ~AnchorList.add_anchor_type
+      ~AnchorList.add_anchor_types
+      ~AnchorList.build_tfidf_features
+      ~AnchorList.featurize
+      ~AnchorList.fire_on_anchor_added
+      ~AnchorList.fire_on_anchor_changed
+      ~AnchorList.fire_on_anchor_removed
+      ~AnchorList.fire_on_anchor_types_changed
+      ~AnchorList.fire_on_default_example_anchor_type_changed
+      ~AnchorList.fire_on_status_event
+      ~AnchorList.get_anchor_by_panel_id
+      ~AnchorList.get_anchor_type_config
+      ~AnchorList.get_unique_anchor_name
+      ~AnchorList.highlight_regex
+      ~AnchorList.load
+      ~AnchorList.modify_anchor_type
+      ~AnchorList.on_anchor_added
+      ~AnchorList.on_anchor_changed
+      ~AnchorList.on_anchor_removed
+      ~AnchorList.on_anchor_types_changed
+      ~AnchorList.on_default_example_anchor_type_changed
+      ~AnchorList.on_status_event
+      ~AnchorList.refresh_anchor_types
+      ~AnchorList.refresh_anchors_table
+      ~AnchorList.remove_anchor
+      ~AnchorList.remove_anchor_type
+      ~AnchorList.save
+      ~AnchorList.servable
+      ~AnchorList.set_coverage
+      ~AnchorList.show
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~AnchorList.anchors
+      ~AnchorList.default_example_anchor_type_dict
+      ~AnchorList.name
+      ~AnchorList.param
+      ~AnchorList.possible_anchor_types
+      ~AnchorList.coverage_info
+      ~AnchorList.anchors_layout
+      ~AnchorList.cache
+      ~AnchorList.model

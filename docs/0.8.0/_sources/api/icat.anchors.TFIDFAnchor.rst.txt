@@ -1,0 +1,49 @@
+icat.anchors.TFIDFAnchor
+========================
+
+.. currentmodule:: icat.anchors
+
+.. autoclass:: TFIDFAnchor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~TFIDFAnchor.__init__
+      ~TFIDFAnchor.anchor_types
+      ~TFIDFAnchor.featurize
+      ~TFIDFAnchor.fire_on_anchor_changed
+      ~TFIDFAnchor.load
+      ~TFIDFAnchor.on_anchor_changed
+      ~TFIDFAnchor.remove_by_short
+      ~TFIDFAnchor.row_view
+      ~TFIDFAnchor.save
+      ~TFIDFAnchor.to_dict
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~TFIDFAnchor.DESCRIPTION
+      ~TFIDFAnchor.NAME
+      ~TFIDFAnchor.anchor_name
+      ~TFIDFAnchor.global_cache
+      ~TFIDFAnchor.in_model
+      ~TFIDFAnchor.in_view
+      ~TFIDFAnchor.name
+      ~TFIDFAnchor.param
+      ~TFIDFAnchor.reference_short
+      ~TFIDFAnchor.reference_texts
+      ~TFIDFAnchor.text_col
+      ~TFIDFAnchor.weight
+      ~TFIDFAnchor.cache
