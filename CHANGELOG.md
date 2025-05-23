@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Automatic detection of model running within Jupyter Notebook instead of Lab,
     allowing more appropriate default interface size for notebook cells.
 
+### Removed
+* Overly strict dependencies on ipywidgets/ipyvuetify versions (interaction
+    through panel has since been fixed)
+
 
 
 

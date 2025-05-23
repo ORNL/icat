@@ -47,16 +47,32 @@ setup(
         "numpy",
         "pandas",
         "scikit-learn",
-        "ipyanchorviz~=0.3.0",
+        "ipyanchorviz",
         "altair",
         "jupyter_bokeh",
         "ipywidgets-bokeh",
-        "ipyvuetify~=1.9",
-        "ipyvue~=1.11",
-        "ipywidgets<8.1.3",  # can be removed once https://github.com/holoviz/panel/issues/6921 is resolved (panel 1.5?)
-        "jupyterlab-widgets<3.0.11",  # "
+        "ipyvuetify",
+        "ipyvue",
+        "ipywidgets",
+        "jupyterlab-widgets",
         "psutil",
     ],
+    # install_requires=[
+    #     "panel",
+    #     "pyviz_comms",
+    #     "numpy",
+    #     "pandas",
+    #     "scikit-learn",
+    #     "ipyanchorviz~=0.3.0",
+    #     "altair",
+    #     "jupyter_bokeh",
+    #     "ipywidgets-bokeh",
+    #     "ipyvuetify~=1.9",
+    #     "ipyvue~=1.11",
+    #     "ipywidgets<8.1.3",  # can be removed once https://github.com/holoviz/panel/issues/6921 is resolved (panel 1.5?)
+    #     "jupyterlab-widgets<3.0.11",  # "
+    #     "psutil",
+    # ],
     # an exact set of dependencies that I know for a fact works, remove comments
     # in case of emergency
     # install_requires=[
