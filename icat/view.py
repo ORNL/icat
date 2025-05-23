@@ -27,6 +27,8 @@ class InteractiveView(pn.viewable.Viewer):
 
     Args:
         model (icat.Model): The parent model that this view is associated with.
+        lcol_width (int): The width of the anchorviz and anchor list widgets.
+        rcol_width (int): The width of the datamanager and histograms.
     """
 
     # TODO: coupling: technically coupling model and view, I think I care a lot less about it

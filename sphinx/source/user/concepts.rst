@@ -94,3 +94,18 @@ viewer, or programmatically:
 
     model.data.apply_label(42, 1)  # label index 42 as "interesting"
     model.data.apply_label(13, 0)  # label index 13 as "uninteresting"
+
+Selection
+=========
+
+One important interaction paradigm in ICAT is manually pulling out clusters of
+interest in the data for further exploration or labelling. The anchors mentioned
+above are the mechanism to pull data out from the center/away from other
+anchors, and the interface additionally has the ability to lasso-select groups
+of points by clicking and dragging a path around the target points:
+
+.. figure:: ../_static/selection.png
+   :align: center
+
+Once points are selected/highlighted in green, the "Selected" tab of the :ref:`Data
+manager` is populated with only the texts from these points.
