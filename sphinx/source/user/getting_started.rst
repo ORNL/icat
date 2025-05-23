@@ -86,3 +86,21 @@ highlight instances that have keywords from both concept anchors.
 
 A more comprehensive overview of using the interface can be found in the `usage
 walkthrough notebook <https://github.com/ORNL/icat/blob/main/notebooks/usage_walkthrough.ipynb>`_.
+
+
+User Interface
+==============
+
+ICAT is primarily designed to run preferably in Jupyter Lab, although it can
+also run in Jupyter Notebook. Various issues may make the interface not work
+correctly inside of other containers such as VSCode.
+
+The interface defaults to 1400px wide if it does not detect Jupyter Notebook,
+otherwise it shrinks to 1100px by default to fit in the narrower Notebook cells.
+If these defaults aren't appropriate for your screen, you can set the desired
+width in the model initialization with the ``interface_width`` parameter:
+
+.. code-block:: python
+
+   model = icat.Model(train_df, "text", interface_width=1200)
+   model.view

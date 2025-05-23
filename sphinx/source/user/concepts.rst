@@ -108,4 +108,5 @@ of points by clicking and dragging a path around the target points:
    :align: center
 
 Once points are selected/highlighted in green, the "Selected" tab of the :ref:`Data
-manager` is populated with only the texts from these points.
+manager` is populated with only the texts from these points, which can then be
+labeled or analyzed for additional anchors/necessary anchor modifications.

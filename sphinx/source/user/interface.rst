@@ -11,6 +11,8 @@ This combined view is created by displaying ``model.view`` inside a jupyter cell
 (either with an explicit ``IPython.display(model.view)`` or simply use
 ``model.view`` as the last line of the cell.)
 
+Please see :ref:`User Interface` for notes on interface width.
+
 AnchorViz
 =========
 
