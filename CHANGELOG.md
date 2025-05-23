@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.8.0] - 2025-05-23
+
+### Added
+* `interface_width` parameter to `Model` to allow manually specifying UI size.
+* Automatic detection of model running within Jupyter Notebook instead of Lab,
+    allowing more appropriate default interface size for notebook cells.
+
+
+
+
 ## [0.7.4] - 2024-09-13
 
 ### Fixed
