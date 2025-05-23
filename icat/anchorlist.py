@@ -126,8 +126,6 @@ class AnchorList(pn.viewable.Viewer):
     Args:
         model: The parent model.
         table_width (int): Static width of the visual component table.
-        table_height (int): Static height of the visual component table. \
-            (Currently unused)
         anchor_types (list[type | dict[str, any]]): The anchor types to start the \
             interface with. This list can contain a combination of types and \
             dictionaries with keys ``ref`` (containing the type), ``name`` (display \
@@ -166,7 +164,6 @@ class AnchorList(pn.viewable.Viewer):
         self,
         model=None,
         table_width: int = 700,
-        table_height: int = 150,
         anchor_types: list[type | dict[str, any]] = None,
         **params,
     ):

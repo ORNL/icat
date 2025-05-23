@@ -17,3 +17,4 @@ pydata-sphinx-theme
 sphinx-favicon
 pytest-playwright
 jupyterlab
+psutil

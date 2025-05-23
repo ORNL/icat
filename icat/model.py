@@ -17,7 +17,7 @@ import icat
 from icat.anchorlist import AnchorList
 from icat.anchors import Anchor, DictionaryAnchor, TFIDFAnchor
 from icat.data import DataManager
-from icat.utils import _kill_param_auto_docstring
+from icat.utils import _kill_param_auto_docstring, jupyter_notebook_detected
 from icat.view import InteractiveView
 
 _kill_param_auto_docstring()
@@ -35,6 +35,10 @@ class Model:
             after initialization through the ``anchor_list``.)
         default_sample_size (int): The initial number of points to sample for the \
             visualizations.
+        interface_width (int): Fit the width of the UI into this number of pixels,
+            or None. If None and ICAT detects that this is running in Jupyter
+            Notebook instead of Jupyter Lab, it will attempt to appropriately size
+            the output to a Notebook cell width.
     """
 
     def __init__(
@@ -43,6 +47,7 @@ class Model:
         text_col: str,
         anchor_types: list[type | dict[str, any]] = None,
         default_sample_size: int = 100,
+        interface_width: int = None,
     ):
         if anchor_types is None:
             anchor_types = [
@@ -52,6 +57,14 @@ class Model:
                     "color": icat.anchorlist.ANCHOR_COLOR_PALLETE[0][1],
                 },
             ]
+
+        # compute interface component sizes
+        if interface_width is None:
+            interface_width = 1400
+            if jupyter_notebook_detected():
+                interface_width = 1100
+        col1_width = int(interface_width / 2)
+        col2_width = int(interface_width / 2)
 
         self._status_event_callbacks: list[Callable] = []
 
@@ -65,7 +78,9 @@ class Model:
         )
         """The underlying machine learning algorithm that learns based on the training data."""
 
-        self.anchor_list: AnchorList = AnchorList(model=self, anchor_types=anchor_types)
+        self.anchor_list: AnchorList = AnchorList(
+            model=self, anchor_types=anchor_types, table_width=col1_width - 10
+        )
         """The ``AnchorList`` instance that manages all features/featuring necessary for
         the classifier."""
         self.data: DataManager = DataManager(
@@ -73,9 +88,12 @@ class Model:
             text_col=text_col,
             model=self,
             default_sample_size=default_sample_size,
+            width=col2_width,
         )
         """The ``DataManager`` instance that handles all labeling tasks and data filtering/sampling."""
-        self.view: InteractiveView = InteractiveView(model=self)
+        self.view: InteractiveView = InteractiveView(
+            model=self, lcol_width=col1_width, rcol_width=col2_width
+        )
         """The ``InteractiveView`` or dashboard widget that glues together the various visual components."""
 
         # set up necessary behind-the-scenes glue for anchors and data

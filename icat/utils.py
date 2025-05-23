@@ -3,6 +3,29 @@
 import importlib.resources
 import re
 
+import psutil
+
+
+def jupyter_notebook_detected() -> bool:
+    """Return True if we recognize we're in a Jupyter Notebook instance, as
+    opposed to Jupyter Lab. Important for correctly sizing the interface
+    automatically."""
+    # https://stackoverflow.com/questions/57173235/how-to-detect-whether-in-jupyter-notebook-or-lab
+    process_name = psutil.Process().parent().cmdline()[-1]
+    if "jupyter-notebook" in process_name:
+        return True
+    return False
+
+
+def jupyter_lab_detected() -> bool:
+    """Return True if we recognize we're in a Jupyter Lab instance, as opposed
+    to Jupyter Notebook. Important for correctly sizing the interface automatically."""
+    # https://stackoverflow.com/questions/57173235/how-to-detect-whether-in-jupyter-notebook-or-lab
+    process_name = psutil.Process().parent().cmdline()[-1]
+    if "jupyter-lab" in process_name:
+        return True
+    return False
+
 
 def _kill_param_auto_docstring():
     """As cool as param.parameterized is, it's doing some things with automatic

@@ -32,17 +32,21 @@ class InteractiveView(pn.viewable.Viewer):
     # TODO: coupling: technically coupling model and view, I think I care a lot less about it
     # here since view is already loosely orchestrating all of the gui stuff. If anything,
     # _more_ of the model event handlers should be handled in here instead of in the model?
-    def __init__(self, model, **params):
+    def __init__(self, model, lcol_width: int = 700, rcol_width: int = 700, **params):
         self.uninteresting_color = "#2196F3"  # blue
         self.interesting_color = "#FB8C00"  # orange darken-1
 
         self.model = model
 
+        av_radius = int((lcol_width - 160) / 2)
+
         self.anchorviz: AnchorViz = AnchorViz(
-            margin=dict(left=80, top=30, right=80, bottom=30), autoNorm=False
+            radius=av_radius,
+            margin=dict(left=80, top=30, right=80, bottom=30),
+            autoNorm=False,
         )
 
-        self.histograms = Histograms()
+        self.histograms = Histograms(width=rcol_width)
 
         self.status_label = v.Label(children=["Status: hi!"])
 
@@ -51,9 +55,14 @@ class InteractiveView(pn.viewable.Viewer):
         self._selected_points_change_callbacks: list[Callable] = []
 
         self.layout = pn.Row(
-            pn.Column(self.anchorviz, self.model.anchor_list, self.debug),
             pn.Column(
-                self.model.data.widget, self.status_label, self.histograms, width=700
+                self.anchorviz, self.model.anchor_list, self.debug, width=lcol_width
+            ),
+            pn.Column(
+                self.model.data.widget,
+                self.status_label,
+                self.histograms,
+                width=rcol_width,
             ),
             height=1150,
         )
