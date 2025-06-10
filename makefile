@@ -64,3 +64,11 @@ scratch: ## build an environment completely from scratch and run tests
 	-micromamba env remove -n icat-scratch -y
 	micromamba create -n icat-scratch python -y
 	$(MM_INIT) && micromamba activate icat-scratch && pip install -e . && pip install -r requirements.txt && playwright install && pytest -s
+
+.PHONY: paper
+paper: ## build the JOSS article
+	docker run --rm \
+		--volume ./paper:/data \
+		--user $(id -u):$(id -g) \
+		--env JOURNAL=joss \
+		openjournals/inara
